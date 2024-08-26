@@ -1,31 +1,41 @@
-package com.example.e_commerce.presentation.store
+package com.example.e_commerce.presentation.categories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.common.Resources
-import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class StoreViewModel @Inject constructor(private val repo: CommerceRepository) : ViewModel() {
+class CategoriesViewModel @Inject constructor(private val repo: CommerceRepository) : ViewModel() {
+    private val _categories = MutableStateFlow<List<String>>(emptyList())
+    val categories = _categories.asStateFlow()
+
     private val _allProducts =
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
     val allProducts = _allProducts.asStateFlow()
 
+
     init {
-        getAllProducts()
+        getCategories()
     }
 
-    private fun getAllProducts() {
+    private fun getCategories() {
         viewModelScope.launch {
-            repo.getProducts().collect { result ->
+            _categories.value = repo.getCategories()
+        }
+    }
+
+    fun getProductsByCategory(category: ProductCategory) {
+        viewModelScope.launch(Dispatchers.IO){
+            repo.getProductsByCategory(category.value).collect { result ->
                 when (result) {
                     is Resources.Error -> {
                         _allProducts.value = ScreenState.Error(
@@ -46,9 +56,11 @@ class StoreViewModel @Inject constructor(private val repo: CommerceRepository) :
         }
     }
 
-    fun getCategories() {
-        viewModelScope.launch {
-            val categories = repo.getCategories()
-        }
-    }
+}
+
+enum class ProductCategory(val value: String) {
+    ELECTRONICS("electronics"),
+    JEWELERY("jewelery"),
+    MENS_CLOTHING("men's clothing"),
+    WOMEN_CLOTHING("women's clothing")
 }

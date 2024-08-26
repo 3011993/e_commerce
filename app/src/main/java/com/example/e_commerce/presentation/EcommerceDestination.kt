@@ -27,4 +27,4 @@ object Account : EcommerceDestination {
     override val route: String = "account"
 }
 
-val ecommerceTabsRowScreen = listOf(Store,Cart,Categories,Account)
+val ecommerceTabsRowScreen = listOf(Store,Categories,Cart,Account)
