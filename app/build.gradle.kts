@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.parcelize)
+    alias(libs.plugins.google.service)
 }
 
 android {
@@ -76,7 +77,8 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.coil)
     implementation(libs.compose.coil)
-
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 
 
     testImplementation(libs.junit)

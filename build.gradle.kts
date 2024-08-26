@@ -10,5 +10,6 @@ plugins {
     alias(libs.plugins.parcelize) apply false
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
+    alias(libs.plugins.google.service) apply false
 
 }
