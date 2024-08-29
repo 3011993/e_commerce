@@ -1,7 +1,8 @@
-package com.example.e_commerce.data.repo
+package com.example.e_commerce.data.service
 
+import android.util.Log
 import com.example.e_commerce.domain.model.User
-import com.example.e_commerce.domain.repo.AccountService
+import com.example.e_commerce.domain.service.AccountService
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.channels.awaitClose
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+
 
 class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : AccountService {
     override val currentUserId: String
@@ -38,7 +40,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
 
     override suspend fun linkAccount(email: String, password: String) {
         val credential = EmailAuthProvider.getCredential(email, password)
-        auth.currentUser!!.linkWithCredential(credential).await()
+        auth.currentUser?.let { it.linkWithCredential(credential).await() }
     }
 
     override suspend fun deleteAccount() {
@@ -52,3 +54,4 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         auth.signOut()
     }
 }
+

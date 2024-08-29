@@ -1,4 +1,4 @@
-package com.example.e_commerce.domain.repo
+package com.example.e_commerce.domain.service
 
 import com.example.e_commerce.domain.model.User
 import kotlinx.coroutines.flow.Flow

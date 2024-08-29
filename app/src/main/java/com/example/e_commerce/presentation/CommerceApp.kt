@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,11 +18,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.e_commerce.presentation.account.AccountScreen
+import com.example.e_commerce.presentation.account.login.LoginScreen
+import com.example.e_commerce.presentation.account.settings.SettingsScreen
+import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.categories.CategoriesScreen
 import com.example.e_commerce.presentation.store.StoreScreen
-import com.example.e_commerce.presentation.store.StoreViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
@@ -52,6 +54,7 @@ fun CommerceApp() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = Store.route, modifier = modifier) {
@@ -65,8 +68,31 @@ fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modi
             CartScreen()
         }
         composable(Account.route) {
-            AccountScreen()
+            SettingsScreen(openScreen = { route -> navController.navigateSingleTopTo(route) },
+                restartApp = { route ->
+                    navController.navigate(route) {
+                        launchSingleTop = true
+                        popUpTo(0) { inclusive = true }
+                    }
+                })
         }
+        composable(LOGIN_IN_SCREEN) {
+            LoginScreen(openAndPopUp = { route, popUp ->
+                navController.navigateAndPopUp(
+                    route,
+                    popUp
+                )
+            })
+        }
+        composable(SIGN_UP_SCREEN) {
+            SignUpScreen(openAndPopUp = { route, popUp ->
+                navController.navigateAndPopUp(
+                    route,
+                    popUp
+                )
+            })
+        }
+
 
     }
 
@@ -78,6 +104,13 @@ fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) 
     }
     launchSingleTop = true
     restoreState = true
+}
+
+fun NavHostController.navigateAndPopUp(route: String, popUp: String) {
+    this.navigate(route) {
+        launchSingleTop = true
+        popUpTo(popUp) { inclusive = true }
+    }
 }
 
 

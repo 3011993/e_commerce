@@ -18,60 +18,62 @@ package com.example.e_commerce.presentation.account.sign_up
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.R.string as AppText
-import com.example.e_commerce.SETTINGS_SCREEN
-import com.example.e_commerce.SIGN_UP_SCREEN
 import com.example.e_commerce.common.ext.isValidEmail
 import com.example.e_commerce.common.ext.isValidPassword
 import com.example.e_commerce.common.ext.passwordMatches
 import com.example.e_commerce.common.snackbar.SnackbarManager
-import com.example.e_commerce.domain.repo.AccountService
+import com.example.e_commerce.domain.service.AccountService
+import com.example.e_commerce.presentation.Account
+import com.example.e_commerce.presentation.SIGN_UP_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-  private val accountService: AccountService,
+    private val accountService: AccountService,
 ) : ViewModel() {
-  var uiState = mutableStateOf(SignUpUiState())
-    private set
+    var uiState = mutableStateOf(SignUpUiState())
+        private set
 
-  private val email
-    get() = uiState.value.email
-  private val password
-    get() = uiState.value.password
+    private val email
+        get() = uiState.value.email
+    private val password
+        get() = uiState.value.password
 
-  fun onEmailChange(newValue: String) {
-    uiState.value = uiState.value.copy(email = newValue)
-  }
-
-  fun onPasswordChange(newValue: String) {
-    uiState.value = uiState.value.copy(password = newValue)
-  }
-
-  fun onRepeatPasswordChange(newValue: String) {
-    uiState.value = uiState.value.copy(repeatPassword = newValue)
-  }
-
-  fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
-    if (!email.isValidEmail()) {
-      SnackbarManager.showMessage(AppText.email_error)
-      return
+    fun onEmailChange(newValue: String) {
+        uiState.value = uiState.value.copy(email = newValue)
     }
 
-    if (!password.isValidPassword()) {
-      SnackbarManager.showMessage(AppText.password_error)
-      return
+    fun onPasswordChange(newValue: String) {
+        uiState.value = uiState.value.copy(password = newValue)
     }
 
-    if (!password.passwordMatches(uiState.value.repeatPassword)) {
-      SnackbarManager.showMessage(AppText.password_match_error)
-      return
+    fun onRepeatPasswordChange(newValue: String) {
+        uiState.value = uiState.value.copy(repeatPassword = newValue)
     }
 
-    launchCatching {
-      accountService.linkAccount(email, password)
-      openAndPopUp(SETTINGS_SCREEN, SIGN_UP_SCREEN)
+    fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
+        if (!email.isValidEmail()) {
+            SnackbarManager.showMessage(AppText.email_error)
+            return
+        }
+
+        if (!password.isValidPassword()) {
+            SnackbarManager.showMessage(AppText.password_error)
+            return
+        }
+
+        if (!password.passwordMatches(uiState.value.repeatPassword)) {
+            SnackbarManager.showMessage(AppText.password_match_error)
+            return
+        }
+        viewModelScope.launch {
+            accountService.linkAccount(email, password)
+        }
+        openAndPopUp(Account.route, SIGN_UP_SCREEN)
+
     }
-  }
 }

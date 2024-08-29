@@ -32,11 +32,9 @@ import com.example.e_commerce.common.composable.EmailField
 import com.example.e_commerce.common.composable.PasswordField
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.R.string as AppText
-import com.example.e_commerce.common.composable.*
 import com.example.e_commerce.common.ext.basicButton
 import com.example.e_commerce.common.ext.fieldModifier
 import com.example.e_commerce.common.ext.textButton
-import com.example.makeitso.screens.login.LoginViewModel
 
 @Composable
 fun LoginScreen(

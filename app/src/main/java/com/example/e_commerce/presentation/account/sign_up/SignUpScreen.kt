@@ -1,19 +1,3 @@
-/*
-Copyright 2022 Google LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- */
-
 package com.example.e_commerce.presentation.account.sign_up
 
 import androidx.compose.foundation.layout.*
@@ -24,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.e_commerce.common.composable.BasicToolbar
 import com.example.e_commerce.common.composable.EmailField
 import com.example.e_commerce.common.composable.PasswordField
 import com.example.e_commerce.common.composable.RepeatPasswordField
@@ -37,17 +20,17 @@ import com.example.e_commerce.common.ext.fieldModifier
 @Composable
 fun SignUpScreen(
   openAndPopUp: (String, String) -> Unit,
-  viewModel: SignUpViewModel = hiltViewModel()
+  viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-  val uiState by viewModel.uiState
+    val uiState by viewModel.uiState
 
-  SignUpScreenContent(
-    uiState = uiState,
-    onEmailChange = viewModel::onEmailChange,
-    onPasswordChange = viewModel::onPasswordChange,
-    onRepeatPasswordChange = viewModel::onRepeatPasswordChange,
-    onSignUpClick = { viewModel.onSignUpClick(openAndPopUp) }
-  )
+    SignUpScreenContent(
+        uiState = uiState,
+        onEmailChange = viewModel::onEmailChange,
+        onPasswordChange = viewModel::onPasswordChange,
+        onRepeatPasswordChange = viewModel::onRepeatPasswordChange,
+        onSignUpClick = { viewModel.onSignUpClick(openAndPopUp) }
+    )
 }
 
 @Composable
@@ -57,44 +40,44 @@ fun SignUpScreenContent(
   onEmailChange: (String) -> Unit,
   onPasswordChange: (String) -> Unit,
   onRepeatPasswordChange: (String) -> Unit,
-  onSignUpClick: () -> Unit
+  onSignUpClick: () -> Unit,
 ) {
-  val fieldModifier = Modifier.fieldModifier()
+    val fieldModifier = Modifier.fieldModifier()
 
-  BasicToolbar(AppText.create_account)
+    BasicToolbar(AppText.create_account)
 
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .verticalScroll(rememberScrollState()),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    EmailField(uiState.email, onEmailChange, fieldModifier)
-    PasswordField(uiState.password, onPasswordChange, fieldModifier)
-    RepeatPasswordField(uiState.repeatPassword, onRepeatPasswordChange, fieldModifier)
+    Column(
+        modifier = modifier
+          .fillMaxWidth()
+          .fillMaxHeight()
+          .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        EmailField(uiState.email, onEmailChange, fieldModifier)
+        PasswordField(uiState.password, onPasswordChange, fieldModifier)
+        RepeatPasswordField(uiState.repeatPassword, onRepeatPasswordChange, fieldModifier)
 
-    BasicButton(AppText.create_account, Modifier.basicButton()) {
-      onSignUpClick()
+        BasicButton(AppText.create_account, Modifier.basicButton()) {
+            onSignUpClick()
+        }
     }
-  }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
-  val uiState = SignUpUiState(
-    email = "email@test.com"
-  )
-
-  E_commerceTheme {
-    SignUpScreenContent(
-      uiState = uiState,
-      onEmailChange = { },
-      onPasswordChange = { },
-      onRepeatPasswordChange = { },
-      onSignUpClick = { }
+    val uiState = SignUpUiState(
+        email = "email@test.com"
     )
-  }
+
+    E_commerceTheme {
+        SignUpScreenContent(
+            uiState = uiState,
+            onEmailChange = { },
+            onPasswordChange = { },
+            onRepeatPasswordChange = { },
+            onSignUpClick = { }
+        )
+    }
 }
