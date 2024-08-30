@@ -25,6 +25,7 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
 
     init {
         getCategories()
+        getProductsByCategory(ProductCategory.ELECTRONICS)
     }
 
     private fun getCategories() {
@@ -34,7 +35,7 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
     }
 
     fun getProductsByCategory(category: ProductCategory) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repo.getProductsByCategory(category.value).collect { result ->
                 when (result) {
                     is Resources.Error -> {

@@ -36,6 +36,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
     Row(modifier = modifier.padding(3.dp)) {
         val viewModel: CategoriesViewModel = hiltViewModel()
         val state by viewModel.allProducts.collectAsState()
+        val categories by viewModel.categories.collectAsState()
         CategoriesNavigationRail(
             onSelectCategory = { category ->
                 viewModel.getProductsByCategory(category)
