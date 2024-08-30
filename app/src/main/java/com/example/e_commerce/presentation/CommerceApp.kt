@@ -23,6 +23,7 @@ import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.categories.CategoriesScreen
+import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.store.StoreScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
@@ -59,8 +60,14 @@ fun CommerceApp() {
 fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = Store.route, modifier = modifier) {
         composable(Store.route) {
-            StoreScreen()
+            StoreScreen(onProductClick = { product ->
+                navController.navigateSingleTopTo("$PRODUCT_DETAILS_SCREEN/${product.id}")
+            })
         }
+        composable("$PRODUCT_DETAILS_SCREEN/{id}") {
+            ProductDetailsScreen()
+        }
+
         composable(Categories.route) {
             CategoriesScreen()
         }
@@ -92,7 +99,6 @@ fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modi
                 )
             })
         }
-
 
     }
 

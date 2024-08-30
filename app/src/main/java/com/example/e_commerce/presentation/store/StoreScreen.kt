@@ -32,15 +32,19 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 
 
 @Composable
-fun StoreScreen(modifier: Modifier = Modifier) {
+fun StoreScreen(
+    onProductClick: (ProductModel) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val viewModel: StoreViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
-    StoreContent(state = state, modifier)
+    StoreContent(state = state, onProductClick, modifier)
 }
 
 @Composable
 fun StoreContent(
     state: ScreenState<List<ProductModel>>,
+    onProductClick: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
@@ -71,8 +75,9 @@ fun StoreContent(
                     modifier = modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
-                ) { items(state.data) { product ->
-                        ProductItem(product = product)
+                ) {
+                    items(state.data) { product ->
+                        ProductItem(product = product, onProductClick)
                     }
                 }
             }
@@ -85,6 +90,6 @@ fun StoreContent(
 @Composable
 fun StoreScreenPreview() {
     E_commerceTheme {
-        StoreScreen()
+        //StoreContent()
     }
 }

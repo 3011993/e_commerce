@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.store.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +24,11 @@ import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
-fun ProductItem(product: ProductModel,modifier: Modifier = Modifier) {
+fun ProductItem(
+    product: ProductModel,
+    onProductClicked: (ProductModel) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -33,6 +38,9 @@ fun ProductItem(product: ProductModel,modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .padding(16.dp)
+                .clickable {
+                    onProductClicked(product)
+                }
         ) {
             AsyncImage(
                 model = product.image,
@@ -81,7 +89,7 @@ private fun ProductItemPreview() {
             title = "Bag",
             id = 0
         )
-        ProductItem(product)
+        ProductItem(product, {})
     }
 
 }
