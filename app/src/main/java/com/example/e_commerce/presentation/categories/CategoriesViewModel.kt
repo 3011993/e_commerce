@@ -22,10 +22,9 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
     val allProducts = _allProducts.asStateFlow()
 
-
     init {
         getCategories()
-        getProductsByCategory(ProductCategory.ELECTRONICS)
+        getProductsByCategory("electronics")
     }
 
     private fun getCategories() {
@@ -34,9 +33,9 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
         }
     }
 
-    fun getProductsByCategory(category: ProductCategory) {
+    fun getProductsByCategory(value: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getProductsByCategory(category.value).collect { result ->
+            repo.getProductsByCategory(value).collect { result ->
                 when (result) {
                     is Resources.Error -> {
                         _allProducts.value = ScreenState.Error(
@@ -56,12 +55,4 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
             }
         }
     }
-
-}
-
-enum class ProductCategory(val value: String) {
-    ELECTRONICS("electronics"),
-    JEWELERY("jewelery"),
-    MENS_CLOTHING("men's clothing"),
-    WOMEN_CLOTHING("women's clothing")
 }
