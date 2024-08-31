@@ -23,7 +23,7 @@ class StoreViewModel @Inject constructor(private val repo: CommerceRepository) :
         getAllProducts()
     }
 
-    private fun getAllProducts() {
+    fun getAllProducts() {
         viewModelScope.launch {
             repo.getProducts().collect { result ->
                 when (result) {
