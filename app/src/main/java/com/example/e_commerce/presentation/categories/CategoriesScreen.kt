@@ -25,7 +25,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
             },
             categories
         )
-        StoreContent(state = state,{},{})
+        StoreContent(state = state,{})
     }
 }
 

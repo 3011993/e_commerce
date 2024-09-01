@@ -8,6 +8,7 @@ import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,13 +24,14 @@ class StoreViewModel @Inject constructor(private val repo: CommerceRepository) :
         getAllProducts()
     }
 
-    fun getAllProducts() {
-        viewModelScope.launch {
+    private fun getAllProducts() {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.getProducts().collect { result ->
                 when (result) {
                     is Resources.Error -> {
                         _allProducts.value = ScreenState.Error(
-                            message = result.message ?: "Unknown error occurred"
+                            message = result.message ?: "Unknown error occurred",
+                            data = result.data
                         )
                     }
 
@@ -43,12 +45,6 @@ class StoreViewModel @Inject constructor(private val repo: CommerceRepository) :
                     }
                 }
             }
-        }
-    }
-
-    fun getCategories() {
-        viewModelScope.launch {
-            val categories = repo.getCategories()
         }
     }
 }

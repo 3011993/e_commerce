@@ -7,6 +7,6 @@ package com.example.e_commerce.presentation
  */
 sealed class ScreenState<T> {
     class Success<T>(val data: T) : ScreenState<T>()
-    data class Error<T>(val message: String? = "") : ScreenState<T>()
+    data class Error<T>(val message: String? = "", val data : T? = null ) : ScreenState<T>()
     class Loading<T> : ScreenState<T>()
 }

@@ -1,5 +1,6 @@
 package com.example.e_commerce.data.remote.dto
 
+import com.example.e_commerce.data.db.ProductEntity
 import com.example.e_commerce.domain.model.ProductModel
 
 data class ProductDto(
@@ -20,3 +21,16 @@ fun ProductDto.toModel(): ProductModel =
         price ?: "",
         title ?: ""
     )
+
+fun List<ProductDto>.toDatabase(): Array<ProductEntity> {
+    return map {
+        ProductEntity(
+            it.id ?: 0,
+            it.category ?: "",
+            it.description ?: "",
+            it.image ?: "",
+            price = it.price ?: "",
+            title = it.title ?: ""
+        )
+    }.toTypedArray()
+}

@@ -1,5 +1,7 @@
 package com.example.e_commerce.di
 
+import com.example.e_commerce.data.db.CommerceDao
+import com.example.e_commerce.data.db.CommerceDataBase
 import com.example.e_commerce.data.remote.ApiService
 import com.example.e_commerce.data.repo.CommerceRepositoryImpl
 import com.example.e_commerce.domain.repo.CommerceRepository
@@ -14,7 +16,10 @@ import javax.inject.Singleton
 object CommerceModule {
     @Provides
     @Singleton
-    fun provideCommerceRepository(apiService: ApiService): CommerceRepository {
-        return CommerceRepositoryImpl(apiService)
+    fun provideCommerceRepository(
+        apiService: ApiService,
+        dao: CommerceDao,
+    ): CommerceRepository {
+        return CommerceRepositoryImpl(apiService, dao)
     }
 }

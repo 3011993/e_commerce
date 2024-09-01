@@ -2,7 +2,10 @@ package com.example.e_commerce.data.repo
 
 import android.util.Log
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.data.db.CommerceDao
+import com.example.e_commerce.data.db.toModel
 import com.example.e_commerce.data.remote.ApiService
+import com.example.e_commerce.data.remote.dto.toDatabase
 import com.example.e_commerce.data.remote.dto.toModel
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
@@ -14,17 +17,26 @@ import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class CommerceRepositoryImpl @Inject constructor(private val api: ApiService) : CommerceRepository {
+class CommerceRepositoryImpl @Inject constructor(
+    private val api: ApiService,
+    private val dao: CommerceDao,
+) : CommerceRepository {
     override suspend fun getProducts(): Flow<Resources<List<ProductModel>>> {
         return flow {
             try {
                 emit(Resources.Loading())
-                val productsList = api.getAllProducts().map { it.toModel() }
-                emit(Resources.Success(data = productsList))
+                val result = api.getAllProducts().toDatabase()
+                dao.insertProducts(*result)
+                val products = dao.getAllProducts().map { it.toModel() }
+                emit(Resources.Success(data = products))
             } catch (e: HttpException) {
-                emit(Resources.Error(message = e.message() ?: "Please check your connection!"))
-            } catch (e: Exception) {
-                emit(Resources.Error(message = e.message ?: "Unexpected Error occurred"))
+                val products = dao.getAllProducts().map { it.toModel() }
+                emit(Resources.Error(message = e.message() ?: "Please check your connection!",
+                    data = products))
+            } catch (e: IOException) {
+                val products = dao.getAllProducts().map { it.toModel() }
+                emit(Resources.Error(message = e.message ?: "Unexpected Error occurred",
+                    data = products))
             }
         }
     }
@@ -55,16 +67,16 @@ class CommerceRepositoryImpl @Inject constructor(private val api: ApiService) : 
                 emit(Resources.Success(data = productsList))
             } catch (e: CancellationException) {
                 emit(Resources.Error(message = e.message ?: "Please check your connection!"))
-                Log.i("Categories","cancellation")
+                Log.i("Categories", "cancellation")
             } catch (e: HttpException) {
                 emit(Resources.Error(message = e.message() ?: "Please check your connection!"))
-                Log.i("Categories","http")
+                Log.i("Categories", "http")
 
             } catch (e: IOException) {
                 emit(Resources.Error(message = e.message ?: "Unexpected Error occurred"))
-                Log.i("Categories","io")
-            } catch (e : Exception){
-                Log.i("Categories","exception")
+                Log.i("Categories", "io")
+            } catch (e: Exception) {
+                Log.i("Categories", "exception")
 
             }
         }
