@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-
 class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : AccountService {
     override val currentUserId: String
         get() = auth.currentUser?.uid.orEmpty()
@@ -27,7 +26,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         }
 
     override suspend fun authenticate(email: String, password: String) {
-        auth.signInWithEmailLink(email, password).await()
+        auth.signInWithEmailAndPassword(email, password).await()
     }
 
     override suspend fun sendRecoveryEmail(email: String) {
@@ -39,8 +38,9 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
     }
 
     override suspend fun linkAccount(email: String, password: String) {
-        val credential = EmailAuthProvider.getCredential(email, password)
-        auth.currentUser?.let { it.linkWithCredential(credential).await() }
+//        val credential = EmailAuthProvider.getCredential(email, password)
+        auth.createUserWithEmailAndPassword(email,password).await()
+        //auth.currentUser?.let { it.linkWithCredential(credential).await() }
     }
 
     override suspend fun deleteAccount() {
