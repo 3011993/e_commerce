@@ -2,6 +2,7 @@ package com.example.e_commerce.data.repo
 
 import android.util.Log
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.data.db.CategoriesEntity
 import com.example.e_commerce.data.db.CommerceDao
 import com.example.e_commerce.data.db.toModel
 import com.example.e_commerce.data.remote.ApiService
@@ -31,12 +32,20 @@ class CommerceRepositoryImpl @Inject constructor(
                 emit(Resources.Success(data = products))
             } catch (e: HttpException) {
                 val products = dao.getAllProducts().map { it.toModel() }
-                emit(Resources.Error(message = e.message() ?: "Please check your connection!",
-                    data = products))
+                emit(
+                    Resources.Error(
+                        message = e.message() ?: "Please check your connection!",
+                        data = products
+                    )
+                )
             } catch (e: IOException) {
                 val products = dao.getAllProducts().map { it.toModel() }
-                emit(Resources.Error(message = e.message ?: "Unexpected Error occurred",
-                    data = products))
+                emit(
+                    Resources.Error(
+                        message = e.message ?: "Unexpected Error occurred",
+                        data = products
+                    )
+                )
             }
         }
     }
@@ -55,29 +64,39 @@ class CommerceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCategories(): List<String> {
-        return api.getCategories()
+    override suspend fun getCategories(): Flow<List<String>> {
+        return flow {
+            try {
+                val categoriesEntity = api.getCategories().mapIndexed { index, category ->
+                    CategoriesEntity(id = index + 1, category)
+                }.toTypedArray()
+                dao.insertCategories(*categoriesEntity)
+                val cachedCategories = dao.getAllCategories().map { it.category }
+                emit(cachedCategories)
+            } catch (e: Exception) {
+                Log.i("repo", e.message ?: "Unexpected Error occurred")
+            }
+        }
     }
 
     override suspend fun getProductsByCategory(category: String): Flow<Resources<List<ProductModel>>> {
         return flow {
             emit(Resources.Loading())
             try {
-                val productsList = api.getProductsByCategory(category).map { it.toModel() }
+                val result = api.getProductsByCategory(category).toDatabase()
+                dao.insertProducts(*result)
+                val productsList = dao.getProductsByCategory(category).map { it.toModel() }
                 emit(Resources.Success(data = productsList))
-            } catch (e: CancellationException) {
-                emit(Resources.Error(message = e.message ?: "Please check your connection!"))
-                Log.i("Categories", "cancellation")
             } catch (e: HttpException) {
-                emit(Resources.Error(message = e.message() ?: "Please check your connection!"))
-                Log.i("Categories", "http")
-
-            } catch (e: IOException) {
                 emit(Resources.Error(message = e.message ?: "Unexpected Error occurred"))
-                Log.i("Categories", "io")
-            } catch (e: Exception) {
-                Log.i("Categories", "exception")
-
+            } catch (e: IOException) {
+                val productsList = dao.getProductsByCategory(category).map { it.toModel() }
+                emit(
+                    Resources.Error(
+                        message = e.message ?: "Please check your connection!",
+                        data = productsList
+                    )
+                )
             }
         }
     }

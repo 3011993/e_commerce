@@ -9,10 +9,18 @@ import androidx.room.Query
 interface CommerceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(vararg product : ProductEntity)
+    fun insertProducts(vararg product: ProductEntity)
+
     @Query("SELECT * FROM PRODUCTENTITY")
-    fun getAllProducts () : List<ProductEntity>
+    fun getAllProducts(): List<ProductEntity>
 
+    @Query("SELECT * FROM ProductEntity WHERE category=:category")
+    fun getProductsByCategory(category: String) : List<ProductEntity>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCategories(vararg category: CategoriesEntity)
+
+    @Query("SELECT * FROM CategoriesEntity")
+    fun getAllCategories(): List<CategoriesEntity>
 
 }

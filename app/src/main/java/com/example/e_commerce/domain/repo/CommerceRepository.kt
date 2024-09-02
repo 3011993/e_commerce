@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface CommerceRepository {
     suspend fun getProducts(): Flow<Resources<List<ProductModel>>>
     suspend fun getProduct(id: Int): Flow<Resources<ProductModel>>
-    suspend fun getCategories() : List<String>
-    suspend fun getProductsByCategory(category : String) : Flow<Resources<List<ProductModel>>>
-    suspend fun getAllCarts() : Flow<Resources<List<CartModel>>>
-    suspend fun getCart(id : Int) : Flow<Resources<CartModel>>
+    suspend fun getCategories(): Flow<List<String>>
+    suspend fun getProductsByCategory(category: String): Flow<Resources<List<ProductModel>>>
+    suspend fun getAllCarts(): Flow<Resources<List<CartModel>>>
+    suspend fun getCart(id: Int): Flow<Resources<CartModel>>
 }

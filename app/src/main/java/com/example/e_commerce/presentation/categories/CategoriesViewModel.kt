@@ -28,8 +28,10 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
     }
 
     private fun getCategories() {
-        viewModelScope.launch {
-            _categories.value = repo.getCategories()
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getCategories().collect {
+                _categories.value = it
+            }
         }
     }
 
@@ -39,7 +41,8 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
                 when (result) {
                     is Resources.Error -> {
                         _allProducts.value = ScreenState.Error(
-                            message = result.message ?: "Unknown error occurred"
+                            message = result.message ?: "Unknown error occurred",
+                            data = result.data ?: emptyList()
                         )
                     }
 
