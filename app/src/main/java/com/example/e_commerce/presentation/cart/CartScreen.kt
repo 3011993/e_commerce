@@ -24,16 +24,18 @@ fun CartScreen(cartProduct: ProductModel, modifier: Modifier = Modifier) {
         val cartItemModel = CartItemModel(
             price = cartProduct.price.toDouble(),
             quantity = 1,
-            productId = cartProduct.id
+            productId = cartProduct.id,
+            title = cartProduct.title,
+            image = cartProduct.image
         )
         viewModel.addProductToCart(newItem = cartItemModel)
         val carts by viewModel.carts.collectAsState()
-        CartContent(product = cartProduct, carts = carts)
+        CartContent(carts = carts)
     }
 }
 
 @Composable
-fun CartContent(product: ProductModel, carts: List<CartModel>, modifier: Modifier = Modifier) {
+fun CartContent(carts: List<CartModel>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
         if (carts.isEmpty()) {
             item {
@@ -44,7 +46,6 @@ fun CartContent(product: ProductModel, carts: List<CartModel>, modifier: Modifie
                 cart.cartItems.forEach { cartItem ->
                     CartItem(
                         cartItem = cartItem,
-                        productModel = product,
                         onIncreaseQuantity = {},
                         onDecreaseQuantity = {},
                         onRemoveItem = {}

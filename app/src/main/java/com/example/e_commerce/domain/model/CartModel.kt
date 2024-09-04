@@ -12,4 +12,6 @@ data class CartItemModel(
     val productId: Int=0,
     val price: Double = 0.0,
     val quantity: Int = 0,
+    val image : String = "",
+    val title : String = ""
 )

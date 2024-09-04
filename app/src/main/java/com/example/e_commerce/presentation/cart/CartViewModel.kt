@@ -28,15 +28,21 @@ class CartViewModel @Inject constructor(
     private val _carts = MutableStateFlow<List<CartModel>>(emptyList())
     val carts = _carts.asStateFlow()
     init {
+      checkBeforeCreateCart()
+    }
+    private fun checkBeforeCreateCart(){
         viewModelScope.launch(Dispatchers.IO) {
-            val userId = auth.currentUserId
-            val cartExists = storageService.checkIfCartExists(userId)
-            if (!cartExists) {
-                val newCart = CartModel(userId = userId)
-                createCart(newCart)
+            auth.currentUser.collect { user ->
+                if (user != null) {
+                    val cartExists = storageService.checkIfCartExists(user.id)
+                    if (!cartExists) {
+                        val newCart = CartModel(userId = user.id)
+                        createCart(newCart)
+                    }
+                    getCarts() // Call getCarts after user is authenticated
+                }
             }
         }
-        getCarts()
     }
     private fun getCarts(){
         viewModelScope.launch {

@@ -32,7 +32,6 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 @Composable
 fun CartItem(
     cartItem: CartItemModel,
-    productModel: ProductModel,
     onIncreaseQuantity: (CartItemModel) -> Unit,
     onDecreaseQuantity: (CartItemModel) -> Unit,
     onRemoveItem: (CartItemModel) -> Unit,
@@ -45,8 +44,8 @@ fun CartItem(
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) { // Center image horizontally
             AsyncImage(
-                model = productModel.image,
-                contentDescription = productModel.title,
+                model = cartItem.image,
+                contentDescription = cartItem.title,
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp))
@@ -69,7 +68,7 @@ fun CartItem(
         }
         Spacer(modifier = Modifier.weight(1f)) // Push image and buttons to the left
         Column { // Details on the right
-            Text(text = productModel.title, fontWeight = FontWeight.Bold)
+            Text(text = cartItem.title, fontWeight = FontWeight.Bold)
             Text(text = "$${cartItem.price}")
             Spacer(modifier = Modifier.height(8.dp))
             IconButton(onClick = { onRemoveItem(cartItem) }) {
@@ -90,19 +89,10 @@ fun CartItemPreview() {
             quantity = 2,
             productId = 1
         )
-        val product = ProductModel(
-            category = "Electronics",
-            price = "140 EGP",
-            image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-            description = "this is ay 7age",
-            title = "Bag",
-            id = 0
-        )
         CartItem(
             cartItem = cartItemModel,
-            productModel = product,
-            onIncreaseQuantity ={},
-            onDecreaseQuantity ={},
+            onIncreaseQuantity = {},
+            onDecreaseQuantity = {},
             onRemoveItem = {}
         )
 
