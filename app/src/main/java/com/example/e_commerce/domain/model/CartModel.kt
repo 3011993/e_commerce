@@ -5,11 +5,11 @@ import com.google.firebase.firestore.DocumentId
 data class CartModel(
     @DocumentId val cartId : String = "",
     val userId: String ="",
-    val items: List<CartItemModel> = emptyList(),
+    val cartItems: List<CartItemModel> = emptyList(),
 )
 
 data class CartItemModel(
-    val productId: Int,
+    val productId: Int=0,
     val price: Double = 0.0,
     val quantity: Int = 0,
 )

@@ -1,5 +1,6 @@
 package com.example.e_commerce.data.service
 
+import android.util.Log
 import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.service.AccountService
@@ -33,7 +34,8 @@ class StorageServiceImpl @Inject constructor(
 
     override suspend fun saveCart(cart: CartModel) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
-        firestore.collection(CARTS_COLLECTION).add(updatedCart).await().id
+        Log.i("userACCountCreate",auth.currentUserId)
+        firestore.collection(CARTS_COLLECTION).document(updatedCart.cartId).set(updatedCart).await()
     }
 
     override suspend fun updateCart(cart: CartModel) {
@@ -55,6 +57,8 @@ class StorageServiceImpl @Inject constructor(
     override suspend fun addToCart(cartId: String, newItem: CartItemModel) {
         firestore.collection(CARTS_COLLECTION).document(cartId)
             .update(CART_ITEMS, FieldValue.arrayUnion(newItem)).await()
+        Log.i("userACCountadd",auth.currentUserId)
+
     }
 
     override suspend fun removeFromCart(cartId: String, productId: Int) {

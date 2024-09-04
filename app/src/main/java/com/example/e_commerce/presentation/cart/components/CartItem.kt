@@ -25,12 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.e_commerce.domain.model.CartItemModel
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
 fun CartItem(
-    cartItemModel: CartItemModel,
+    cartItem: CartItemModel,
     productModel: ProductModel,
     onIncreaseQuantity: (CartItemModel) -> Unit,
     onDecreaseQuantity: (CartItemModel) -> Unit,
@@ -52,16 +53,16 @@ fun CartItem(
             )
             Spacer(modifier = Modifier.height(8.dp)) // Add space below image
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { onDecreaseQuantity(cartItemModel) }) {
+                IconButton(onClick = { onDecreaseQuantity(cartItem) }) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "Decrease Quantity"
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "${cartItemModel.quantity}")
+                Text(text = "${cartItem.quantity}")
                 Spacer(modifier = Modifier.width(8.dp))
-                IconButton(onClick = { onIncreaseQuantity(cartItemModel) }) {
+                IconButton(onClick = { onIncreaseQuantity(cartItem) }) {
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase Quantity")
                 }
             }
@@ -69,9 +70,9 @@ fun CartItem(
         Spacer(modifier = Modifier.weight(1f)) // Push image and buttons to the left
         Column { // Details on the right
             Text(text = productModel.title, fontWeight = FontWeight.Bold)
-            Text(text = "$${cartItemModel.price}")
+            Text(text = "$${cartItem.price}")
             Spacer(modifier = Modifier.height(8.dp))
-            IconButton(onClick = { onRemoveItem(cartItemModel) }) {
+            IconButton(onClick = { onRemoveItem(cartItem) }) {
                 Icon(imageVector = Icons.Filled.Delete, contentDescription = "Remove Item")
             }
         }
@@ -85,7 +86,7 @@ fun CartItemPreview() {
     E_commerceTheme {
 
         val cartItemModel = CartItemModel(
-            price = 98.0,
+            price = 99.0,
             quantity = 2,
             productId = 1
         )
@@ -98,10 +99,10 @@ fun CartItemPreview() {
             id = 0
         )
         CartItem(
-            cartItemModel = cartItemModel,
+            cartItem = cartItemModel,
             productModel = product,
-            onIncreaseQuantity = {},
-            onDecreaseQuantity = {},
+            onIncreaseQuantity ={},
+            onDecreaseQuantity ={},
             onRemoveItem = {}
         )
 

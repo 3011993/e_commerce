@@ -79,7 +79,7 @@ fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modi
         composable(Cart.route) {
             val cartProduct =
                 navController.previousBackStackEntry?.savedStateHandle?.get<ProductModel>("product")
-            CartScreen(cartProduct!!)
+            cartProduct?.let { CartScreen(it) }
         }
         composable(Account.route) {
             SettingsScreen(openScreen = { route -> navController.navigateSingleTopTo(route) },
