@@ -48,7 +48,7 @@ fun ProductDetailsContent(state: ScreenState<ProductModel>, modifier: Modifier =
             }
 
             is ScreenState.Success -> {
-                ProductItem(product = state.data,{})
+                ProductItem(product = state.data,{},{})
             }
         }
     }

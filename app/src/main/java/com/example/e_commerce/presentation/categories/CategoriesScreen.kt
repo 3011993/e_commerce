@@ -29,7 +29,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
             },
             cahcedCategories
         )
-        StoreContent(state = state, {})
+        StoreContent(state = state, {},{})
     }
 }
 

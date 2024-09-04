@@ -1,12 +1,15 @@
 package com.example.e_commerce.domain.model
 
+import com.google.firebase.firestore.DocumentId
+
 data class CartModel(
-    val date: String,
-    val id: Int,
-    val productCarts: List<ProductCartModel>,
-    val userId: Int
+    @DocumentId val cartId : String = "",
+    val userId: String ="",
+    val items: List<CartItemModel> = emptyList(),
 )
-data class ProductCartModel(
+
+data class CartItemModel(
     val productId: Int,
-    val quantity: Int
+    val price: Double = 0.0,
+    val quantity: Int = 0,
 )

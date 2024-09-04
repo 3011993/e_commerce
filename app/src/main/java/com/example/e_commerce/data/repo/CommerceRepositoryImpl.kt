@@ -105,8 +105,8 @@ class CommerceRepositoryImpl @Inject constructor(
         return flow {
             emit(Resources.Loading())
             try {
-                val cartsList = api.getAllCarts().map { it.toModel() }
-                emit(Resources.Success(data = cartsList))
+//                val cartsList = api.getAllCarts().map { it.toModel() }
+//                emit(Resources.Success(data = cartsList))
             } catch (e: HttpException) {
                 emit(Resources.Error(message = e.message() ?: "Please check your connection!"))
             } catch (e: Exception) {
@@ -119,8 +119,8 @@ class CommerceRepositoryImpl @Inject constructor(
         return flow {
             emit(Resources.Loading())
             try {
-                val cart = api.getCart(id).toModel()
-                emit(Resources.Success(data = cart))
+//                val cart = api.getCart(id).toModel()
+//                emit(Resources.Success(data = cart))
             } catch (e: HttpException) {
                 emit(Resources.Error(message = e.message() ?: "Please check your connection!"))
             } catch (e: Exception) {

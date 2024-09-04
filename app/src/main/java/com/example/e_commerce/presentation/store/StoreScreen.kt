@@ -36,12 +36,13 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 @Composable
 fun StoreScreen(
     onProductClick: (ProductModel) -> Unit,
+    onCartButtonClicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: StoreViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
     StoreContent(
-        state = state, onProductClick, modifier
+        state = state, onProductClick,onCartButtonClicked, modifier
     )
 }
 
@@ -49,6 +50,7 @@ fun StoreScreen(
 fun StoreContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
+    onCartButtonClicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val connection by rememberConnectivityState()
@@ -61,6 +63,7 @@ fun StoreContent(
                 ProductsLazyVerticalGrid(
                     products = state.data ?: emptyList(),
                     onProductClick = onProductClick,
+                    onCartButtonClicked = onCartButtonClicked,
                     isConnected = isConnected
                 )
                 Log.i("Store Screen", state.message ?: "An unexpected error occurred")
@@ -74,6 +77,7 @@ fun StoreContent(
                 ProductsLazyVerticalGrid(
                     products = state.data,
                     onProductClick = onProductClick,
+                    onCartButtonClicked = onCartButtonClicked,
                     isConnected = isConnected
                 )
             }
@@ -85,6 +89,7 @@ fun StoreContent(
 fun ProductsLazyVerticalGrid(
     products: List<ProductModel>,
     onProductClick: (ProductModel) -> Unit,
+    onCartButtonClicked: (ProductModel) -> Unit,
     isConnected: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -113,7 +118,7 @@ fun ProductsLazyVerticalGrid(
             )
         }
         items(products) { product ->
-            ProductItem(product = product, onProductClick)
+            ProductItem(product = product, onProductClick, onCartButtonClicked)
         }
     }
 }

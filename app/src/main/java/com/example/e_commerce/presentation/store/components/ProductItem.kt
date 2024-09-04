@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +30,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 fun ProductItem(
     product: ProductModel,
     onProductClicked: (ProductModel) -> Unit,
+    onCartButtonClicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -49,14 +53,18 @@ fun ProductItem(
                     .fillMaxWidth()
                     .height(150.dp)
                     .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
             Spacer(modifier = modifier.height(8.dp))
+            val words = product.title.split(" ")
+            val firstTwoWords =
+                if (words.size >= 2) words.subList(0, 2).joinToString(" ") else product.title
             Text(
-                text = product.title,
+                text = firstTwoWords,
                 style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold
-            )
+                fontWeight = FontWeight.Bold,
+
+                )
             Text(
                 text = "$${product.price}",
                 style = MaterialTheme.typography.subtitle1,
@@ -67,12 +75,8 @@ fun ProductItem(
                 style = MaterialTheme.typography.body2
             )
             Spacer(modifier = modifier.height(4.dp))
-            Text(
-                text = product.description,
-                style = MaterialTheme.typography.body2,
-                maxLines = 2, // Limit description to 2 lines
-                overflow = TextOverflow.Ellipsis // Add ellipsis if truncated
-            )
+            Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = null,
+                modifier = modifier.clickable { onCartButtonClicked(product) })
         }
     }
 }
@@ -89,7 +93,7 @@ private fun ProductItemPreview() {
             title = "Bag",
             id = 0
         )
-        ProductItem(product, {})
+        ProductItem(product, {},{})
     }
 
 }

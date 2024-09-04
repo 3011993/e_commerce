@@ -7,17 +7,16 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
@@ -62,9 +61,15 @@ fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modi
         composable(Store.route) {
             StoreScreen(onProductClick = { product ->
                 navController.navigateSingleTopTo("$PRODUCT_DETAILS_SCREEN/${product.id}")
+            }, onCartButtonClicked = { product ->
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    key = "product",
+                    value = product
+                )
+                navController.navigateSingleTopTo(Cart.route)
             })
         }
-        composable("$PRODUCT_DETAILS_SCREEN/{id}") {
+        composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {
             ProductDetailsScreen()
         }
 
@@ -72,7 +77,9 @@ fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modi
             CategoriesScreen()
         }
         composable(Cart.route) {
-            CartScreen()
+            val cartProduct =
+                navController.previousBackStackEntry?.savedStateHandle?.get<ProductModel>("product")
+            CartScreen(cartProduct!!)
         }
         composable(Account.route) {
             SettingsScreen(openScreen = { route -> navController.navigateSingleTopTo(route) },
