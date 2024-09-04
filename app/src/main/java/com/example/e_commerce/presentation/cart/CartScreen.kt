@@ -18,17 +18,9 @@ import com.example.e_commerce.presentation.cart.components.CartItem
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
-fun CartScreen(cartProduct: ProductModel, modifier: Modifier = Modifier) {
+fun CartScreen(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         val viewModel: CartViewModel = hiltViewModel()
-        val cartItemModel = CartItemModel(
-            price = cartProduct.price.toDouble(),
-            quantity = 1,
-            productId = cartProduct.id,
-            title = cartProduct.title,
-            image = cartProduct.image
-        )
-        viewModel.addProductToCart(newItem = cartItemModel)
         val carts by viewModel.carts.collectAsState()
         CartContent(carts = carts)
     }

@@ -10,17 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.e_commerce.domain.model.ProductModel
+import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
+import com.example.e_commerce.presentation.cart.CartViewModel
 import com.example.e_commerce.presentation.categories.CategoriesScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.store.StoreScreen
@@ -59,13 +61,18 @@ fun CommerceApp() {
 fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = Store.route, modifier = modifier) {
         composable(Store.route) {
+            val viewModel : CartViewModel = hiltViewModel()
             StoreScreen(onProductClick = { product ->
                 navController.navigateSingleTopTo("$PRODUCT_DETAILS_SCREEN/${product.id}")
             }, onCartButtonClicked = { product ->
-                navController.currentBackStackEntry?.savedStateHandle?.set(
-                    key = "product",
-                    value = product
+                val cartItemModel = CartItemModel(
+                    price = product.price.toDouble(),
+                    quantity = 1,
+                    productId = product.id,
+                    title = product.title,
+                    image = product.image
                 )
+                viewModel.addProductToCart(newItem = cartItemModel)
                 navController.navigateSingleTopTo(Cart.route)
             })
         }
@@ -77,9 +84,7 @@ fun EcommerceNavHost(navController: NavHostController, modifier: Modifier = Modi
             CategoriesScreen()
         }
         composable(Cart.route) {
-            val cartProduct =
-                navController.previousBackStackEntry?.savedStateHandle?.get<ProductModel>("product")
-            cartProduct?.let { CartScreen(it) }
+            CartScreen()
         }
         composable(Account.route) {
             SettingsScreen(openScreen = { route -> navController.navigateSingleTopTo(route) },
