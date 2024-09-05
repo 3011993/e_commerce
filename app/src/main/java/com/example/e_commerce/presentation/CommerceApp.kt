@@ -62,7 +62,6 @@ fun CommerceApp() {
                     onTabSelected = { newScreen ->
                         appState.navigate(newScreen.route)
                     },
-                    modifier = Modifier.padding(bottom = systemBarsPadding.calculateBottomPadding())
                 )
             }) { innerPadding ->
             NavHost(
@@ -110,7 +109,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             )
             viewModel.addProductToCart(newItem = cartItemModel)
             appState.navigate(Cart.route)
-        }, modifier = Modifier.padding(top = 16.dp))
+        })
     }
     composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {
         ProductDetailsScreen()

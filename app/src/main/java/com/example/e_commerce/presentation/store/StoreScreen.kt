@@ -81,8 +81,6 @@ fun StoreContent(
                     isConnected = isConnected
                 )
             }
-
-            else -> {}
         }
     }
 }
