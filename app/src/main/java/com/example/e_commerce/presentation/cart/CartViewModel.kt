@@ -9,7 +9,9 @@ import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
+import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.CommerceViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,10 +22,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
+    logService: LogService,
     private val repo: CommerceRepository,
     private val storageService: StorageService,
     private val auth: AccountService,
-) : ViewModel() {
+) : CommerceViewModel(logService){
 
     private val _carts = MutableStateFlow<List<CartModel>>(emptyList())
     val carts = _carts.asStateFlow()
@@ -31,7 +34,7 @@ class CartViewModel @Inject constructor(
       checkBeforeCreateCart()
     }
     private fun checkBeforeCreateCart(){
-        viewModelScope.launch(Dispatchers.IO) {
+        launchCatching {
             auth.currentUser.collect { user ->
                 if (user != null) {
                     val cartExists = storageService.checkIfCartExists(user.id)
@@ -45,14 +48,14 @@ class CartViewModel @Inject constructor(
         }
     }
     private fun getCarts(){
-        viewModelScope.launch {
+        launchCatching {
             storageService.carts.collect{
                 _carts.value = it
             }
         }
     }
     private fun createCart(cart: CartModel) {
-        viewModelScope.launch (Dispatchers.IO){
+        launchCatching{
             if (cart.cartId.isBlank()) {
                 storageService.saveCart(cart)
             } else {
@@ -63,7 +66,7 @@ class CartViewModel @Inject constructor(
     }
 
     fun addProductToCart( newItem: CartItemModel) {
-        viewModelScope.launch (Dispatchers.IO){
+        launchCatching{
             storageService.addToCart(auth.currentUserId,newItem)
         }
         Log.i("userACCountadd",auth.currentUserId)

@@ -18,12 +18,14 @@ roomKtx = "2.6.1"
 compose_material = "1.6.8"
 coil = "2.7.0"
 google-version = "4.4.2"
+crashlytics-plugin = "3.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -60,6 +62,7 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndro
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 google-service = { id = "com.google.gms.google-services", version.ref = "google-version" }
+crashlytics-plugin = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 
 
 

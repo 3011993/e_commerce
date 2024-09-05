@@ -7,9 +7,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
+import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.PRODUCT_ID
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,9 +20,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
+    logService: LogService,
     private val repo: CommerceRepository,
     savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+) : CommerceViewModel(logService) {
     private val _product = MutableStateFlow<ScreenState<ProductModel>>(ScreenState.Loading())
     val product = _product.asStateFlow()
 
@@ -30,7 +34,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun getProductById(productId: Int) {
-        viewModelScope.launch {
+        launchCatching(dispatcher = Dispatchers.IO) {
             repo.getProduct(productId).collect { result ->
                 when (result) {
                     is Resources.Error -> _product.value =

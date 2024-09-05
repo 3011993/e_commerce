@@ -19,6 +19,8 @@ package com.example.e_commerce.presentation.account.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.domain.service.AccountService
+import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import com.example.e_commerce.presentation.SIGN_UP_SCREEN
 import com.example.e_commerce.presentation.Store
@@ -29,22 +31,23 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    logService: LogService,
     private val accountService: AccountService,
-) : ViewModel() {
+) : CommerceViewModel(logService) {
     val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
 
     fun onLoginClick(openScreen: (String) -> Unit) = openScreen(LOGIN_IN_SCREEN)
     fun onSignUpClick(openScreen: (String) -> Unit) = openScreen(SIGN_UP_SCREEN)
 
     fun onSignOutClick(restartApp: (String) -> Unit) {
-        viewModelScope.launch {
+        launchCatching {
             accountService.signOut()
             restartApp(Store.route)
         }
     }
 
     fun onDeleteMyAccountClick(restartApp: (String) -> Unit) {
-        viewModelScope.launch {
+        launchCatching {
             accountService.deleteAccount()
             restartApp(Store.route)
         }

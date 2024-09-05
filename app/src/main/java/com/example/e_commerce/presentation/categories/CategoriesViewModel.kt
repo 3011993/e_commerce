@@ -1,20 +1,22 @@
 package com.example.e_commerce.presentation.categories
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
+import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesViewModel @Inject constructor(private val repo: CommerceRepository) : ViewModel() {
+class CategoriesViewModel @Inject constructor(
+    logService: LogService,
+    private val repo: CommerceRepository,
+) : CommerceViewModel(logService) {
     private val _categories = MutableStateFlow<List<String>>(emptyList())
     val categories = _categories.asStateFlow()
 
@@ -28,7 +30,7 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
     }
 
     private fun getCategories() {
-        viewModelScope.launch(Dispatchers.IO) {
+        launchCatching {
             repo.getCategories().collect {
                 _categories.value = it
             }
@@ -36,7 +38,7 @@ class CategoriesViewModel @Inject constructor(private val repo: CommerceReposito
     }
 
     fun getProductsByCategory(value: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        launchCatching(dispatcher = Dispatchers.IO){
             repo.getProductsByCategory(value).collect { result ->
                 when (result) {
                     is Resources.Error -> {

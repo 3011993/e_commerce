@@ -21,9 +21,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.common.ext.isValidEmail
-import com.example.e_commerce.common.snackbar.SnackbarManager
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.service.AccountService
+import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.Account
+import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -31,8 +33,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    logService: LogService,
     private val accountService: AccountService,
-) : ViewModel() {
+) : CommerceViewModel(logService) {
     var uiState = mutableStateOf(LoginUiState())
         private set
 
@@ -51,16 +54,16 @@ class LoginViewModel @Inject constructor(
 
     fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
         if (!email.isValidEmail()) {
-            SnackbarManager.showMessage(AppText.email_error)
+            SnackBarManager.showMessage(AppText.email_error)
             return
         }
 
         if (password.isBlank()) {
-            SnackbarManager.showMessage(AppText.empty_password_error)
+            SnackBarManager.showMessage(AppText.empty_password_error)
             return
         }
 
-        viewModelScope.launch {
+        launchCatching{
             accountService.authenticate(email, password)
             openAndPopUp(Account.route, LOGIN_IN_SCREEN)
         }
@@ -68,13 +71,13 @@ class LoginViewModel @Inject constructor(
 
     fun onForgotPasswordClick() {
         if (!email.isValidEmail()) {
-            SnackbarManager.showMessage(AppText.email_error)
+            SnackBarManager.showMessage(AppText.email_error)
             return
         }
 
-        viewModelScope.launch {
+        launchCatching {
             accountService.sendRecoveryEmail(email)
-            SnackbarManager.showMessage(AppText.recovery_email_sent)
+            SnackBarManager.showMessage(AppText.recovery_email_sent)
         }
     }
 }

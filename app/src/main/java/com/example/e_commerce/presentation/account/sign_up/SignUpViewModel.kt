@@ -23,9 +23,11 @@ import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.common.ext.isValidEmail
 import com.example.e_commerce.common.ext.isValidPassword
 import com.example.e_commerce.common.ext.passwordMatches
-import com.example.e_commerce.common.snackbar.SnackbarManager
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.service.AccountService
+import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.Account
+import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.SIGN_UP_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -33,8 +35,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
+    logService: LogService,
     private val accountService: AccountService,
-) : ViewModel() {
+) : CommerceViewModel(logService) {
     var uiState = mutableStateOf(SignUpUiState())
         private set
 
@@ -57,20 +60,20 @@ class SignUpViewModel @Inject constructor(
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         if (!email.isValidEmail()) {
-            SnackbarManager.showMessage(AppText.email_error)
+            SnackBarManager.showMessage(AppText.email_error)
             return
         }
 
         if (!password.isValidPassword()) {
-            SnackbarManager.showMessage(AppText.password_error)
+            SnackBarManager.showMessage(AppText.password_error)
             return
         }
 
         if (!password.passwordMatches(uiState.value.repeatPassword)) {
-            SnackbarManager.showMessage(AppText.password_match_error)
+            SnackBarManager.showMessage(AppText.password_match_error)
             return
         }
-        viewModelScope.launch {
+       launchCatching{
             accountService.linkAccount(email, password)
         }
         openAndPopUp(Account.route, SIGN_UP_SCREEN)

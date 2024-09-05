@@ -30,7 +30,6 @@ import com.example.e_commerce.common.ConnectionState
 import com.example.e_commerce.common.composable.rememberConnectivityState
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
-import com.example.e_commerce.presentation.cart.CartViewModel
 import com.example.e_commerce.presentation.store.components.ProductItem
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
@@ -82,6 +81,8 @@ fun StoreContent(
                     isConnected = isConnected
                 )
             }
+
+            else -> {}
         }
     }
 }
