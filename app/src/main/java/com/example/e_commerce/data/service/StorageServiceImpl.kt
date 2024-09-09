@@ -69,12 +69,12 @@ class StorageServiceImpl @Inject constructor(
                 val inStock = productDoc.getBoolean("inStock") ?: false
                 if (inStock && quantity > 0) {
                     val newQuantity = quantity - 1
+                    transaction.update(productRef, "quantity", newQuantity)
+                    if (newQuantity == 0) {
+                        transaction.update(productRef, "inStock", false)
+                    }
                     firestore.collection(CARTS_COLLECTION).document(cartId)
                         .update(CART_ITEMS, FieldValue.arrayUnion(newItem)).addOnSuccessListener {
-                            transaction.update(productRef, "quantity", newQuantity)
-                            if (newQuantity == 0) {
-                                transaction.update(productRef, "inStock", false)
-                            }
                             Log.i("StorageImpl", "Product added to cart successfully")
                         }
 
