@@ -65,11 +65,16 @@ class CartViewModel @Inject constructor(
         Log.i("userACCountCreate",auth.currentUserId)
     }
 
-    fun addProductToCart( newItem: CartItemModel) {
+    fun addProductToCart(newItem: CartItemModel) {
         launchCatching{
             storageService.addToCart(auth.currentUserId,newItem)
         }
         Log.i("userACCountadd",auth.currentUserId)
 
+    }
+    fun removeProductFromCart(cartModel :CartItemModel){
+        launchCatching {
+            storageService.removeFromCart(auth.currentUserId,cartModel)
+        }
     }
 }

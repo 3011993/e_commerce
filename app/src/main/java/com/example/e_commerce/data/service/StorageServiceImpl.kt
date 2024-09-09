@@ -25,6 +25,7 @@ class StorageServiceImpl @Inject constructor(
             auth.currentUserId
         )
 
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override val carts: Flow<List<CartModel>>
         get() = auth.currentUser.flatMapLatest { user ->
@@ -32,10 +33,14 @@ class StorageServiceImpl @Inject constructor(
                 .dataObjects()
         }
 
+    suspend fun getCart(cartId: String): CartModel? =
+        firestore.collection(CARTS_COLLECTION).document(cartId).get().await()
+            .toObject(CartModel::class.java)
+
     override suspend fun saveCart(cart: CartModel) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
-        Log.i("userACCountCreate",auth.currentUserId)
-        firestore.collection(CARTS_COLLECTION).document(updatedCart.cartId).set(updatedCart).await()
+        Log.i("userACCountCreate", auth.currentUserId)
+        firestore.collection(CARTS_COLLECTION).add(updatedCart).await().id
     }
 
     override suspend fun updateCart(cart: CartModel) {
@@ -55,19 +60,55 @@ class StorageServiceImpl @Inject constructor(
     }
 
     override suspend fun addToCart(cartId: String, newItem: CartItemModel) {
-        firestore.collection(CARTS_COLLECTION).document(cartId)
-            .update(CART_ITEMS, FieldValue.arrayUnion(newItem)).await()
-        Log.i("userACCountadd",auth.currentUserId)
+        val productRef =
+            firestore.collection(INVENTORY_COLLECTION).document(newItem.productId.toString())
+        firestore.runTransaction { transaction ->
+            val productDoc = transaction.get(productRef)
+            if (productDoc.exists()) {
+                val quantity = productDoc.getLong("quantity")?.toInt() ?: 0
+                val inStock = productDoc.getBoolean("inStock") ?: false
+                if (inStock && quantity > 0) {
+                    val newQuantity = quantity - 1
+                    firestore.collection(CARTS_COLLECTION).document(cartId)
+                        .update(CART_ITEMS, FieldValue.arrayUnion(newItem)).addOnSuccessListener {
+                            transaction.update(productRef, "quantity", newQuantity)
+                            if (newQuantity == 0) {
+                                transaction.update(productRef, "inStock", false)
+                            }
+                            Log.i("StorageImpl", "Product added to cart successfully")
+                        }
 
+                } else {
+                    Log.i("StorageImpl", "issue in quantity and stock ")
+                }
+            } else {
+                Log.i("StorageImpl", "product doesn't exist ")
+            }
+        }
     }
 
-    override suspend fun removeFromCart(cartId: String, productId: Int) {
-        firestore.collection(CARTS_COLLECTION)
+
+    override suspend fun removeFromCart(cartId: String, cartModel: CartItemModel) {
+        val productRef =
+            firestore.collection(INVENTORY_COLLECTION).document(cartModel.productId.toString())
+        firestore.runTransaction { transaction ->
+            val productDoc = transaction.get(productRef)
+            val quantity = productDoc.getLong("quantity")?.toInt() ?: 0
+            val newQuantity = quantity + 1
+            transaction.update(productRef, "quantity", newQuantity)
+            transaction.update(productRef, "inStock", true)
+            firestore.collection(CARTS_COLLECTION).document(cartId)
+                .update(CART_ITEMS, FieldValue.arrayRemove(cartModel)).addOnSuccessListener {
+                    Log.i("StorageImpl", "Product removed successfully")
+                }
+        }
     }
 
     companion object {
         const val CARTS_COLLECTION = "carts"
         const val USER_ID_FIELD = "userId"
         const val CART_ITEMS = "cartItems"
+        const val INVENTORY_COLLECTION = "inventory"
+        const val STOCK_DOCUMENT = "stock"
     }
 }

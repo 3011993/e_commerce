@@ -2,6 +2,7 @@ package com.example.e_commerce.domain.service
 
 import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.domain.model.ProductModel
 import kotlinx.coroutines.flow.Flow
 
 interface StorageService {
@@ -11,5 +12,5 @@ interface StorageService {
     suspend fun deleteCart(cartId: String)
     suspend fun checkIfCartExists(userId: String) : Boolean
     suspend fun addToCart(cartId: String, newItem: CartItemModel)
-    suspend fun removeFromCart(cartId: String, productId: Int)
+    suspend fun removeFromCart(cartId: String, cartModel: CartItemModel)
 }
