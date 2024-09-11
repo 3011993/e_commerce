@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.cart.components.CartItem
@@ -22,13 +21,20 @@ fun CartScreen(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         val viewModel: CartViewModel = hiltViewModel()
         val carts by viewModel.carts.collectAsState()
-        CartContent(viewModel::removeProductFromCart, carts = carts)
+        CartContent(
+            onRemoveItem = viewModel::removeProductFromCart,
+            onIncreaseQuantity = viewModel::addProductToCart,
+            onDecreaseQuantity = viewModel::removeProductFromCart,
+            carts = carts
+        )
     }
 }
 
 @Composable
 fun CartContent(
-    onRemoveItem: (CartItemModel) -> Unit,
+    onRemoveItem: (CartModel) -> Unit,
+    onIncreaseQuantity: (CartModel) -> Unit,
+    onDecreaseQuantity: (CartModel) -> Unit,
     carts: List<CartModel>,
     modifier: Modifier = Modifier,
 ) {
@@ -39,15 +45,13 @@ fun CartContent(
             }
         } else {
             items(carts) { cart ->
-                cart.cartItems.forEach { cartItem ->
-                    CartItem(
-                        cartItem = cartItem,
-                        onIncreaseQuantity = {},
-                        onDecreaseQuantity = {},
-                        onRemoveItem = { onRemoveItem(cartItem) }
-                    )
+                CartItem(
+                    cartItem = cart,
+                    onIncreaseQuantity = { onIncreaseQuantity(cart) },
+                    onDecreaseQuantity = { onDecreaseQuantity(cart) },
+                    onRemoveItem = { onRemoveItem(cart) }
+                )
 
-                }
             }
         }
     }

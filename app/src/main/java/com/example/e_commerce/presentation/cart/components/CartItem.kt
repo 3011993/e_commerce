@@ -24,17 +24,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.domain.model.CartModel
-import com.example.e_commerce.domain.model.ProductModel
+
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
 fun CartItem(
-    cartItem: CartItemModel,
-    onIncreaseQuantity: (CartItemModel) -> Unit,
-    onDecreaseQuantity: (CartItemModel) -> Unit,
-    onRemoveItem: (CartItemModel) -> Unit,
+    cartItem: CartModel,
+    onIncreaseQuantity: (CartModel) -> Unit,
+    onDecreaseQuantity: (CartModel) -> Unit,
+    onRemoveItem: (CartModel) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -84,7 +83,7 @@ fun CartItem(
 fun CartItemPreview() {
     E_commerceTheme {
 
-        val cartItemModel = CartItemModel(
+        val cartItemModel = CartModel(
             price = 99.0,
             quantity = 2,
             productId = 1

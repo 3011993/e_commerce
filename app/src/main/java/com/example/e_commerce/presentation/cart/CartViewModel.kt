@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.data.service.StorageServiceImpl.Companion.CARTS_COLLECTION
-import com.example.e_commerce.domain.model.CartItemModel
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
@@ -26,55 +25,44 @@ class CartViewModel @Inject constructor(
     private val repo: CommerceRepository,
     private val storageService: StorageService,
     private val auth: AccountService,
-) : CommerceViewModel(logService){
+) : CommerceViewModel(logService) {
 
     private val _carts = MutableStateFlow<List<CartModel>>(emptyList())
     val carts = _carts.asStateFlow()
+
     init {
-      checkBeforeCreateCart()
+        getCarts()
     }
-    private fun checkBeforeCreateCart(){
+    private fun getCarts() {
         launchCatching {
-            auth.currentUser.collect { user ->
-                if (user != null) {
-                    val cartExists = storageService.checkIfCartExists(user.id)
-                    if (!cartExists) {
-                        val newCart = CartModel(userId = user.id)
-                        createCart(newCart)
-                    }
-                    getCarts() // Call getCarts after user is authenticated
-                }
-            }
-        }
-    }
-    private fun getCarts(){
-        launchCatching {
-            storageService.carts.collect{
+            storageService.carts.collect {
                 _carts.value = it
             }
         }
     }
-    private fun createCart(cart: CartModel) {
-        launchCatching{
+
+    fun createCart(cart: CartModel) {
+        launchCatching {
             if (cart.cartId.isBlank()) {
                 storageService.saveCart(cart)
             } else {
-                storageService.updateCart(cart)
+                addProductToCart(cart)
             }
         }
-        Log.i("userACCountCreate",auth.currentUserId)
+        Log.i("userACCountCreate", auth.currentUserId)
     }
 
-    fun addProductToCart(newItem: CartItemModel) {
-        launchCatching{
-            storageService.addToCart(auth.currentUserId,newItem)
-        }
-        Log.i("userACCountadd",auth.currentUserId)
-
-    }
-    fun removeProductFromCart(cartModel :CartItemModel){
+    fun addProductToCart(cart: CartModel) {
         launchCatching {
-            storageService.removeFromCart(auth.currentUserId,cartModel)
+            storageService.addToCart(cart)
+        }
+        Log.i("userACCountadd", auth.currentUserId)
+
+    }
+
+    fun removeProductFromCart(cart: CartModel) {
+        launchCatching {
+            storageService.removeFromCart(cart)
         }
     }
 }

@@ -24,7 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.e_commerce.common.snackbar.SnackBarManager
-import com.example.e_commerce.domain.model.CartItemModel
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
@@ -100,14 +100,15 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         StoreScreen(onProductClick = { product ->
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
-            val cartItemModel = CartItemModel(
+            val cartItemModel = CartModel(
                 price = product.price.toDouble(),
                 quantity = 1,
                 productId = product.id,
+                originalPrice = product.price.toDouble(),
                 title = product.title,
                 image = product.image
             )
-            viewModel.addProductToCart(newItem = cartItemModel)
+            viewModel.createCart(cartItemModel)
             appState.navigate(Cart.route)
         })
     }
