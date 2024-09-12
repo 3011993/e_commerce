@@ -7,18 +7,26 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +50,11 @@ fun StoreScreen(
     val viewModel: StoreViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
     StoreContent(
-        state = state, onProductClick,onCartButtonClicked, modifier
+        state = state,
+        onProductClick,
+        onCartButtonClicked,
+        getAllProducts = viewModel::getAllProducts,
+        modifier
     )
 }
 
@@ -51,12 +63,29 @@ fun StoreContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    getAllProducts: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val connection by rememberConnectivityState()
+    var previousConnection by remember { mutableStateOf<ConnectionState?>(null) }
     val isConnected by remember(key1 = connection) {
         derivedStateOf { connection === ConnectionState.Available }
     }
+    var showRefreshButton by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = connection) {
+        if (previousConnection != null && previousConnection != connection) {
+            // Connection state has changed
+            if (isConnected) {
+                showRefreshButton = true
+            }
+        } else {
+            showRefreshButton = false
+        }
+        previousConnection = connection
+    }
+
+
     Box(modifier = modifier.fillMaxSize()) {
         when (state) {
             is ScreenState.Error -> {
@@ -64,6 +93,11 @@ fun StoreContent(
                     products = state.data ?: emptyList(),
                     onProductClick = onProductClick,
                     onCartButtonClicked = onCartButtonClicked,
+                    getAllProducts ={
+                        getAllProducts()
+                        showRefreshButton = false
+                    },
+                    showRefreshButton = showRefreshButton,
                     isConnected = isConnected
                 )
                 Log.i("Store Screen", state.message ?: "An unexpected error occurred")
@@ -78,7 +112,12 @@ fun StoreContent(
                     products = state.data,
                     onProductClick = onProductClick,
                     onCartButtonClicked = onCartButtonClicked,
-                    isConnected = isConnected
+                    getAllProducts = {
+                        getAllProducts()
+                        showRefreshButton = false
+                    },
+                    isConnected = isConnected,
+                    showRefreshButton = showRefreshButton
                 )
             }
         }
@@ -91,6 +130,8 @@ fun ProductsLazyVerticalGrid(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     isConnected: Boolean,
+    getAllProducts: () -> Unit,
+    showRefreshButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -103,19 +144,25 @@ fun ProductsLazyVerticalGrid(
             .background(MaterialTheme.colorScheme.background)
     ) {
         item(span = { GridItemSpan(2) }) {
-            if (isConnected) Text(
-                text = "Connected",
-                modifier
-                    .fillMaxWidth()
-                    .background(Color.Green),
-                textAlign = TextAlign.Center
-            ) else Text(
-                text = "Please Connect to your Internet!",
-                modifier
-                    .fillMaxWidth()
-                    .background(Color.Red),
-                textAlign = TextAlign.Center
-            )
+            if (showRefreshButton) {
+                Button(
+                    onClick = getAllProducts,
+                    modifier = modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .wrapContentSize(),
+                ) {
+                    Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+                }
+            }
+            if (!isConnected) {
+                Text(
+                    text = "Please Connect to your Internet!",
+                    modifier
+                        .fillMaxWidth()
+                        .background(Color.Red),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
         items(products) { product ->
             ProductItem(product = product, onProductClick, onCartButtonClicked)

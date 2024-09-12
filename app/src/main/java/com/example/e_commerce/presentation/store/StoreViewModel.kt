@@ -29,7 +29,7 @@ class StoreViewModel @Inject constructor(
         getAllProducts()
     }
 
-    private fun getAllProducts() {
+    fun getAllProducts() {
        launchCatching(dispatcher = Dispatchers.IO){
             repo.getProducts().collect { result ->
                 when (result) {
