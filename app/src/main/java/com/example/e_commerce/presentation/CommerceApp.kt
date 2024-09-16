@@ -32,6 +32,7 @@ import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
 import com.example.e_commerce.presentation.categories.CategoriesScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
+import com.example.e_commerce.presentation.splash.SplashScreen
 import com.example.e_commerce.presentation.store.StoreScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
@@ -96,6 +97,11 @@ fun resources(): Resources {
 
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
+    composable(SPLASH_SCREEN) {
+        SplashScreen(openAndPopUp = { route, popUp ->
+            appState.navigateAndPopUp(route, popUp)
+        })
+    }
     composable(Store.route) {
         val viewModel: CartViewModel = hiltViewModel()
         StoreScreen(onProductClick = { product ->
@@ -110,7 +116,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
                 title = product.title,
                 image = product.image
             )
-            if(cartItemModel.cartId.isEmpty()) {
+            if (cartItemModel.cartId.isEmpty()) {
                 viewModel.addOrUpdateCart(cartItemModel)
             } else {
                 viewModel.addProductToCart(cartItemModel)

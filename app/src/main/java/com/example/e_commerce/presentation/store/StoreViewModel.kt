@@ -6,6 +6,7 @@ import com.example.e_commerce.common.Resources
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
+import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ScreenState
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class StoreViewModel @Inject constructor(
     logService: LogService,
     private val repo: CommerceRepository,
+    private val accountService: AccountService
 ) : CommerceViewModel(logService) {
     private val _allProducts =
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
@@ -27,6 +29,7 @@ class StoreViewModel @Inject constructor(
 
     init {
         getAllProducts()
+
     }
 
     fun getAllProducts() {

@@ -3,6 +3,7 @@ package com.example.e_commerce.data.service
 import android.util.Log
 import com.example.e_commerce.domain.model.User
 import com.example.e_commerce.domain.service.AccountService
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.channels.awaitClose
@@ -26,7 +27,11 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         }
 
     override suspend fun authenticate(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).await()
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                auth.currentUser?.let { User(task.result.user!!.uid) } ?: User()
+            }
+        }
     }
 
     override suspend fun sendRecoveryEmail(email: String) {
@@ -38,7 +43,12 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
     }
 
     override suspend fun linkAccount(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email,password).await()
+        val credential = EmailAuthProvider.getCredential(email, password)
+        auth.currentUser!!.linkWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                auth.currentUser?.let { User(task.result.user!!.uid) } ?: User()
+            }
+        }
     }
 
     override suspend fun deleteAccount() {
@@ -50,6 +60,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
             auth.currentUser!!.delete()
         }
         auth.signOut()
+        createAnonymousAccount()
     }
 }
 
