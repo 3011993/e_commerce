@@ -1,9 +1,10 @@
 package com.example.e_commerce.presentation.categories
 
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.data.db.CategoriesEntity
+import com.example.e_commerce.domain.model.CategoriesModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
-import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ScreenState
@@ -16,10 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     logService: LogService,
-    private val accountService: AccountService,
     private val repo: CommerceRepository,
 ) : CommerceViewModel(logService) {
-    private val _categories = MutableStateFlow<List<String>>(emptyList())
+    private val _categories = MutableStateFlow<List<CategoriesModel>>(emptyList())
     val categories = _categories.asStateFlow()
 
     private val _allProducts =
@@ -29,13 +29,10 @@ class CategoriesViewModel @Inject constructor(
     init {
         getCategories()
         getProductsByCategory("electronics")
-        launchCatching {
-            accountService.createAnonymousAccount()
-        }
     }
 
     private fun getCategories() {
-        launchCatching {
+        launchCatching(dispatcher = Dispatchers.IO) {
             repo.getCategories().collect {
                 _categories.value = it
             }

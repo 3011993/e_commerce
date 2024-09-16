@@ -1,10 +1,7 @@
 package com.example.e_commerce.presentation
 
 import android.content.res.Resources
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
@@ -41,7 +38,6 @@ import java.util.UUID
 @Composable
 fun CommerceApp() {
     E_commerceTheme {
-        val systemBarsPadding = WindowInsets.systemBars.asPaddingValues()
         val appState = rememberCommerceAppState()
         val currentBackStack by appState.navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
@@ -68,7 +64,7 @@ fun CommerceApp() {
             }) { innerPadding ->
             NavHost(
                 navController = appState.navController,
-                startDestination = Store.route,
+                startDestination = SPLASH_SCREEN,
                 modifier = Modifier.padding(innerPadding)
             ) {
                 commerceGraph(appState = appState)

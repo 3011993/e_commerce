@@ -9,6 +9,7 @@ import com.example.e_commerce.data.remote.ApiService
 import com.example.e_commerce.data.remote.dto.toDatabase
 import com.example.e_commerce.data.remote.dto.toModel
 import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.domain.model.CategoriesModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import kotlinx.coroutines.CancellationException
@@ -64,14 +65,14 @@ class CommerceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCategories(): Flow<List<String>> {
+    override suspend fun getCategories(): Flow<List<CategoriesModel>> {
         return flow {
             try {
                 val categoriesEntity = api.getCategories().mapIndexed { index, category ->
                     CategoriesEntity(id = index + 1, category)
                 }.toTypedArray()
                 dao.insertCategories(*categoriesEntity)
-                val cachedCategories = dao.getAllCategories().map { it.category }
+                val cachedCategories = dao.getAllCategories().map { it.toModel() }
                 emit(cachedCategories)
             } catch (e: Exception) {
                 Log.i("repo", e.message ?: "Unexpected Error occurred")

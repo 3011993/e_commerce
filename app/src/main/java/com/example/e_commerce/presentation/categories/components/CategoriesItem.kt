@@ -19,12 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.e_commerce.domain.model.CategoriesModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
 fun CategoriesNavigationRail(
-    onSelectCategory: (String) -> Unit,
-    categories: List<String>,
+    onSelectCategory: (CategoriesModel) -> Unit,
+    categories: List<CategoriesModel>,
     modifier: Modifier = Modifier,
 ) {
     var selectedCategory by remember {
@@ -49,7 +50,7 @@ fun CategoriesNavigationRail(
                 },
                 label = {
                     Text(
-                        text = category,
+                        text = category.category,
                         modifier = modifier
                             .align(Alignment.Start)
                     )

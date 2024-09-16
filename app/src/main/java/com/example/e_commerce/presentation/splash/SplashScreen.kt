@@ -20,7 +20,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.delay
 import com.example.e_commerce.R.string as AppText
 
-private const val SPLASH_TIMEOUT = 1000L
+private const val SPLASH_TIMEOUT = 2000L
 
 @Composable
 fun SplashScreen(
