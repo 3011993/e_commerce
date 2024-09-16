@@ -9,20 +9,12 @@ import com.google.firebase.firestore.dataObjects
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: AccountService,
 ) : StorageService {
-
-    private val cartsCollection
-        get() = firestore.collection(CARTS_COLLECTION).whereEqualTo(
-            USER_ID_FIELD,
-            auth.currentUserId
-        )
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val carts: Flow<List<CartModel>>
@@ -31,15 +23,16 @@ class StorageServiceImpl @Inject constructor(
                 .dataObjects()
         }
 
-    suspend fun getCart(cartId: String): CartModel? =
-        firestore.collection(CARTS_COLLECTION).document(cartId).get().await()
-            .toObject(CartModel::class.java)
-
-    suspend fun addCart(cart: CartModel) {
-        firestore.collection(CARTS_COLLECTION).add(cart).await().id
+    override fun addOrUpdateCart(cart: CartModel) {
+        val documentId = cart.cartId
+        if (documentId.isEmpty()) {
+            addCart(cart)
+        } else {
+            updateCart(cart)
+        }
     }
 
-    override suspend fun saveCart(cart: CartModel) {
+    override fun addCart(cart: CartModel) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
@@ -61,29 +54,11 @@ class StorageServiceImpl @Inject constructor(
                 } else {
                     Log.i("StorageImpl", "issue in quantity and stock ")
                 }
-            } else {
-                Log.i("StorageImpl", "product doesn't exist ")
             }
         }
     }
 
-    override suspend fun updateCart(cart: CartModel) {
-        firestore.collection(CARTS_COLLECTION).document(cart.cartId).set(cart).await()
-    }
-
-    override suspend fun deleteCart(cartId: String) {
-        firestore.collection(CARTS_COLLECTION).document(cartId).delete().await()
-    }
-
-    override suspend fun checkIfCartExists(userId: String): Boolean {
-        return try {
-            firestore.collection(CARTS_COLLECTION).document(userId).get().await().exists()
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    override suspend fun addToCart(cart: CartModel) {
+    override fun updateCart(cart: CartModel) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
@@ -101,18 +76,12 @@ class StorageServiceImpl @Inject constructor(
                         transaction.update(productRef, "inStock", false)
                     }
                     if (cartDoc.exists()) {
-                        // Update existing cart item
                         val existingQuantity = cartDoc.getLong("quantity") ?: 0
                         val increasedQuantity = existingQuantity + 1
                         val increasedPrice = cart.originalPrice * increasedQuantity
-                        Log.i("storageImpl", increasedPrice.toString())
-                        Log.i("storageImpl", existingQuantity.toString())
-                        Log.i("storageImpl", increasedQuantity.toString())
-
                         transaction.update(cartRef, "quantity", increasedQuantity)
                         transaction.update(cartRef, "price", increasedPrice)
                     } else {
-                        // Create new cart item
                         transaction.set(cartRef, updatedCart)
                     }
 
@@ -122,12 +91,10 @@ class StorageServiceImpl @Inject constructor(
             } else {
                 Log.i("StorageImpl", "Product doesn't exist")
             }
-            null // You need to return null from the transaction
         }
-
     }
 
-    override suspend fun removeFromCart(cart: CartModel) {
+    override fun removeFromCart(cart: CartModel) {
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
         val cartRef = firestore.collection(CARTS_COLLECTION).document(cart.cartId)

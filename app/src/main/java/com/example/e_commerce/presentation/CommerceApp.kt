@@ -35,6 +35,7 @@ import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.store.StoreScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
+import java.util.UUID
 
 @Composable
 fun CommerceApp() {
@@ -101,6 +102,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
             val cartItemModel = CartModel(
+                cartId = UUID.randomUUID().toString(),
                 price = product.price.toDouble(),
                 quantity = 1,
                 productId = product.id,
@@ -108,7 +110,11 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
                 title = product.title,
                 image = product.image
             )
-            viewModel.createCart(cartItemModel)
+            if(cartItemModel.cartId.isEmpty()) {
+                viewModel.addOrUpdateCart(cartItemModel)
+            } else {
+                viewModel.addProductToCart(cartItemModel)
+            }
             appState.navigate(Cart.route)
         })
     }
