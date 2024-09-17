@@ -39,6 +39,7 @@ import com.example.e_commerce.common.composable.rememberConnectivityState
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.store.components.ProductItem
+import com.example.e_commerce.presentation.store.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
@@ -51,9 +52,10 @@ fun StoreScreen(
     val state by viewModel.allProducts.collectAsState()
     StoreContent(
         state = state,
-        onProductClick,
-        onCartButtonClicked,
+        onProductClick = onProductClick,
+        onCartButtonClicked = onCartButtonClicked,
         getAllProducts = viewModel::getAllProducts,
+        searchPrefix = viewModel::searchProducts,
         modifier
     )
 }
@@ -64,6 +66,7 @@ fun StoreContent(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     getAllProducts: () -> Unit,
+    searchPrefix: (String) -> List<ProductModel>,
     modifier: Modifier = Modifier,
 ) {
     val connection by rememberConnectivityState()
@@ -72,6 +75,13 @@ fun StoreContent(
         derivedStateOf { connection === ConnectionState.Available }
     }
     var showRefreshButton by remember { mutableStateOf(false) }
+    var displayedProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
+    var searchText by remember { mutableStateOf("") }
+    LaunchedEffect(state) {
+        if (state is ScreenState.Success) {
+            displayedProducts = state.data
+        }
+    }
 
     LaunchedEffect(key1 = connection) {
         if (previousConnection != null && previousConnection != connection) {
@@ -93,12 +103,14 @@ fun StoreContent(
                     products = state.data ?: emptyList(),
                     onProductClick = onProductClick,
                     onCartButtonClicked = onCartButtonClicked,
-                    getAllProducts ={
+                    getAllProducts = {
                         getAllProducts()
                         showRefreshButton = false
                     },
                     showRefreshButton = showRefreshButton,
-                    isConnected = isConnected
+                    isConnected = isConnected,
+                    searchBar = {
+                    }
                 )
                 Log.i("Store Screen", state.message ?: "An unexpected error occurred")
             }
@@ -108,8 +120,9 @@ fun StoreContent(
             }
 
             is ScreenState.Success -> {
+
                 ProductsLazyVerticalGrid(
-                    products = state.data,
+                    products = displayedProducts,
                     onProductClick = onProductClick,
                     onCartButtonClicked = onCartButtonClicked,
                     getAllProducts = {
@@ -117,7 +130,18 @@ fun StoreContent(
                         showRefreshButton = false
                     },
                     isConnected = isConnected,
-                    showRefreshButton = showRefreshButton
+                    showRefreshButton = showRefreshButton, searchBar = {
+                        SearchBar(searchText = searchText,
+                            onSearchTextChange = { newValue ->
+                                searchText = newValue
+                                displayedProducts = if (newValue.isBlank()) {
+                                    state.data
+                                } else {
+                                    searchPrefix(newValue)
+                                }
+
+                            })
+                    }
                 )
             }
         }
@@ -131,6 +155,7 @@ fun ProductsLazyVerticalGrid(
     onCartButtonClicked: (ProductModel) -> Unit,
     isConnected: Boolean,
     getAllProducts: () -> Unit,
+    searchBar : @Composable () -> Unit ,
     showRefreshButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -143,6 +168,10 @@ fun ProductsLazyVerticalGrid(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+        item(span = { GridItemSpan(2) }) {
+            searchBar()
+        }
+
         item(span = { GridItemSpan(2) }) {
             if (showRefreshButton) {
                 Button(

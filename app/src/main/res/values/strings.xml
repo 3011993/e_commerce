@@ -32,4 +32,6 @@
     <string name="delete_account_title">Delete account?</string>
     <string name="delete_account_description">You will lose all your tasks and your account will be deleted. This action is irreversible.</string>
 
+    <!-- Search BAr -->
+    <string name="placeholder_search">Search</string>
 </resources>
