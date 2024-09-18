@@ -1,6 +1,5 @@
 package com.example.e_commerce.presentation.product_details
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,17 +17,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
-import com.example.e_commerce.presentation.store.components.ProductItem
+import com.example.e_commerce.presentation.product_details.components.ProductDetailsItem
 
 @Composable
 fun ProductDetailsScreen(modifier: Modifier = Modifier) {
     val viewModel: ProductDetailsViewModel = hiltViewModel()
     val state by viewModel.product.collectAsState()
-    ProductDetailsContent(state = state, modifier = modifier)
+    ProductDetailsContent(
+        state = state,
+        onCartButtonClicked = viewModel::addOrUpdateCart,
+        modifier = modifier
+    )
 }
 
 @Composable
-fun ProductDetailsContent(state: ScreenState<ProductModel>, modifier: Modifier = Modifier) {
+fun ProductDetailsContent(
+    state: ScreenState<ProductModel>,
+    onCartButtonClicked: (ProductModel) -> Unit, modifier: Modifier = Modifier,
+) {
     Box(modifier = modifier.fillMaxSize()) {
         when (state) {
             is ScreenState.Error -> {
@@ -48,7 +54,7 @@ fun ProductDetailsContent(state: ScreenState<ProductModel>, modifier: Modifier =
             }
 
             is ScreenState.Success -> {
-                ProductItem(product = state.data,{},{})
+                ProductDetailsItem(product = state.data, onCartButtonClicked = onCartButtonClicked)
             }
         }
     }

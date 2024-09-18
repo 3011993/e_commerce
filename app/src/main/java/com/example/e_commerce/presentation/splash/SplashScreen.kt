@@ -58,7 +58,6 @@ fun SplashScreenContent(
     }
 
     LaunchedEffect(true) {
-        delay(SPLASH_TIMEOUT)
         onAppStart()
     }
 }

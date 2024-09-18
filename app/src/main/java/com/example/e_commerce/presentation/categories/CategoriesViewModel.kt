@@ -1,6 +1,7 @@
 package com.example.e_commerce.presentation.categories
 
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.data.Trie
 import com.example.e_commerce.data.db.CategoriesEntity
 import com.example.e_commerce.domain.model.CategoriesModel
 import com.example.e_commerce.domain.model.ProductModel
@@ -26,6 +27,7 @@ class CategoriesViewModel @Inject constructor(
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
     val allProducts = _allProducts.asStateFlow()
 
+    private var trie : Trie? = null
     init {
         getCategories()
         getProductsByCategory("electronics")
@@ -48,6 +50,7 @@ class CategoriesViewModel @Inject constructor(
                             message = result.message ?: "Unknown error occurred",
                             data = result.data ?: emptyList()
                         )
+                        trie = Trie.preprocessProducts(result.data?: emptyList())
                     }
 
                     is Resources.Loading -> {
@@ -57,9 +60,14 @@ class CategoriesViewModel @Inject constructor(
                     is Resources.Success -> {
                         _allProducts.value =
                             ScreenState.Success(result.data ?: emptyList())
+                        trie = Trie.preprocessProducts(result.data?: emptyList())
+
                     }
                 }
             }
         }
+    }
+    fun searchProducts(prefix: String): List<ProductModel> {
+        return trie?.searchPrefix(prefix) ?: emptyList()
     }
 }

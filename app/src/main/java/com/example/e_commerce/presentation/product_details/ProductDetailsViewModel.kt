@@ -1,13 +1,16 @@
 package com.example.e_commerce.presentation.product_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.PRODUCT_ID
 import com.example.e_commerce.presentation.ScreenState
@@ -21,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     logService: LogService,
+    private val storageService: StorageService,
     private val repo: CommerceRepository,
     savedStateHandle: SavedStateHandle,
 ) : CommerceViewModel(logService) {
@@ -47,4 +51,18 @@ class ProductDetailsViewModel @Inject constructor(
             }
         }
     }
+    fun addOrUpdateCart(productModel: ProductModel) {
+        val cart = CartModel(
+            image = productModel.image,
+            title = productModel.title,
+            price = productModel.price.toDouble(),
+            quantity = 1,
+            productId = productModel.id,
+            originalPrice = productModel.price.toDouble(),
+        )
+        launchCatching {
+            storageService.addOrUpdateCart(cart)
+        }
+    }
+
 }

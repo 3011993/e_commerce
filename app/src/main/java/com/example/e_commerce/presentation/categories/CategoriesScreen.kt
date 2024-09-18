@@ -25,7 +25,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
             },
             categories
         )
-        //StoreContent(state = state, {},{},{}, searchPrefix = { (null) })
+        StoreContent(state = state, {}, {}, {}, searchPrefix = viewModel::searchProducts)
     }
 }
 
