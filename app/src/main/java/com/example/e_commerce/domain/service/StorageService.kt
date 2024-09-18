@@ -7,6 +7,6 @@ interface StorageService {
     val carts: Flow<List<CartModel>>
     fun addCart(cart: CartModel)
     fun updateCart(cart: CartModel)
-    fun addOrUpdateCart(cart: CartModel)
+    suspend fun addOrUpdateCart(cart: CartModel)
     fun removeFromCart(cart: CartModel)
 }

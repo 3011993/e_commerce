@@ -2,6 +2,7 @@ package com.example.e_commerce.presentation.store
 
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.Trie
+import com.example.e_commerce.data.repo.CommerceRepositoryImpl
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.LogService
@@ -48,8 +49,6 @@ class StoreViewModel @Inject constructor(
                         _allProducts.value = ScreenState.Success(result.data ?: emptyList())
                         trie = Trie.preprocessProducts(result.data?: emptyList())
                     }
-
-                    else -> {}
                 }
             }
         }
@@ -57,4 +56,5 @@ class StoreViewModel @Inject constructor(
     fun searchProducts(prefix: String): List<ProductModel> {
         return trie?.searchPrefix(prefix) ?: emptyList()
     }
+
 }

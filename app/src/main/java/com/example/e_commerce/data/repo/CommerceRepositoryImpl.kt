@@ -1,5 +1,6 @@
 package com.example.e_commerce.data.repo
 
+import android.content.SharedPreferences
 import android.util.Log
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.db.CategoriesEntity
@@ -12,7 +13,6 @@ import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.CategoriesModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.IOException
@@ -22,6 +22,7 @@ import javax.inject.Inject
 class CommerceRepositoryImpl @Inject constructor(
     private val api: ApiService,
     private val dao: CommerceDao,
+    private val sharedPreferences: SharedPreferences,
 ) : CommerceRepository {
     override suspend fun getProducts(): Flow<Resources<List<ProductModel>>> {
         return flow {
@@ -128,6 +129,16 @@ class CommerceRepositoryImpl @Inject constructor(
                 emit(Resources.Error(message = e.message ?: "Unexpected Error occurred"))
             }
         }
+    }
+
+    override fun saveCartIdForProduct(productId: String, cartId: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(productId, cartId)
+        editor.apply()
+    }
+
+    override fun getCartIdForProduct(productId: String): String? {
+        return sharedPreferences.getString(productId, null)
     }
 
 }

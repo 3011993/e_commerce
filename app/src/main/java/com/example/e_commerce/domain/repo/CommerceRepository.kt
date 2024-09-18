@@ -13,4 +13,6 @@ interface CommerceRepository {
     suspend fun getProductsByCategory(category: String): Flow<Resources<List<ProductModel>>>
     suspend fun getAllCarts(): Flow<Resources<List<CartModel>>>
     suspend fun getCart(id: Int): Flow<Resources<CartModel>>
+    fun saveCartIdForProduct(productId : String,cartId : String)
+    fun getCartIdForProduct(productId: String) : String?
 }

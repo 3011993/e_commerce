@@ -6,15 +6,19 @@ import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.StorageService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
+import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: AccountService,
 ) : StorageService {
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val carts: Flow<List<CartModel>>
@@ -23,12 +27,12 @@ class StorageServiceImpl @Inject constructor(
                 .dataObjects()
         }
 
-    override fun addOrUpdateCart(cart: CartModel) {
-        val documentId = cart.cartId
-        if (documentId.isEmpty()) {
-            addCart(cart)
-        } else {
+    override suspend fun addOrUpdateCart(cart: CartModel) {
+        val document = firestore.collection(CARTS_COLLECTION).document(cart.cartId).get().await()
+        if(document.exists()){
             updateCart(cart)
+        } else {
+            addCart(cart)
         }
     }
 
@@ -36,6 +40,7 @@ class StorageServiceImpl @Inject constructor(
         val updatedCart = cart.copy(userId = auth.currentUserId)
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
+        val cartRef = firestore.collection(CARTS_COLLECTION).document(cart.cartId)
         firestore.runTransaction { transaction ->
             val productDoc = transaction.get(productRef)
             if (productDoc.exists()) {
@@ -47,9 +52,7 @@ class StorageServiceImpl @Inject constructor(
                     if (newQuantity == 0) {
                         transaction.update(productRef, "inStock", false)
                     }
-                    firestore.collection(CARTS_COLLECTION).add(updatedCart).addOnSuccessListener {
-                        Log.i("StorageImpl", "Product added to cart successfully")
-                    }
+                    transaction.set(cartRef, updatedCart)
 
                 } else {
                     Log.i("StorageImpl", "issue in quantity and stock ")
@@ -125,7 +128,6 @@ class StorageServiceImpl @Inject constructor(
     companion object {
         const val CARTS_COLLECTION = "carts"
         const val USER_ID_FIELD = "userId"
-        const val PRODUCT_ID_FIELD = "productId"
         const val INVENTORY_COLLECTION = "inventory"
     }
 }

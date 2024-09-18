@@ -23,7 +23,7 @@ fun CartScreen(modifier: Modifier = Modifier) {
         val carts by viewModel.carts.collectAsState()
         CartContent(
             onRemoveItem = viewModel::removeProductFromCart,
-            onIncreaseQuantity = viewModel::addProductToCart,
+            onIncreaseQuantity = viewModel::addOrUpdateCart,
             onDecreaseQuantity = viewModel::removeProductFromCart,
             carts = carts
         )

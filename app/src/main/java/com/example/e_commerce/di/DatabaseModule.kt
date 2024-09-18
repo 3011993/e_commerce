@@ -1,6 +1,9 @@
 package com.example.e_commerce.di
 
+import android.app.Application
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.e_commerce.data.db.CommerceDao
 import com.example.e_commerce.data.db.CommerceDataBase
@@ -28,4 +31,8 @@ object DatabaseModule {
     fun getGameDao(database: CommerceDataBase): CommerceDao {
         return database.commerceDao
     }
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(app: Application): SharedPreferences =
+        app.getSharedPreferences("carts", MODE_PRIVATE)
 }
