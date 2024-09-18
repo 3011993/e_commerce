@@ -1,10 +1,6 @@
 package com.example.e_commerce.presentation.product_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
@@ -18,7 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,8 +47,12 @@ class ProductDetailsViewModel @Inject constructor(
             }
         }
     }
+
     fun addOrUpdateCart(productModel: ProductModel) {
+        val cartId =
+            repo.getCartIdForProduct(productModel.id.toString()) ?: UUID.randomUUID().toString()
         val cart = CartModel(
+            cartId = cartId,
             image = productModel.image,
             title = productModel.title,
             price = productModel.price.toDouble(),
@@ -62,6 +62,9 @@ class ProductDetailsViewModel @Inject constructor(
         )
         launchCatching {
             storageService.addOrUpdateCart(cart)
+        }
+        if (repo.getCartIdForProduct(productModel.id.toString()) == null) {
+            repo.saveCartIdForProduct(productModel.id.toString(), cartId)
         }
     }
 
