@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -18,7 +17,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,18 +27,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.ConnectionState
 import com.example.e_commerce.common.composable.rememberConnectivityState
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.store.components.ProductItem
 import com.example.e_commerce.presentation.store.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.R.string as AppText
 
 @Composable
 fun StoreScreen(
@@ -159,6 +157,7 @@ fun ProductsLazyVerticalGrid(
     showRefreshButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var showSnackBar by remember { mutableStateOf(true) }
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(vertical = 6.dp),
@@ -183,14 +182,9 @@ fun ProductsLazyVerticalGrid(
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
                 }
             }
-            if (!isConnected) {
-                Text(
-                    text = "Please Connect to your Internet!",
-                    modifier
-                        .fillMaxWidth()
-                        .background(Color.Red),
-                    textAlign = TextAlign.Center
-                )
+            if (showSnackBar && !isConnected) {
+                SnackBarManager.showMessage(AppText.offline_message)
+                showSnackBar = false
             }
         }
         items(products) { product ->
