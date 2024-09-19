@@ -12,5 +12,6 @@ data class CategoriesEntity(
 )
 
 fun CategoriesEntity.toModel() = CategoriesModel(
+    id = id,
     category = category
 )

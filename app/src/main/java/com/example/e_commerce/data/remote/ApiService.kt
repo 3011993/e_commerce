@@ -2,11 +2,8 @@ package com.example.e_commerce.data.remote
 
 import com.example.e_commerce.common.Constants.GET_ALL_CATEGORIES
 import com.example.e_commerce.common.Constants.GET_ALL_PRODUCTS
-import com.example.e_commerce.common.Constants.GET_CARTS
 import com.example.e_commerce.common.Constants.GET_PRODUCTS_BY_CATEGORY
-import com.example.e_commerce.common.Constants.GET_SINGLE_CART
 import com.example.e_commerce.common.Constants.GET_SINGLE_PRODUCT
-import com.example.e_commerce.data.remote.dto.CartDto
 import com.example.e_commerce.data.remote.dto.ProductDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -24,9 +21,6 @@ interface ApiService {
 
     @GET(GET_PRODUCTS_BY_CATEGORY)
     suspend fun getProductsByCategory(@Path("category") category: String): List<ProductDto>
-    @GET(GET_CARTS)
-    suspend fun getAllCarts() : List<CartDto>
-    @GET(GET_SINGLE_CART)
-    suspend fun getCart(@Path("cartId") cartId : Int) : CartDto
+
 
 }

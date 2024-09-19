@@ -6,11 +6,9 @@ import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.StorageService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
-import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -18,7 +16,6 @@ class StorageServiceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: AccountService,
 ) : StorageService {
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val carts: Flow<List<CartModel>>
@@ -123,7 +120,6 @@ class StorageServiceImpl @Inject constructor(
             }
         }
     }
-
 
     companion object {
         const val CARTS_COLLECTION = "carts"
