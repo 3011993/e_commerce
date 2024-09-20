@@ -48,8 +48,10 @@ fun CartContent(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
-        LazyColumn(modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 100.dp)) {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 100.dp)
+        ) {
             if (carts.isEmpty()) {
                 item {
                     Text(
@@ -71,8 +73,14 @@ fun CartContent(
                 }
             }
         }
+
         if (carts.isNotEmpty()) {
-            CheckOutBottom(modifier = Modifier.align(Alignment.BottomCenter))
+            val totalPrice = carts.sumOf { it.price }
+            CheckOutBottom(
+                totalPrice,
+                onCheckOutClick = {},
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
 }

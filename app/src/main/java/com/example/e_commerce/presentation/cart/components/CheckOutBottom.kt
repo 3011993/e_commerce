@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
-fun CheckOutBottom(modifier: Modifier = Modifier) {
+fun CheckOutBottom(totalPrice : Double,onCheckOutClick: () -> Unit,
+                   modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth().height(100.dp)
@@ -29,12 +30,12 @@ fun CheckOutBottom(modifier: Modifier = Modifier) {
     ) {
         Column {
             Text(
-                "Total Price: $100.00",
+                "Total Price: $totalPrice$",
                 modifier.padding(start = 16.dp, top = 16.dp),
                 style = MaterialTheme.typography.bodyLarge
             )
             Button(
-                onClick = { },
+                onClick = onCheckOutClick,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -49,6 +50,6 @@ fun CheckOutBottom(modifier: Modifier = Modifier) {
 @Composable
 private fun CheckOutBottomPreview() {
     E_commerceTheme {
-        CheckOutBottom()
+        CheckOutBottom(19.0,{})
     }
 }
