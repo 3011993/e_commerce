@@ -4,7 +4,7 @@ package com.example.e_commerce.common.composable
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -40,6 +40,7 @@ fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier =
     singleLine = true,
     modifier = modifier,
     value = value,
+    textStyle = MaterialTheme.typography.bodyMedium,
     onValueChange = { onNewValue(it) },
     placeholder = { Text(stringResource(AppText.email)) },
     leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
@@ -79,6 +80,7 @@ private fun PasswordField(
   OutlinedTextField(
     modifier = modifier,
     value = value,
+    textStyle = MaterialTheme.typography.bodyMedium,
     onValueChange = { onNewValue(it) },
     placeholder = { Text(text = stringResource(placeholder)) },
     leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
