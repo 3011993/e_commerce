@@ -1,28 +1,29 @@
 package com.example.e_commerce.presentation.store.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.e_commerce.R
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
@@ -35,48 +36,68 @@ fun ProductItem(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
+            .width(160.dp)
+            .height(257.dp)
             .padding(8.dp),
-        elevation = 2.dp
+        elevation = CardDefaults.elevatedCardElevation(2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+        shape = RoundedCornerShape(8.dp)
     ) {
-        Column(
+        Box(
             modifier = modifier
-                .padding(16.dp)
+                .fillMaxSize()
                 .clickable {
                     onProductClicked(product)
                 }
         ) {
-            AsyncImage(
-                model = product.image,
-                contentDescription = product.title,
+            Column(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Fit
-            )
-            Spacer(modifier = modifier.height(8.dp))
-            val words = product.title.split(" ")
-            val firstTwoWords =
-                if (words.size >= 2) words.subList(0, 2).joinToString(" ") else product.title
-            Text(
-                text = firstTwoWords,
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
+                    .fillMaxSize()
+            ) {
 
+                AsyncImage(
+                    model = product.image,
+                    contentDescription = product.title,
+                    modifier = modifier
+                        .width(160.dp)
+                        .height(203.dp),
+                    contentScale = ContentScale.Fit
                 )
-            Text(
-                text = "$${product.price}",
-                style = MaterialTheme.typography.subtitle1,
-                color = Color.Gray
+                Spacer(modifier = modifier.height(2.dp))
+                val words = product.title.split(" ")
+                val firstTwoWords =
+                    if (words.size >= 4) words.subList(0, 4).joinToString(" ") else product.title
+                Text(
+                    text = firstTwoWords,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 11.sp,
+                    modifier = modifier
+                        .height(15.dp)
+                        .width(117.dp)
+                        .offset(3.dp)
+                )
+                Text(
+                    text = "$${product.price}",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = modifier
+                        .height(14.dp)
+                        .width(26.dp)
+                        .offset(x = 3.dp)
+                )
+            }
+            Icon(
+                painter = painterResource(id = R.drawable.heart),
+                contentDescription = null,
+                modifier = modifier
+                    .align(Alignment.TopEnd)
+                    .padding(end = 8.dp, top = 8.dp)
             )
-            Text(
-                text = "Category: ${product.category}",
-                style = MaterialTheme.typography.body2
-            )
-            Spacer(modifier = modifier.height(4.dp))
             Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = null,
-                modifier = modifier.clickable { onCartButtonClicked(product) })
+                modifier = modifier
+                    .align(Alignment.BottomEnd)
+                    .clickable { onCartButtonClicked(product) }
+                    .padding(end = 8.dp, bottom = 8.dp)
+            )
         }
     }
 }
@@ -93,7 +114,7 @@ private fun ProductItemPreview() {
             title = "Bag",
             id = 0
         )
-        ProductItem(product, {},{})
+        ProductItem(product, {}, {})
     }
 
 }

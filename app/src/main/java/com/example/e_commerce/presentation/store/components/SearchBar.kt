@@ -1,10 +1,14 @@
 package com.example.e_commerce.presentation.store.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.R.string as AppText
 
@@ -41,10 +46,11 @@ fun SearchBar(
         placeholder = {
             Text(stringResource(AppText.placeholder_search))
         },
+        textStyle = MaterialTheme.typography.titleMedium,
+        shape = RoundedCornerShape(8.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .padding(10.dp)
+            .width(300.dp)
+            .height(50.dp)
             .shadow(elevation = 3.dp)
     )
 }

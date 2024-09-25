@@ -1,15 +1,21 @@
 package com.example.e_commerce.presentation.product_details.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -23,8 +29,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.e_commerce.domain.model.ProductModel
+import com.example.e_commerce.ui.theme.AppTypography
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
@@ -34,50 +42,86 @@ fun ProductDetailsItem(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(all = 16.dp)
-            .shadow(elevation = 2.dp, shape = RoundedCornerShape(8.dp))
+            .fillMaxSize()
     ) {
         AsyncImage(
             model = product.image,
             contentDescription = product.title,
             modifier = modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(418.dp)
                 .clip(RoundedCornerShape(8.dp)),
             contentScale = ContentScale.Fit
         )
         Spacer(modifier = modifier.height(8.dp))
-        Text(
-            text = product.title,
-            style = MaterialTheme.typography.h6,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(start = 8.dp, end = 10.dp)
-
-        )
-        Text(
-            text = "$${product.price}",
-            style = MaterialTheme.typography.subtitle1,
-            color = Color.Gray,
-            modifier = modifier.padding(start = 8.dp)
-
-        )
-        Text(
-            text = "Category: ${product.category}",
-            style = MaterialTheme.typography.body2,
-            modifier = modifier.padding(start = 8.dp)
-        )
-        Text(
-            text = "Description: ${product.description}",
-            style = MaterialTheme.typography.body2,
-            modifier = modifier.padding(start = 8.dp, end = 10.dp)
-        )
-        Spacer(modifier = modifier.height(4.dp))
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 16.dp, end = 16.dp
+                )
+        ) {
+            Row(
+                modifier = modifier.align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = product.title,
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = modifier
+                        .padding(start = 8.dp, end = 10.dp, bottom = 4.dp)
+                        .weight(1f)
+                )
+                Text(
+                    text = "Price",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = modifier.padding(end = 16.dp)
+                )
+            }
+            Row(
+                modifier = modifier.align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = product.category,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
+                        .padding(start = 8.dp)
+                        .weight(1f)
+                )
+                Text(
+                    text = "$${product.price}",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier.padding(end = 8.dp)
+                )
+            }
+        }
+        Spacer(modifier = modifier.height(16.dp))
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp)
+        ) {
+            Text(
+                "Description",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = modifier.padding(start = 8.dp, bottom = 4.dp)
+            )
+            Text(
+                text = product.description,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = modifier.padding(start = 8.dp, end = 10.dp, bottom = 4.dp)
+            )
+        }
+        Spacer(modifier = modifier.height(8.dp))
         Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = null,
             modifier = modifier
                 .align(Alignment.End)
-                .padding(end = 10.dp, bottom = 16.dp)
+                .padding(end = 16.dp, bottom = 16.dp)
                 .clickable { onCartButtonClicked(product) })
+
     }
 
 }

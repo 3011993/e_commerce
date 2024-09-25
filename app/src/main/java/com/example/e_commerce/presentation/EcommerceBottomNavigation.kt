@@ -56,44 +56,44 @@ fun EcommerceBottomNavigation(
     }
 }
 
-@Composable
-fun EcommerceTab(
-    text: String,
-    icon: ImageVector,
-    onSelected: () -> Unit,
-    selected: Boolean,
-) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .animateContentSize()
-            .height(56.dp)
-            .selectable(
-                selected = selected,
-                onClick = onSelected,
-                role = Role.Tab,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(
-                    bounded = false,
-                    radius = Dp.Unspecified,
-                    color = Color.Unspecified
-                )
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        Spacer(
-            modifier = Modifier
-                .height(3.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Text(text = text.uppercase(Locale.getDefault()))
-    }
-}
+//@Composable
+//fun EcommerceTab(
+//    text: String,
+//    icon: ImageVector,
+//    onSelected: () -> Unit,
+//    selected: Boolean,
+//) {
+//    Column(
+//        modifier = Modifier
+//            .padding(16.dp)
+//            .animateContentSize()
+//            .height(56.dp)
+//            .selectable(
+//                selected = selected,
+//                onClick = onSelected,
+//                role = Role.Tab,
+//                interactionSource = remember { MutableInteractionSource() },
+//                indication = rememberRipple(
+//                    bounded = false,
+//                    radius = Dp.Unspecified,
+//                    color = Color.Unspecified
+//                )
+//            ),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        Icon(
+//            imageVector = icon,
+//            contentDescription = text,
+//            modifier = Modifier.align(Alignment.CenterHorizontally)
+//        )
+//        Spacer(
+//            modifier = Modifier
+//                .height(3.dp)
+//                .align(Alignment.CenterHorizontally)
+//        )
+//        Text(text = text.uppercase(Locale.getDefault()))
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable

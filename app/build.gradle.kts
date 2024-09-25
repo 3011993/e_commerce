@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.gson.converter)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.ui.text.google.fonts)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
