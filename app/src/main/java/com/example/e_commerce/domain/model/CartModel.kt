@@ -1,6 +1,5 @@
 package com.example.e_commerce.domain.model
 
-import com.google.firebase.firestore.DocumentId
 
 data class CartModel(
     val cartId : String = "",

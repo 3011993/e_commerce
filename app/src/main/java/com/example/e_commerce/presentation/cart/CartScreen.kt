@@ -4,8 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -18,10 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.domain.model.CartModel
-import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.cart.components.CartHeader
-import com.example.e_commerce.presentation.cart.components.CartItem
 import com.example.e_commerce.presentation.cart.components.CheckOutBottom
+import com.example.e_commerce.presentation.cart.components.CartItem
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable

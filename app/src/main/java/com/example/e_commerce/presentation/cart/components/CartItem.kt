@@ -1,29 +1,31 @@
 package com.example.e_commerce.presentation.cart.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.e_commerce.R.drawable as AppIcon
 import com.example.e_commerce.domain.model.CartModel
 
 import com.example.e_commerce.ui.theme.E_commerceTheme
@@ -33,50 +35,91 @@ fun CartItem(
     cartItem: CartModel,
     onIncreaseQuantity: (CartModel) -> Unit,
     onDecreaseQuantity: (CartModel) -> Unit,
-    onRemoveItem: (CartModel) -> Unit,
+    onRemoveItem: (CartModel) -> Unit, modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = Modifier
+    Card(
+        modifier = modifier
+            .height(120.dp)
             .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically // Align items vertically
+            .padding(
+                start = 16.dp, end = 16.dp,
+                top = 8.dp
+            ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) { // Center image horizontally
+        Row(modifier = modifier.fillMaxWidth()) {
             AsyncImage(
                 model = cartItem.image,
                 contentDescription = cartItem.title,
                 modifier = Modifier
-                    .size(80.dp)
+                    .width(100.dp)
+                    .height(100.dp)
                     .clip(RoundedCornerShape(8.dp))
+                    .padding(top = 8.dp, start = 8.dp)
+                    .weight(1f)
             )
-            Spacer(modifier = Modifier.height(8.dp)) // Add space below image
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { onDecreaseQuantity(cartItem) }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Decrease Quantity"
-                    )
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .weight(2f)
+            ) {
+                Text(
+                    cartItem.title,
+                    modifier.padding(start = 8.dp, top = 8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 13.sp
+                )
+                Text(
+                    text = "$${cartItem.price}",
+                    modifier.padding(start = 8.dp, top = 2.dp),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 11.sp,
+                    color = Color.Gray
+                )
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = { onDecreaseQuantity(cartItem) },
+                        modifier = modifier.clip(CircleShape)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = AppIcon.decrease_button),
+                            contentDescription = "Decrease quantity"
+                        )
+                    }
+                    Text(text = "${cartItem.quantity}",
+                        style = MaterialTheme.typography.headlineMedium)
+                    IconButton(
+                        onClick = {
+                            onIncreaseQuantity(cartItem)
+                        },
+                        modifier = modifier.clip(CircleShape)
+                    ) {
+                        Icon(
+                            painter = painterResource(AppIcon.increase_button),
+                            contentDescription = "Increase quantity"
+                        )
+                    }
+                    IconButton(
+                        onClick = { onRemoveItem(cartItem) },
+                        modifier = modifier.clip(CircleShape)
+                    ) {
+                        Icon(
+                            painter = painterResource(AppIcon.delete_button),
+                            contentDescription = "Remove Item"
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "${cartItem.quantity}")
-                Spacer(modifier = Modifier.width(8.dp))
-                IconButton(onClick = { onIncreaseQuantity(cartItem) }) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase Quantity")
-                }
+
             }
         }
-        Spacer(modifier = Modifier.weight(1f)) // Push image and buttons to the left
-        Column { // Details on the right
-            Text(text = cartItem.title, fontWeight = FontWeight.Bold)
-            Text(text = "$${cartItem.price}")
-            Spacer(modifier = Modifier.height(8.dp))
-            IconButton(onClick = { onRemoveItem(cartItem) }) {
-                Icon(imageVector = Icons.Filled.Delete, contentDescription = "Remove Item")
-            }
-        }
+
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -86,7 +129,8 @@ fun CartItemPreview() {
         val cartItemModel = CartModel(
             price = 99.0,
             quantity = 2,
-            productId = 1
+            productId = 1,
+            title = "Bag"
         )
         CartItem(
             cartItem = cartItemModel,
