@@ -1,26 +1,25 @@
 package com.example.e_commerce.presentation.store.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.R.string as AppText
 
@@ -30,7 +29,7 @@ fun SearchBar(
     onSearchTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TextField(
+    OutlinedTextField(
         value = searchText,
         onValueChange = onSearchTextChange,
         leadingIcon = {
@@ -39,10 +38,6 @@ fun SearchBar(
                 contentDescription = null
             )
         },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedContainerColor = MaterialTheme.colorScheme.surface
-        ),
         placeholder = {
             Text(stringResource(AppText.placeholder_search))
         },
@@ -50,11 +45,15 @@ fun SearchBar(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
             .width(300.dp)
-            .height(50.dp)
-            .shadow(elevation = 3.dp)
+            .height(50.dp).padding(start = 16.dp, end = 16.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = MaterialTheme.colorScheme.surface,
+            focusedBorderColor = MaterialTheme.colorScheme.surface,
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface
+        )
     )
 }
-
 @Preview
 @Composable
 private fun SearchBarPreview() {

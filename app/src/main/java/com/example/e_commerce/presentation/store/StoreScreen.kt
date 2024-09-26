@@ -40,6 +40,7 @@ import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.store.components.ProductItem
 import com.example.e_commerce.presentation.store.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import okhttp3.internal.wait
 import com.example.e_commerce.R.string as AppText
 
 @Composable
@@ -169,7 +170,7 @@ fun ProductsLazyVerticalGrid(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(Color.White)
     ) {
         item(span = { GridItemSpan(2) }) {
             searchBar()
