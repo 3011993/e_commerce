@@ -58,8 +58,7 @@ fun SignUpScreenContent(
             style = MaterialTheme.typography.headlineSmall,
             color = Color.Gray,
             modifier = modifier
-                .height(14.dp)
-                .padding(start = 16.dp)
+                .padding(start = 16.dp, top = 200.dp)
         )
         EmailField(
             uiState.email,
