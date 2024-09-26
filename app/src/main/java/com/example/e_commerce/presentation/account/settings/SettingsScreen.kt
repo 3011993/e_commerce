@@ -1,4 +1,3 @@
-
 package com.example.e_commerce.presentation.account.settings
 
 import androidx.compose.foundation.layout.*
@@ -10,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.BasicToolbar
@@ -26,125 +26,142 @@ import com.example.e_commerce.R.string as AppText
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreen(
-  restartApp: (String) -> Unit,
-  openScreen: (String) -> Unit,
-  viewModel: SettingsViewModel = hiltViewModel()
+    restartApp: (String) -> Unit,
+    openScreen: (String) -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
-  val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
+    val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
 
-  SettingsScreenContent(
-    uiState = uiState,
-    onLoginClick = { viewModel.onLoginClick(openScreen) },
-    onSignUpClick = { viewModel.onSignUpClick(openScreen) },
-    onSignOutClick = { viewModel.onSignOutClick(restartApp) },
-    onDeleteMyAccountClick = { viewModel.onDeleteMyAccountClick(restartApp) }
-  )
+    SettingsScreenContent(
+        uiState = uiState,
+        onLoginClick = { viewModel.onLoginClick(openScreen) },
+        onSignUpClick = { viewModel.onSignUpClick(openScreen) },
+        onSignOutClick = { viewModel.onSignOutClick(restartApp) },
+        onDeleteMyAccountClick = { viewModel.onDeleteMyAccountClick(restartApp) }
+    )
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreenContent(
-  modifier: Modifier = Modifier,
-  uiState: SettingsUiState,
-  onLoginClick: () -> Unit,
-  onSignUpClick: () -> Unit,
-  onSignOutClick: () -> Unit,
-  onDeleteMyAccountClick: () -> Unit
+    modifier: Modifier = Modifier,
+    uiState: SettingsUiState,
+    onLoginClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+    onSignOutClick: () -> Unit,
+    onDeleteMyAccountClick: () -> Unit,
 ) {
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .verticalScroll(rememberScrollState()),
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    BasicToolbar(AppText.settings)
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TopAppBar(
+            title = {
+                Text(
+                    "Settings",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }, colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = androidx.compose.material.MaterialTheme.colors.background
+            )
+        )
+        Spacer(modifier = Modifier.spacer())
 
-    Spacer(modifier = Modifier.spacer())
+        if (uiState.isAnonymousAccount) {
+            RegularCardEditor(AppText.sign_in, AppIcon.ic_sign_in, "", Modifier.card()) {
+                onLoginClick()
+            }
 
-    if (uiState.isAnonymousAccount) {
-      RegularCardEditor(AppText.sign_in, AppIcon.ic_sign_in, "", Modifier.card()) {
-        onLoginClick()
-      }
-
-      RegularCardEditor(AppText.create_account, AppIcon.ic_create_account, "", Modifier.card()) {
-        onSignUpClick()
-      }
-    } else {
-      SignOutCard { onSignOutClick() }
-      DeleteMyAccountCard { onDeleteMyAccountClick() }
+            RegularCardEditor(
+                AppText.create_account,
+                AppIcon.ic_create_account,
+                "",
+                Modifier.card()
+            ) {
+                onSignUpClick()
+            }
+        } else {
+            SignOutCard { onSignOutClick() }
+            DeleteMyAccountCard { onDeleteMyAccountClick() }
+        }
     }
-  }
 }
 
 @ExperimentalMaterialApi
 @Composable
 private fun SignOutCard(signOut: () -> Unit) {
-  var showWarningDialog by remember { mutableStateOf(false) }
+    var showWarningDialog by remember { mutableStateOf(false) }
 
-  RegularCardEditor(AppText.sign_out, AppIcon.ic_exit, "", Modifier.card()) {
-    showWarningDialog = true
-  }
+    RegularCardEditor(AppText.sign_out, AppIcon.ic_exit, "", Modifier.card()) {
+        showWarningDialog = true
+    }
 
-  if (showWarningDialog) {
-    AlertDialog(
-      title = { Text(stringResource(AppText.sign_out_title)) },
-      text = { Text(stringResource(AppText.sign_out_description)) },
-      dismissButton = { DialogCancelButton(AppText.cancel) { showWarningDialog = false } },
-      confirmButton = {
-        DialogConfirmButton(AppText.sign_out) {
-          signOut()
-          showWarningDialog = false
-        }
-      },
-      onDismissRequest = { showWarningDialog = false }
-    )
-  }
+    if (showWarningDialog) {
+        AlertDialog(
+            title = { Text(stringResource(AppText.sign_out_title)) },
+            text = { Text(stringResource(AppText.sign_out_description)) },
+            dismissButton = { DialogCancelButton(AppText.cancel) { showWarningDialog = false } },
+            confirmButton = {
+                DialogConfirmButton(AppText.sign_out) {
+                    signOut()
+                    showWarningDialog = false
+                }
+            },
+            onDismissRequest = { showWarningDialog = false }
+        )
+    }
 }
 
 @ExperimentalMaterialApi
 @Composable
 private fun DeleteMyAccountCard(deleteMyAccount: () -> Unit) {
-  var showWarningDialog by remember { mutableStateOf(false) }
+    var showWarningDialog by remember { mutableStateOf(false) }
 
-  DangerousCardEditor(
-    AppText.delete_my_account,
-    AppIcon.ic_delete_my_account,
-    "",
-    Modifier.card()
-  ) {
-    showWarningDialog = true
-  }
+    DangerousCardEditor(
+        AppText.delete_my_account,
+        AppIcon.ic_delete_my_account,
+        "",
+        Modifier.card()
+    ) {
+        showWarningDialog = true
+    }
 
-  if (showWarningDialog) {
-    AlertDialog(
-      title = { Text(stringResource(AppText.delete_account_title)) },
-      text = { Text(stringResource(AppText.delete_account_description)) },
-      dismissButton = { DialogCancelButton(AppText.cancel) { showWarningDialog = false } },
-      confirmButton = {
-        DialogConfirmButton(AppText.delete_my_account) {
-          deleteMyAccount()
-          showWarningDialog = false
-        }
-      },
-      onDismissRequest = { showWarningDialog = false }
-    )
-  }
+    if (showWarningDialog) {
+        AlertDialog(
+            title = { Text(stringResource(AppText.delete_account_title)) },
+            text = { Text(stringResource(AppText.delete_account_description)) },
+            dismissButton = { DialogCancelButton(AppText.cancel) { showWarningDialog = false } },
+            confirmButton = {
+                DialogConfirmButton(AppText.delete_my_account) {
+                    deleteMyAccount()
+                    showWarningDialog = false
+                }
+            },
+            onDismissRequest = { showWarningDialog = false }
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreenPreview() {
-  val uiState = SettingsUiState(isAnonymousAccount = false)
+    val uiState = SettingsUiState(isAnonymousAccount = false)
 
-  E_commerceTheme {
-    SettingsScreenContent(
-      uiState = uiState,
-      onLoginClick = { },
-      onSignUpClick = { },
-      onSignOutClick = { },
-      onDeleteMyAccountClick = { }
-    )
-  }
+    E_commerceTheme {
+        SettingsScreenContent(
+            uiState = uiState,
+            onLoginClick = { },
+            onSignUpClick = { },
+            onSignOutClick = { },
+            onDeleteMyAccountClick = { }
+        )
+    }
 }
