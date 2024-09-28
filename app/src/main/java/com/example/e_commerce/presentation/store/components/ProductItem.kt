@@ -16,12 +16,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.e_commerce.R
 import com.example.e_commerce.domain.model.ProductModel
@@ -69,8 +67,7 @@ fun ProductItem(
                     if (words.size >= 4) words.subList(0, 4).joinToString(" ") else product.title
                 Text(
                     text = firstTwoWords,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 11.sp,
+                    style = MaterialTheme.typography.titleSmall,
                     modifier = modifier
                         .height(15.dp)
                         .width(117.dp)
@@ -78,11 +75,8 @@ fun ProductItem(
                 )
                 Text(
                     text = "$${product.price}",
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = modifier
-                        .height(14.dp)
-                        .width(26.dp)
-                        .offset(x = 3.dp)
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = modifier.height(14.dp).width(26.dp).offset(x = 3.dp)
                 )
             }
             Icon(

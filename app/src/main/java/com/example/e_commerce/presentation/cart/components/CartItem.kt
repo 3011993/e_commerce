@@ -19,8 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +30,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 import com.example.e_commerce.domain.model.CartModel
 
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
 fun CartItem(
@@ -66,16 +68,14 @@ fun CartItem(
             ) {
                 Text(
                     cartItem.title,
-                    modifier.padding(start = 8.dp, top = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = modifier.padding(start = 8.dp, top = 8.dp),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
                     fontSize = 13.sp
                 )
                 Text(
-                    text = "$${cartItem.price}",
-                    modifier.padding(start = 8.dp, top = 2.dp),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontSize = 11.sp,
-                    color = Color.Gray
+                    "$${cartItem.price}",
+                    style = MaterialTheme.typography.titleSmall.copy(color = secondaryOnBackGround),
+                    modifier = modifier.padding(start = 8.dp, top = 2.dp),
                 )
                 Row(
                     modifier = modifier.fillMaxWidth(),
@@ -91,8 +91,10 @@ fun CartItem(
                             contentDescription = "Decrease quantity"
                         )
                     }
-                    Text(text = "${cartItem.quantity}",
-                        style = MaterialTheme.typography.headlineMedium)
+                    Text(
+                        text = "${cartItem.quantity}",
+                        style = MaterialTheme.typography.titleMedium
+                    )
                     IconButton(
                         onClick = {
                             onIncreaseQuantity(cartItem)

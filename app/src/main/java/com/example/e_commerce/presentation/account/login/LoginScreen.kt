@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.EmailField
 import com.example.e_commerce.common.composable.PasswordField
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
+import com.example.e_commerce.ui.theme.warningColor
 
 @Composable
 fun LoginScreen(
@@ -42,7 +45,6 @@ fun LoginScreenContent(
     onSignInClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
 ) {
-
     Column(modifier = modifier.fillMaxSize()) {
         Text(
             "Welcome",
@@ -50,7 +52,7 @@ fun LoginScreenContent(
                 .fillMaxWidth()
                 .padding(top = 105.dp),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge.copy(fontSize = 28.sp)
+            style = MaterialTheme.typography.labelLarge
         )
         Text(
             "Enter your credentials to Login",
@@ -58,15 +60,12 @@ fun LoginScreenContent(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             textAlign = TextAlign.Center,
-            color = Color.Gray,
-            style = MaterialTheme.typography.headlineSmall.copy(fontSize = 15.sp)
+            style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
         )
         Text(
             "Email Address",
-            style = MaterialTheme.typography.headlineSmall,
-            color = Color.Gray,
-            modifier = modifier
-                .padding(start = 16.dp, top = 200.dp)
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround),
+            modifier = modifier.padding(start = 16.dp, top = 100.dp)
         )
         EmailField(
             uiState.email,
@@ -77,8 +76,7 @@ fun LoginScreenContent(
         )
         Text(
             "Password",
-            style = MaterialTheme.typography.headlineSmall,
-            color = Color.Gray,
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround),
             modifier = modifier
                 .padding(
                     start = 16.dp,
@@ -102,8 +100,8 @@ fun LoginScreenContent(
         ) {
             Text(
                 "Forget Password?",
-                color = Color.Red,
-                style = MaterialTheme.typography.headlineSmall,
+                color = warningColor,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
         Spacer(modifier.weight(1f))
@@ -117,7 +115,7 @@ fun LoginScreenContent(
         ) {
             Text(
                 "Login",
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
             )
         }
     }

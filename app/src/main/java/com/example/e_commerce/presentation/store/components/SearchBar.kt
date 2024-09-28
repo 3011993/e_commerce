@@ -11,16 +11,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
 
 @Composable
@@ -41,11 +38,12 @@ fun SearchBar(
         placeholder = {
             Text(stringResource(AppText.placeholder_search))
         },
-        textStyle = MaterialTheme.typography.titleMedium,
+        textStyle = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
             .width(300.dp)
-            .height(50.dp).padding(start = 16.dp, end = 16.dp),
+            .height(50.dp)
+            .padding(start = 16.dp, end = 16.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.surface,
             focusedBorderColor = MaterialTheme.colorScheme.surface,
@@ -54,6 +52,7 @@ fun SearchBar(
         )
     )
 }
+
 @Preview
 @Composable
 private fun SearchBarPreview() {

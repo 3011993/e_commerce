@@ -63,17 +63,16 @@ fun SettingsScreenContent(
         TopAppBar(
             title = {
                 Text(
-                    "Settings",
-                    style = MaterialTheme.typography.titleMedium,
+                    "Account",
+                    style = MaterialTheme.typography.labelMedium,
                     modifier = modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
             }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = androidx.compose.material.MaterialTheme.colors.background
+                containerColor = MaterialTheme.colorScheme.background
             )
         )
         Spacer(modifier = Modifier.spacer())
-
         if (uiState.isAnonymousAccount) {
             RegularCardEditor(AppText.sign_in, AppIcon.ic_sign_in, "", Modifier.card()) {
                 onLoginClick()

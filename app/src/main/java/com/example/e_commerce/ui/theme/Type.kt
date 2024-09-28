@@ -1,5 +1,6 @@
 package com.example.e_commerce.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -17,6 +18,24 @@ val interFontFamily = FontFamily(
 )
 
 val AppTypography = Typography(
+    labelLarge = TextStyle(
+        fontFamily = interFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = interFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 17.sp,
+        letterSpacing = 0.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = interFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 13.sp,
+        letterSpacing = 0.sp
+    ),
     titleLarge = TextStyle(
         fontFamily = interFontFamily,
         fontWeight = FontWeight.SemiBold,
@@ -26,25 +45,19 @@ val AppTypography = Typography(
     titleMedium = TextStyle(
         fontFamily = interFontFamily,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 17.sp,
-        letterSpacing = 0.15.sp
+        fontSize = 13.sp,
+        letterSpacing = 0.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = interFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        letterSpacing = 0.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = interFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
-        letterSpacing = 0.25.sp
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = interFontFamily,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 13.sp,
-        letterSpacing = 0.sp
-    ),
-    headlineSmall = TextStyle(
-        fontFamily = interFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp,
         letterSpacing = 0.sp
     ),
     bodySmall = TextStyle(

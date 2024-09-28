@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,6 +16,7 @@ import com.example.e_commerce.common.composable.EmailField
 import com.example.e_commerce.common.composable.PasswordField
 import com.example.e_commerce.common.composable.RepeatPasswordField
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
 fun SignUpScreen(
@@ -48,17 +50,16 @@ fun SignUpScreenContent(
     ) {
         Text(
             "Sign Up",
-            style = MaterialTheme.typography.titleLarge,
-            fontSize = 28.sp,
+            style = MaterialTheme.typography.labelLarge,
             modifier = modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
         Text(
             "Email Address",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround),
             color = Color.Gray,
             modifier = modifier
-                .padding(start = 16.dp, top = 200.dp)
+                .padding(start = 16.dp, top = 100.dp)
         )
         EmailField(
             uiState.email,
@@ -69,7 +70,7 @@ fun SignUpScreenContent(
         )
         Text(
             "Password",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround),
             color = Color.Gray,
             modifier = modifier
                 .padding(
@@ -89,7 +90,7 @@ fun SignUpScreenContent(
 
         Text(
             "Repeat Password",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround),
             color = Color.Gray,
             modifier = modifier
                 .padding(
@@ -116,7 +117,7 @@ fun SignUpScreenContent(
             shape = RectangleShape
         ) {
             Text("Sign Up",
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium))
         }
     }
 }
