@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.store.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -41,9 +42,8 @@ fun SearchBar(
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
-            .width(300.dp)
-            .height(50.dp)
-            .padding(start = 16.dp, end = 16.dp),
+            .fillMaxWidth()
+            .height(50.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.surface,
             focusedBorderColor = MaterialTheme.colorScheme.surface,

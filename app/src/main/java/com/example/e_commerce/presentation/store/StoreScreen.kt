@@ -4,19 +4,19 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,7 +40,7 @@ import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.store.components.ProductItem
 import com.example.e_commerce.presentation.store.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
-import okhttp3.internal.wait
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
 
 @Composable
@@ -78,15 +78,9 @@ fun StoreContent(
     var showRefreshButton by remember { mutableStateOf(false) }
     var displayedProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
     var searchText by remember { mutableStateOf("") }
-    LaunchedEffect(state) {
-        if (state is ScreenState.Success) {
-            displayedProducts = state.data
-        }
-    }
 
     LaunchedEffect(key1 = connection) {
         if (previousConnection != null && previousConnection != connection) {
-            // Connection state has changed
             if (isConnected) {
                 showRefreshButton = true
             }
@@ -95,63 +89,89 @@ fun StoreContent(
         }
         previousConnection = connection
     }
-
-    Box(modifier = modifier.fillMaxSize()) {
-        when (state) {
-            is ScreenState.Error -> {
-                ProductsLazyVerticalGrid(
-                    products = state.data ?: emptyList(),
-                    onProductClick = onProductClick,
-                    onCartButtonClicked = onCartButtonClicked,
-                    isConnected = isConnected,
-                    searchBar = {
-                    }
-                )
-                Log.i("Store Screen", state.message ?: "An unexpected error occurred")
-            }
-
-            is ScreenState.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-
-            is ScreenState.Success -> {
-
-                ProductsLazyVerticalGrid(
-                    products = displayedProducts,
-                    onProductClick = onProductClick,
-                    onCartButtonClicked = onCartButtonClicked,
-                    isConnected = isConnected,
-                    searchBar = {
-                        SearchBar(searchText = searchText,
-                            onSearchTextChange = { newValue ->
-                                searchText = newValue
-                                displayedProducts = if (newValue.isBlank()) {
-                                    state.data
-                                } else {
-                                    searchPrefix(newValue)
-                                }
-
-                            })
-                    }
-                )
-            }
+    LaunchedEffect(state) {
+        displayedProducts = when (state) {
+            is ScreenState.Success -> state.data
+            is ScreenState.Error -> state.data ?: emptyList()
+            else -> emptyList()
         }
-        if (showRefreshButton) {
-            IconButton(
-                onClick = {
-                    getAllProducts()
-                    showRefreshButton = false
-                },
-                modifier = modifier
-                    .clip(CircleShape)
-                    .background(Color.White)
-                    .align(Alignment.TopCenter),
-            ) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+    }
+    Card(
+        modifier = modifier.fillMaxSize(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp)
+        ) {
+            Text(
+                "Hello", style = MaterialTheme.typography.labelLarge,
+                modifier = modifier.padding(start = 16.dp)
+            )
+            Text(
+                "Welcome to our Store",
+                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
+                modifier = modifier.padding(start = 16.dp)
+            )
+
+            SearchBar(
+                searchText = searchText,
+                onSearchTextChange = { newValue ->
+                    searchText = newValue
+                    displayedProducts = if (newValue.isBlank()) {
+                        displayedProducts
+                    } else {
+                        searchPrefix(newValue)
+                    }
+                }, modifier = modifier.padding(start = 16.dp, end = 16.dp)
+            )
+        }
+
+        Box(modifier = modifier.fillMaxSize()) {
+            when (state) {
+                is ScreenState.Error -> {
+                    ProductsLazyVerticalGrid(
+                        products = state.data ?: emptyList(),
+                        onProductClick = onProductClick,
+                        onCartButtonClicked = onCartButtonClicked,
+                        isConnected = isConnected,
+
+                        )
+                    Log.i("Store Screen", state.message ?: "An unexpected error occurred")
+                }
+
+                is ScreenState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+
+                is ScreenState.Success -> {
+                    ProductsLazyVerticalGrid(
+                        products = displayedProducts,
+                        onProductClick = onProductClick,
+                        onCartButtonClicked = onCartButtonClicked,
+                        isConnected = isConnected,
+                    )
+                }
+            }
+            if (showRefreshButton) {
+                IconButton(
+                    onClick = {
+                        getAllProducts()
+                        showRefreshButton = false
+                    },
+                    modifier = modifier
+                        .clip(CircleShape)
+                        .background(Color.White)
+                        .align(Alignment.TopCenter),
+                ) {
+                    Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+                }
             }
         }
     }
 }
+
 
 @Composable
 fun ProductsLazyVerticalGrid(
@@ -159,7 +179,6 @@ fun ProductsLazyVerticalGrid(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     isConnected: Boolean,
-    searchBar : @Composable () -> Unit ,
     modifier: Modifier = Modifier,
 ) {
     var showSnackBar by remember { mutableStateOf(true) }
@@ -172,10 +191,6 @@ fun ProductsLazyVerticalGrid(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        item(span = { GridItemSpan(2) }) {
-            searchBar()
-        }
-
         item(span = { GridItemSpan(2) }) {
             if (showSnackBar && !isConnected) {
                 SnackBarManager.showMessage(AppText.offline_message)
@@ -193,6 +208,26 @@ fun ProductsLazyVerticalGrid(
 @Composable
 fun StoreScreenPreview() {
     E_commerceTheme {
-        //StoreContent()
+        val productsList = listOf(
+            ProductModel(
+                title = "Bag",
+                price = "80.44",
+                category = "",
+                description = "",
+                id = 0,
+                image = ""
+            ),
+            ProductModel(
+                title = "Shoe",
+                price = "11.44",
+                category = "",
+                description = "",
+                id = 0,
+                image = ""
+            )
+
+        )
+        val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
+        StoreContent(state = state, {}, {}, {}, searchPrefix = { emptyList() })
     }
 }
