@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
@@ -81,7 +82,7 @@ fun CategoryChip(
             backgroundColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
-        shape = RectangleShape,
+        shape = RoundedCornerShape(8.dp),
         border = if(selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null
     ) { Text(category.toUpperCase(Locale.current),style = MaterialTheme.typography.bodyMedium) }
 }
