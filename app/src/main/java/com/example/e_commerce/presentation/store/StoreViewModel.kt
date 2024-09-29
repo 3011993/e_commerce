@@ -53,6 +53,33 @@ class StoreViewModel @Inject constructor(
             }
         }
     }
+
+    fun getProductsByCategory(category: CategoriesEntries) {
+        launchCatching(dispatcher = Dispatchers.IO){
+            repo.getProductsByCategory(category.category).collect { result ->
+                when (result) {
+                    is Resources.Error -> {
+                        _allProducts.value = ScreenState.Error(
+                            message = result.message ?: "Unknown error occurred",
+                            data = result.data ?: emptyList()
+                        )
+                        trie = Trie.preprocessProducts(result.data?: emptyList())
+                    }
+
+                    is Resources.Loading -> {
+                        _allProducts.value = ScreenState.Loading()
+                    }
+
+                    is Resources.Success -> {
+                        _allProducts.value =
+                            ScreenState.Success(result.data ?: emptyList())
+                        trie = Trie.preprocessProducts(result.data?: emptyList())
+
+                    }
+                }
+            }
+        }
+    }
     fun searchProducts(prefix: String): List<ProductModel> {
         return trie?.searchPrefix(prefix) ?: emptyList()
     }

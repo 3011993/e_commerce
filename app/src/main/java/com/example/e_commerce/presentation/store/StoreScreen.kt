@@ -37,6 +37,7 @@ import com.example.e_commerce.common.composable.rememberConnectivityState
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
+import com.example.e_commerce.presentation.store.components.CategoriesSection
 import com.example.e_commerce.presentation.store.components.ProductItem
 import com.example.e_commerce.presentation.store.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
@@ -57,6 +58,7 @@ fun StoreScreen(
         onCartButtonClicked = onCartButtonClicked,
         getAllProducts = viewModel::getAllProducts,
         searchPrefix = viewModel::searchProducts,
+        onCategorySelected = viewModel::getProductsByCategory,
         modifier
     )
 }
@@ -68,6 +70,7 @@ fun StoreContent(
     onCartButtonClicked: (ProductModel) -> Unit,
     getAllProducts: () -> Unit,
     searchPrefix: (String) -> List<ProductModel>,
+    onCategorySelected: (CategoriesEntries) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val connection by rememberConnectivityState()
@@ -107,14 +110,13 @@ fun StoreContent(
         ) {
             Text(
                 "Hello", style = MaterialTheme.typography.labelLarge,
-                modifier = modifier.padding(start = 16.dp)
+                modifier = modifier.padding(start = 16.dp,top = 8.dp)
             )
             Text(
                 "Welcome to our Store",
                 style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
                 modifier = modifier.padding(start = 16.dp)
             )
-
             SearchBar(
                 searchText = searchText,
                 onSearchTextChange = { newValue ->
@@ -124,7 +126,12 @@ fun StoreContent(
                     } else {
                         searchPrefix(newValue)
                     }
-                }, modifier = modifier.padding(start = 16.dp, end = 16.dp)
+                }, modifier = modifier.padding(start = 16.dp, end = 16.dp,top = 32.dp)
+            )
+            CategoriesSection(onCategorySelected = onCategorySelected, modifier = modifier.padding(start = 8.dp,top = 16.dp))
+            Text(
+                "New Arrival", style = MaterialTheme.typography.bodyMedium,
+                modifier = modifier.padding(start = 16.dp, top = 45.dp)
             )
         }
 
@@ -228,6 +235,6 @@ fun StoreScreenPreview() {
 
         )
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
-        StoreContent(state = state, {}, {}, {}, searchPrefix = { emptyList() })
+        StoreContent(state = state, {}, {}, {}, searchPrefix = { emptyList() }, {})
     }
 }

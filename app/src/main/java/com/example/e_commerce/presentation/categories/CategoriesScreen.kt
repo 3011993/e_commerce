@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.e_commerce.domain.model.CategoriesModel
 import com.example.e_commerce.presentation.categories.components.CategoriesNavigationRail
 import com.example.e_commerce.presentation.store.StoreContent
 import com.example.e_commerce.ui.theme.E_commerceTheme
@@ -25,7 +26,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
             },
             categories
         )
-        StoreContent(state = state, {}, {}, {}, searchPrefix = viewModel::searchProducts)
+        StoreContent(state = state, {}, {}, {}, searchPrefix = viewModel::searchProducts,{})
     }
 }
 
