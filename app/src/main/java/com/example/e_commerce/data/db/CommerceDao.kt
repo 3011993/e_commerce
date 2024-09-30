@@ -1,6 +1,7 @@
 package com.example.e_commerce.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -15,15 +16,25 @@ interface CommerceDao {
     fun getAllProducts(): List<ProductEntity>
 
     @Query("SELECT * FROM ProductEntity WHERE category=:category")
-    fun getProductsByCategory(category: String) : List<ProductEntity>
-    @Query("SELECT * FROM PRODUCTENTITY WHERE isFavorite= 1")
-    fun getFavoriteProducts() : List<ProductEntity>
-    @Query("UPDATE PRODUCTENTITY SET isFavorite=:isFavourite WHERE id =:productId")
-    fun updateFavourites(productId : Int,isFavourite : Boolean)
+    fun getProductsByCategory(category: String): List<ProductEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCategories(vararg category: CategoriesEntity)
 
     @Query("SELECT * FROM CategoriesEntity")
     fun getAllCategories(): List<CategoriesEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertFavourite(favouriteEntity: FavouriteEntity)
+
+    @Query("UPDATE PRODUCTENTITY SET isFavorite=:isFavourite WHERE id =:productId")
+    fun updateFavourites(productId: Int, isFavourite: Boolean)
+
+    @Query("DELETE FROM FavouriteEntity WHERE productId =:productId ")
+    fun deleteFavourite(productId: Int)
+
+    @Query("SELECT * FROM PRODUCTENTITY WHERE isFavorite= 1")
+    fun getFavoriteProducts(): List<ProductEntity>
+
 
 }

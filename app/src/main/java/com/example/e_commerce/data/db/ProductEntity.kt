@@ -13,7 +13,7 @@ data class ProductEntity(
     val image: String,
     val price: String,
     val title: String,
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 )
 
 fun ProductEntity.toModel() = ProductModel(

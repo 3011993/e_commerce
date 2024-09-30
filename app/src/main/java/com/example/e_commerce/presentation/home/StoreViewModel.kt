@@ -49,7 +49,6 @@ class StoreViewModel @Inject constructor(
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
-                    else -> {}
                 }
             }
         }
@@ -77,8 +76,6 @@ class StoreViewModel @Inject constructor(
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
 
                     }
-
-                    else -> {}
                 }
             }
         }

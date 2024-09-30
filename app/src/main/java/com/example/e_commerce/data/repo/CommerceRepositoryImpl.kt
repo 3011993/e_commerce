@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.db.CategoriesEntity
 import com.example.e_commerce.data.db.CommerceDao
+import com.example.e_commerce.data.db.FavouriteEntity
 import com.example.e_commerce.data.db.toModel
 import com.example.e_commerce.data.remote.ApiService
 import com.example.e_commerce.data.remote.dto.toDatabase
@@ -23,12 +24,18 @@ class CommerceRepositoryImpl @Inject constructor(
     private val dao: CommerceDao,
     private val sharedPreferences: SharedPreferences,
 ) : CommerceRepository {
+
     override suspend fun getProducts(): Flow<Resources<List<ProductModel>>> {
         return flow {
             try {
                 emit(Resources.Loading())
                 val result = api.getAllProducts().toDatabase()
-                dao.insertProducts(*result)
+                val favouritesProductsId = dao.getFavoriteProducts().map { it.id }
+                val updatedProducts = result.map{ product ->
+                    val isFavourite = favouritesProductsId.contains(product.id)
+                    product.copy(isFavorite = isFavourite)
+                }.toTypedArray()
+                dao.insertProducts(*updatedProducts)
                 val products = dao.getAllProducts().map { it.toModel() }
                 emit(Resources.Success(data = products))
             } catch (e: HttpException) {
@@ -107,6 +114,8 @@ class CommerceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateFavouriteStatus(productId: Int, isFavourite: Boolean) {
+        val favouriteEntity = FavouriteEntity(productId, isFavourite)
+        dao.insertFavourite(favouriteEntity)
         dao.updateFavourites(productId,isFavourite)
     }
 
@@ -115,7 +124,12 @@ class CommerceRepositoryImpl @Inject constructor(
             emit(Resources.Loading())
             try {
                 val result = api.getProductsByCategory(category).toDatabase()
-                dao.insertProducts(*result)
+                val favouritesProductsId = dao.getFavoriteProducts().map { it.id }
+                val updatedProducts = result.map{ product ->
+                    val isFavourite = favouritesProductsId.contains(product.id)
+                    product.copy(isFavorite = isFavourite)
+                }.toTypedArray()
+                dao.insertProducts(*updatedProducts)
                 val productsList = dao.getProductsByCategory(category).map { it.toModel() }
                 emit(Resources.Success(data = productsList))
             } catch (e: HttpException) {

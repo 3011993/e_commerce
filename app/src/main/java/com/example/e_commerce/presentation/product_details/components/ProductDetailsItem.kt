@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -35,6 +37,7 @@ fun ProductDetailsItem(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         AsyncImage(
             model = product.image,
@@ -108,7 +111,7 @@ fun ProductDetailsItem(
         Spacer(modifier = modifier.height(8.dp))
         Icon(painter = painterResource(R.drawable.shopping_cart_icon), contentDescription = null,
             modifier = modifier
-                .size(40.dp)
+                .size(50.dp)
                 .align(Alignment.End)
                 .padding(end = 16.dp, bottom = 16.dp)
                 .clickable { onCartButtonClicked(product) })
