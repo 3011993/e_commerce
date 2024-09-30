@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.store.components
+package com.example.e_commerce.presentation.home.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -20,16 +20,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.e_commerce.presentation.store.CategoriesEntries
-import com.example.e_commerce.presentation.store.ecommerceCategories
+import com.example.e_commerce.presentation.home.CategoriesEntries
+import com.example.e_commerce.presentation.home.ecommerceCategories
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable

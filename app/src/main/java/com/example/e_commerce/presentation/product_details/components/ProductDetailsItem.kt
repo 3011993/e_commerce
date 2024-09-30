@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
@@ -107,6 +108,7 @@ fun ProductDetailsItem(
         Spacer(modifier = modifier.height(8.dp))
         Icon(painter = painterResource(R.drawable.shopping_cart_icon), contentDescription = null,
             modifier = modifier
+                .size(40.dp)
                 .align(Alignment.End)
                 .padding(end = 16.dp, bottom = 16.dp)
                 .clickable { onCartButtonClicked(product) })

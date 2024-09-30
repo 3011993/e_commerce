@@ -1,10 +1,7 @@
-package com.example.e_commerce.presentation.store
+package com.example.e_commerce.presentation.home
 
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.Trie
-import com.example.e_commerce.data.repo.CommerceRepositoryImpl
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.LogService
@@ -14,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

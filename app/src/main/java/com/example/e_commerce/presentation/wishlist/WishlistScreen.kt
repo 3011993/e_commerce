@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.categories
+package com.example.e_commerce.presentation.wishlist
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -18,17 +18,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
-import com.example.e_commerce.presentation.categories.components.WishListAvailableItems
-import com.example.e_commerce.presentation.store.ProductsLazyVerticalGrid
+import com.example.e_commerce.presentation.wishlist.components.WishListAvailableItems
+import com.example.e_commerce.presentation.home.ProductsLazyVerticalGrid
 import com.example.e_commerce.ui.theme.E_commerceTheme
-import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
 fun WishlistScreen(modifier: Modifier = Modifier) {

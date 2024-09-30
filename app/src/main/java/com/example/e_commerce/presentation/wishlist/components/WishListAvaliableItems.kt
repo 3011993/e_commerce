@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.categories.components
+package com.example.e_commerce.presentation.wishlist.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

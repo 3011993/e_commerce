@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.store
+package com.example.e_commerce.presentation.home
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -37,9 +37,9 @@ import com.example.e_commerce.common.composable.rememberConnectivityState
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
-import com.example.e_commerce.presentation.store.components.CategoriesSection
-import com.example.e_commerce.presentation.store.components.ProductItem
-import com.example.e_commerce.presentation.store.components.SearchBar
+import com.example.e_commerce.presentation.home.components.CategoriesSection
+import com.example.e_commerce.presentation.home.components.ProductItem
+import com.example.e_commerce.presentation.home.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText

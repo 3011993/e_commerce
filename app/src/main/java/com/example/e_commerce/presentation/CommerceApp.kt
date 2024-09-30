@@ -27,10 +27,10 @@ import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
-import com.example.e_commerce.presentation.categories.WishlistScreen
+import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
-import com.example.e_commerce.presentation.store.StoreScreen
+import com.example.e_commerce.presentation.home.StoreScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
 import java.util.UUID

@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.store.components
+package com.example.e_commerce.presentation.home.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

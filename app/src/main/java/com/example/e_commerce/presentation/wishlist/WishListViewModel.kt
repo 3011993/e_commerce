@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.categories
+package com.example.e_commerce.presentation.wishlist
 
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.domain.model.ProductModel
