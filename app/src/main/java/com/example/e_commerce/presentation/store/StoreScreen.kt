@@ -59,7 +59,8 @@ fun StoreScreen(
         getAllProducts = viewModel::getAllProducts,
         searchPrefix = viewModel::searchProducts,
         onCategorySelected = viewModel::getProductsByCategory,
-        modifier
+        onFavouriteClicked = viewModel::onFavouriteClicked,
+        modifier = modifier
     )
 }
 
@@ -68,6 +69,7 @@ fun StoreContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    onFavouriteClicked : (ProductModel) -> Unit,
     getAllProducts: () -> Unit,
     searchPrefix: (String) -> List<ProductModel>,
     onCategorySelected: (CategoriesEntries) -> Unit,
@@ -142,8 +144,8 @@ fun StoreContent(
                         products = state.data ?: emptyList(),
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
+                        onFavouriteClicked = onFavouriteClicked,
                         isConnected = isConnected,
-
                         )
                     Log.i("Store Screen", state.message ?: "An unexpected error occurred")
                 }
@@ -157,7 +159,8 @@ fun StoreContent(
                         products = displayedProducts,
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
-                        isConnected = isConnected,
+                        onFavouriteClicked = onFavouriteClicked,
+                        isConnected = isConnected
                     )
                 }
             }
@@ -185,6 +188,7 @@ fun ProductsLazyVerticalGrid(
     products: List<ProductModel>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    onFavouriteClicked: (ProductModel) -> Unit,
     isConnected: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -205,7 +209,7 @@ fun ProductsLazyVerticalGrid(
             }
         }
         items(products) { product ->
-            ProductItem(product = product, onProductClick, onCartButtonClicked)
+            ProductItem(product = product, onProductClick, onCartButtonClicked,onFavouriteClicked)
         }
     }
 }
@@ -235,6 +239,7 @@ fun StoreScreenPreview() {
 
         )
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
-        StoreContent(state = state, {}, {}, {}, searchPrefix = { emptyList() }, {})
+        StoreContent(state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
+            getAllProducts = {},)
     }
 }

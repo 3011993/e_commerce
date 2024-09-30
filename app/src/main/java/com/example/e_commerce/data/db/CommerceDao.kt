@@ -16,7 +16,10 @@ interface CommerceDao {
 
     @Query("SELECT * FROM ProductEntity WHERE category=:category")
     fun getProductsByCategory(category: String) : List<ProductEntity>
-
+    @Query("SELECT * FROM PRODUCTENTITY WHERE isFavorite= 1")
+    fun getFavoriteProducts() : List<ProductEntity>
+    @Query("UPDATE PRODUCTENTITY SET isFavorite=:isFavourite WHERE id =:productId")
+    fun updateFavourites(productId : Int,isFavourite : Boolean)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCategories(vararg category: CategoriesEntity)
 

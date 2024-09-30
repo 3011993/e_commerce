@@ -8,14 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +30,7 @@ fun ProductItem(
     product: ProductModel,
     onProductClicked: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    onFavouriteCLicked : (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -83,14 +84,19 @@ fun ProductItem(
                 painter = painterResource(id = R.drawable.heart),
                 contentDescription = null,
                 modifier = modifier
+                    .size(25.dp)
                     .align(Alignment.TopEnd)
-                    .padding(end = 8.dp, top = 8.dp)
+                    .padding(end = 8.dp, top = 8.dp).clickable {
+                        onFavouriteCLicked(product)
+                    },
+                tint = if(product.isFavorite) Color.Red else LocalContentColor.current,
             )
-            Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = null,
+            Icon(painter = painterResource(R.drawable.shopping_cart_icon), contentDescription = null,
                 modifier = modifier
+                    .size(25.dp)
                     .align(Alignment.BottomEnd)
                     .clickable { onCartButtonClicked(product) }
-                    .padding(end = 8.dp, bottom = 8.dp)
+                    .padding(end = 8.dp, bottom = 8.dp),
             )
         }
     }
@@ -108,7 +114,7 @@ private fun ProductItemPreview() {
             title = "Bag",
             id = 0
         )
-        ProductItem(product, {}, {})
+        ProductItem(product, {}, {},{})
     }
 
 }

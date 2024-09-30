@@ -27,7 +27,7 @@ import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
-import com.example.e_commerce.presentation.categories.CategoriesScreen
+import com.example.e_commerce.presentation.categories.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
 import com.example.e_commerce.presentation.store.StoreScreen
@@ -125,8 +125,8 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         ProductDetailsScreen()
     }
 
-    composable(Categories.route) {
-        CategoriesScreen()
+    composable(WishList.route) {
+        WishlistScreen()
     }
     composable(Cart.route) {
         CartScreen()

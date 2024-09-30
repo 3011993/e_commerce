@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
@@ -37,7 +38,7 @@ fun CategoriesSection(
     modifier: Modifier = Modifier,
 ) {
     var selectedCategory by remember { mutableStateOf<CategoriesEntries?>(null) }
-    Column(modifier = modifier.fillMaxWidth()){
+    Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = "Choose Category",
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
@@ -67,14 +68,14 @@ fun CategoryChip(
     category: String,
     selected: Boolean,
     onCategorySelected: () -> Unit,
-    icon: ImageVector,
+    icon: Int,
     modifier: Modifier = Modifier,
 ) {
     Chip(
         onClick = { onCategorySelected() },
         leadingIcon = {
             Icon(
-                imageVector = icon,
+                painter = painterResource(icon),
                 contentDescription = category,
                 modifier = modifier.size(40.dp)
             )
@@ -83,8 +84,8 @@ fun CategoryChip(
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
         shape = RoundedCornerShape(8.dp),
-        border = if(selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null
-    ) { Text(category.toUpperCase(Locale.current),style = MaterialTheme.typography.bodyMedium) }
+        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null
+    ) { Text(category.toUpperCase(Locale.current), style = MaterialTheme.typography.bodyMedium) }
 }
 
 @Preview(showBackground = true)

@@ -80,6 +80,36 @@ class CommerceRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getFavouriteProducts(): Flow<Resources<List<ProductModel>>> {
+        return flow {
+            try {
+                emit(Resources.Loading())
+                val products = dao.getFavoriteProducts().map { it.toModel() }
+                emit(Resources.Success(data = products))
+            } catch (e: HttpException) {
+                val products = dao.getAllProducts().map { it.toModel() }
+                emit(
+                    Resources.Error(
+                        message = e.message() ?: "Please check your connection!",
+                        data = products
+                    )
+                )
+            } catch (e: IOException) {
+                val products = dao.getFavoriteProducts().map { it.toModel() }
+                emit(
+                    Resources.Error(
+                        message = e.message ?: "Unexpected Error occurred",
+                        data = products
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun updateFavouriteStatus(productId: Int, isFavourite: Boolean) {
+        dao.updateFavourites(productId,isFavourite)
+    }
+
     override suspend fun getProductsByCategory(category: String): Flow<Resources<List<ProductModel>>> {
         return flow {
             emit(Resources.Loading())

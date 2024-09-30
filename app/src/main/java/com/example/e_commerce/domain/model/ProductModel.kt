@@ -11,4 +11,5 @@ data class ProductModel(
     val image: String,
     val price: String,
     val title: String,
+    val isFavorite: Boolean = false
 ) : Parcelable

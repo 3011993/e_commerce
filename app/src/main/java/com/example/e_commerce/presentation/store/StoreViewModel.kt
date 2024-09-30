@@ -1,5 +1,7 @@
 package com.example.e_commerce.presentation.store
 
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.Trie
 import com.example.e_commerce.data.repo.CommerceRepositoryImpl
@@ -12,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +33,7 @@ class StoreViewModel @Inject constructor(
     }
 
     fun getAllProducts() {
-       launchCatching(dispatcher = Dispatchers.IO){
+        launchCatching(dispatcher = Dispatchers.IO) {
             repo.getProducts().collect { result ->
                 when (result) {
                     is Resources.Error -> {
@@ -38,7 +41,7 @@ class StoreViewModel @Inject constructor(
                             message = result.message ?: "Unknown error occurred",
                             data = result.data
                         )
-                        trie = Trie.preprocessProducts(result.data?: emptyList())
+                        trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
                     is Resources.Loading -> {
@@ -47,15 +50,17 @@ class StoreViewModel @Inject constructor(
 
                     is Resources.Success -> {
                         _allProducts.value = ScreenState.Success(result.data ?: emptyList())
-                        trie = Trie.preprocessProducts(result.data?: emptyList())
+                        trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
+
+                    else -> {}
                 }
             }
         }
     }
 
     fun getProductsByCategory(category: CategoriesEntries) {
-        launchCatching(dispatcher = Dispatchers.IO){
+        launchCatching(dispatcher = Dispatchers.IO) {
             repo.getProductsByCategory(category.category).collect { result ->
                 when (result) {
                     is Resources.Error -> {
@@ -63,7 +68,7 @@ class StoreViewModel @Inject constructor(
                             message = result.message ?: "Unknown error occurred",
                             data = result.data ?: emptyList()
                         )
-                        trie = Trie.preprocessProducts(result.data?: emptyList())
+                        trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
                     is Resources.Loading -> {
@@ -73,13 +78,22 @@ class StoreViewModel @Inject constructor(
                     is Resources.Success -> {
                         _allProducts.value =
                             ScreenState.Success(result.data ?: emptyList())
-                        trie = Trie.preprocessProducts(result.data?: emptyList())
+                        trie = Trie.preprocessProducts(result.data ?: emptyList())
 
                     }
+
+                    else -> {}
                 }
             }
         }
     }
+
+    fun onFavouriteClicked(product: ProductModel) {
+        launchCatching(dispatcher = Dispatchers.IO) {
+            repo.updateFavouriteStatus(product.id, isFavourite = true)
+        }
+    }
+
     fun searchProducts(prefix: String): List<ProductModel> {
         return trie?.searchPrefix(prefix) ?: emptyList()
     }
