@@ -11,38 +11,51 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 @Stable
-class CommerceAppState (
+class CommerceAppState(
     val scaffoldState: ScaffoldState,
     val navController: NavHostController,
-    private val snackBarManager : SnackBarManager,
-    val resources : Resources,
-    coroutineScope: CoroutineScope
-    ){
+    private val snackBarManager: SnackBarManager,
+    val resources: Resources,
+    coroutineScope: CoroutineScope,
+) {
     init {
         coroutineScope.launch {
-            snackBarManager.snackBarMessages.filterNotNull().collect{ snackBarMessage ->
+            snackBarManager.snackBarMessages.filterNotNull().collect { snackBarMessage ->
                 val text = snackBarMessage.toMessage(resources)
                 scaffoldState.snackbarHostState.showSnackbar(text)
                 snackBarManager.clearSnackBarState()
             }
         }
     }
-    fun navigate(route : String){
-        navController.navigate(route) {launchSingleTop = true}
-    }
-    fun navigateAndPopUp(route : String, popUp : String){
-        navController.navigate(route){
-            launchSingleTop = true
-            popUpTo(popUp) {inclusive = true}
+
+    fun navigate(route: String) {
+        val currentRoute = navController.currentDestination?.route
+        if (currentRoute != route) {
+            navController.navigate(route) { launchSingleTop = true }
         }
     }
-    fun clearAndNavigate(route : String){
-        navController.navigate(route){
-            launchSingleTop = true
-            popUpTo(0) {inclusive = true}
+
+    fun navigateAndPopUp(route: String, popUp: String) {
+        val currentRoute = navController.currentDestination?.route
+        if (currentRoute != route) {
+            navController.navigate(route) {
+                launchSingleTop = true
+                popUpTo(popUp) { inclusive = true }
+            }
         }
     }
-    fun popUp(){
+
+    fun clearAndNavigate(route: String) {
+        val currentRoute = navController.currentDestination?.route
+        if (currentRoute != route) {
+            navController.navigate(route) {
+                launchSingleTop = true
+                popUpTo(0) { inclusive = true }
+            }
+        }
+    }
+
+    fun popUp() {
         navController.popBackStack()
     }
 
