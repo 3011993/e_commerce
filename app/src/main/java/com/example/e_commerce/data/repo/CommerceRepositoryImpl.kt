@@ -113,9 +113,14 @@ class CommerceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateFavouriteStatus(productId: Int, isFavourite: Boolean) {
+    override suspend fun addFavouriteProduct(productId: Int, isFavourite: Boolean) {
         val favouriteEntity = FavouriteEntity(productId, isFavourite)
         dao.insertFavourite(favouriteEntity)
+        dao.updateFavourites(productId,isFavourite)
+    }
+
+    override suspend fun removeFavouriteProduct(productId: Int, isFavourite: Boolean) {
+        dao.deleteFavourite(productId)
         dao.updateFavourites(productId,isFavourite)
     }
 

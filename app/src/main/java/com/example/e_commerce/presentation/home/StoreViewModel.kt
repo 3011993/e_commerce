@@ -83,7 +83,11 @@ class StoreViewModel @Inject constructor(
 
     fun onFavouriteClicked(product: ProductModel) {
         launchCatching(dispatcher = Dispatchers.IO) {
-            repo.updateFavouriteStatus(product.id, isFavourite = true)
+            if (product.isFavorite) {
+                repo.removeFavouriteProduct(product.id, isFavourite = false)
+            } else {
+                repo.addFavouriteProduct(product.id, isFavourite = true)
+            }
         }
     }
 

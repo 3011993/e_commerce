@@ -11,7 +11,8 @@ interface CommerceRepository {
     suspend fun getCategories(): Flow<List<CategoriesModel>>
     suspend fun getProductsByCategory(category: String): Flow<Resources<List<ProductModel>>>
     suspend fun getFavouriteProducts () : Flow<Resources<List<ProductModel>>>
-    suspend fun updateFavouriteStatus(productId: Int,isFavourite : Boolean)
+    suspend fun addFavouriteProduct(productId: Int, isFavourite : Boolean)
+    suspend fun removeFavouriteProduct(productId: Int,isFavourite: Boolean)
     fun saveCartIdForProduct(productId : String,cartId : String)
     fun getCartIdForProduct(productId: String) : String?
 }
