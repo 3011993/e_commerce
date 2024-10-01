@@ -15,7 +15,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +29,7 @@ fun ProductItem(
     product: ProductModel,
     onProductClicked: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
-    onFavouriteCLicked : (ProductModel) -> Unit,
+    onFavouriteCLicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -77,21 +76,28 @@ fun ProductItem(
                 Text(
                     text = "$${product.price}",
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = modifier.height(14.dp).width(26.dp).offset(x = 3.dp)
+                    modifier = modifier
+                        .height(14.dp)
+                        .width(26.dp)
+                        .offset(x = 3.dp)
                 )
             }
             Icon(
-                painter = painterResource(id = R.drawable.heart),
+                painter = if (product.isFavorite) {
+                    painterResource(id = R.drawable.heart_selected)
+                } else
+                    painterResource(id = R.drawable.heart),
                 contentDescription = null,
                 modifier = modifier
                     .size(25.dp)
                     .align(Alignment.TopEnd)
-                    .padding(end = 8.dp, top = 8.dp).clickable {
+                    .padding(end = 8.dp, top = 8.dp)
+                    .clickable {
                         onFavouriteCLicked(product)
                     },
-                tint = if(product.isFavorite) Color.Red else LocalContentColor.current,
             )
-            Icon(painter = painterResource(R.drawable.shopping_cart_icon), contentDescription = null,
+            Icon(
+                painter = painterResource(R.drawable.shopping_cart_icon), contentDescription = null,
                 modifier = modifier
                     .size(25.dp)
                     .align(Alignment.BottomEnd)
@@ -112,9 +118,10 @@ private fun ProductItemPreview() {
             image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
             description = "this is ay 7age",
             title = "Bag",
-            id = 0
+            id = 0,
+            isFavorite = true
         )
-        ProductItem(product, {}, {},{})
+        ProductItem(product, {}, {}, {})
     }
 
 }

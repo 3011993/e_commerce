@@ -3,6 +3,9 @@ package com.example.e_commerce.presentation
 import android.content.res.Resources
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.common.snackbar.SnackBarMessage.Companion.toMessage
@@ -27,6 +30,8 @@ class CommerceAppState(
             }
         }
     }
+
+    var showBottomNavigation by mutableStateOf(true)
 
     fun navigate(route: String) {
         val currentRoute = navController.currentDestination?.route

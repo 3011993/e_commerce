@@ -54,13 +54,15 @@ fun CommerceApp() {
             },
             scaffoldState = appState.scaffoldState,
             bottomBar = {
-                EcommerceBottomNavigation(
-                    ecommerceScreens = ecommerceTabsRowScreen,
-                    currentScreen = currentScreen,
-                    onTabSelected = { newScreen ->
-                        appState.navigate(newScreen.route)
-                    },
-                )
+                if (appState.showBottomNavigation) {
+                    EcommerceBottomNavigation(
+                        ecommerceScreens = ecommerceTabsRowScreen,
+                        currentScreen = currentScreen,
+                        onTabSelected = { newScreen ->
+                            appState.navigate(newScreen.route)
+                        },
+                    )
+                }
             }) { innerPadding ->
             NavHost(
                 navController = appState.navController,
@@ -99,6 +101,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         })
     }
     composable(Home.route) {
+        appState.showBottomNavigation = true
         val viewModel: CartViewModel = hiltViewModel()
         HomeScreen(onProductClick = { product ->
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
@@ -122,27 +125,33 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         })
     }
     composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {
+        appState.showBottomNavigation = false
         ProductDetailsScreen()
     }
 
     composable(WishList.route) {
+        appState.showBottomNavigation = true
         WishlistScreen()
     }
     composable(Cart.route) {
+        appState.showBottomNavigation = false
         CartScreen()
     }
     composable(Account.route) {
+        appState.showBottomNavigation = true
         SettingsScreen(openScreen = { route -> appState.navigate(route) },
             restartApp = { route ->
                 appState.clearAndNavigate(route)
             })
     }
     composable(LOGIN_IN_SCREEN) {
+        appState.showBottomNavigation = false
         LoginScreen(openAndPopUp = { route, popUp ->
             appState.navigateAndPopUp(route, popUp)
         })
     }
     composable(SIGN_UP_SCREEN) {
+        appState.showBottomNavigation = false
         SignUpScreen(openAndPopUp = { route, popUp ->
             appState.navigateAndPopUp(route, popUp)
         })
