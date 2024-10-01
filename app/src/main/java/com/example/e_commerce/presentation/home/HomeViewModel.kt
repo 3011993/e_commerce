@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class StoreViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     logService: LogService,
     private val repo: CommerceRepository,
 ) : CommerceViewModel(logService) {

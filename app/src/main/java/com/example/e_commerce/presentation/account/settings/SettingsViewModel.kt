@@ -6,7 +6,7 @@ import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import com.example.e_commerce.presentation.SIGN_UP_SCREEN
-import com.example.e_commerce.presentation.Store
+import com.example.e_commerce.presentation.Home
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.map
@@ -24,14 +24,14 @@ class SettingsViewModel @Inject constructor(
     fun onSignOutClick(restartApp: (String) -> Unit) {
         launchCatching {
             accountService.signOut()
-            restartApp(Store.route)
+            restartApp(Home.route)
         }
     }
 
     fun onDeleteMyAccountClick(restartApp: (String) -> Unit) {
         launchCatching {
             accountService.deleteAccount()
-            restartApp(Store.route)
+            restartApp(Home.route)
         }
     }
 }

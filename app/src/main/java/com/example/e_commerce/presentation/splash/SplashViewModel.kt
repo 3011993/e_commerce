@@ -5,7 +5,7 @@ import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.SPLASH_SCREEN
-import com.example.e_commerce.presentation.Store
+import com.example.e_commerce.presentation.Home
 import com.google.firebase.auth.FirebaseAuthException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class SplashViewModel @Inject constructor(
 
     fun onAppStart(openAndPopUp: (String, String) -> Unit) {
         showError.value = false
-        if (accountService.hasUser) openAndPopUp(Store.route, SPLASH_SCREEN)
+        if (accountService.hasUser) openAndPopUp(Home.route, SPLASH_SCREEN)
         else createAnonymousAccount(openAndPopUp)
     }
 
@@ -31,7 +31,7 @@ class SplashViewModel @Inject constructor(
                 showError.value = true
                 throw ex
             }
-            openAndPopUp(Store.route, SPLASH_SCREEN)
+            openAndPopUp(Home.route, SPLASH_SCREEN)
         }
     }
 }

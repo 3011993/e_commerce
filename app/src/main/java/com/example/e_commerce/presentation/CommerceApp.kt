@@ -30,7 +30,7 @@ import com.example.e_commerce.presentation.cart.CartViewModel
 import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
-import com.example.e_commerce.presentation.home.StoreScreen
+import com.example.e_commerce.presentation.home.HomeScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
 import java.util.UUID
@@ -42,7 +42,7 @@ fun CommerceApp() {
         val currentBackStack by appState.navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
         val currentScreen =
-            ecommerceTabsRowScreen.find { it.route == currentDestination?.route } ?: Store
+            ecommerceTabsRowScreen.find { it.route == currentDestination?.route } ?: Home
         Scaffold(
             snackbarHost = {
                 SnackbarHost(
@@ -98,9 +98,9 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigateAndPopUp(route, popUp)
         })
     }
-    composable(Store.route) {
+    composable(Home.route) {
         val viewModel: CartViewModel = hiltViewModel()
-        StoreScreen(onProductClick = { product ->
+        HomeScreen(onProductClick = { product ->
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
             val cartId =

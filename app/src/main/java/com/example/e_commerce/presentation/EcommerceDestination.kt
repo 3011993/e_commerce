@@ -5,9 +5,9 @@ interface EcommerceDestination {
     val icon : Int
     val route : String
 }
-object Store : EcommerceDestination {
+object Home : EcommerceDestination {
     override val icon = R.drawable.home_icon
-    override val route: String = "store"
+    override val route: String = "home"
 }
 object Cart : EcommerceDestination {
     override val icon = R.drawable.cart_icon
@@ -22,4 +22,4 @@ object Account : EcommerceDestination {
     override val route: String = "account"
 }
 
-val ecommerceTabsRowScreen = listOf(Store,WishList,Cart,Account)
+val ecommerceTabsRowScreen = listOf(Home,WishList,Cart,Account)

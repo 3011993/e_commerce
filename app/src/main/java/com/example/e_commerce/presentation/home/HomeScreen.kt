@@ -45,14 +45,14 @@ import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
 
 @Composable
-fun StoreScreen(
+fun HomeScreen(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel: StoreViewModel = hiltViewModel()
+    val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
-    StoreContent(
+    HomeContent(
         state = state,
         onProductClick = onProductClick,
         onCartButtonClicked = onCartButtonClicked,
@@ -65,7 +65,7 @@ fun StoreScreen(
 }
 
 @Composable
-fun StoreContent(
+fun HomeContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
@@ -239,7 +239,7 @@ fun StoreScreenPreview() {
 
         )
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
-        StoreContent(state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
+        HomeContent(state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
             getAllProducts = {},)
     }
 }

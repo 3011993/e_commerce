@@ -51,7 +51,7 @@ private fun EcommerceTabPreview() {
         EcommerceBottomNavigation(
             ecommerceScreens = ecommerceTabsRowScreen,
             onTabSelected = {},
-            currentScreen = Store
+            currentScreen = Home
         )
     }
 }
