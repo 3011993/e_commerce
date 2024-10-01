@@ -35,6 +35,7 @@ fun WishlistScreen(modifier: Modifier = Modifier) {
         state = state,
         onProductClick = {},
         onCartButtonClicked = {},
+        onFavouriteButtonClicked = viewModel::onFavouriteClicked,
         isConnected = true,
         modifier = modifier
     )
@@ -46,6 +47,7 @@ fun WishListContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    onFavouriteButtonClicked : (ProductModel) -> Unit,
     isConnected: Boolean, modifier: Modifier = Modifier,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -95,7 +97,7 @@ fun WishListContent(
                             onProductClick = onProductClick,
                             onCartButtonClicked = onCartButtonClicked,
                             isConnected = isConnected,
-                            onFavouriteClicked = {},
+                            onFavouriteClicked = onFavouriteButtonClicked,
                             modifier = modifier
                         )
                     }
@@ -144,6 +146,6 @@ fun CategoriesScreenPreview() {
             ),
         )
         val state = ScreenState.Success(products)
-        WishListContent(state, {}, {}, isConnected = true)
+        WishListContent(state, {}, {}, {}, isConnected = true)
     }
 }

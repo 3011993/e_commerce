@@ -39,5 +39,14 @@ class WishListViewModel @Inject constructor(
             }
         }
     }
+    fun onFavouriteClicked(product: ProductModel) {
+        launchCatching(dispatcher = Dispatchers.IO) {
+            if (product.isFavorite) {
+                repo.removeFavouriteProduct(product.id, isFavourite = false)
+            } else {
+                repo.addFavouriteProduct(product.id, isFavourite = true)
+            }
+        }
+    }
 
 }

@@ -6,10 +6,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +25,7 @@ import com.example.e_commerce.presentation.cart.components.CartHeader
 import com.example.e_commerce.presentation.cart.components.CheckOutBottom
 import com.example.e_commerce.presentation.cart.components.CartItem
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
 fun CartScreen(modifier: Modifier = Modifier) {
@@ -44,19 +50,16 @@ fun CartContent(
     carts: List<CartModel>,
     modifier: Modifier = Modifier,
 ) {
+    var showLoading by remember { mutableStateOf(false) }
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 100.dp)
         ) {
             if (carts.isEmpty()) {
-                item {
-                    Text(
-                        text = "the cart is empty ",
-                        modifier.align(Alignment.Center)
-                    )
-                }
+               showLoading = true
             } else {
+                showLoading = false
                 stickyHeader(content = {
                     CartHeader()
                 })
@@ -71,7 +74,11 @@ fun CartContent(
             }
         }
 
-        if (carts.isNotEmpty()) {
+        if (showLoading) {
+            Text("You dont have any items in your cart",
+                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
+                modifier = modifier.align(Alignment.Center))
+        } else {
             val totalPrice = carts.sumOf { it.price }
             CheckOutBottom(
                 totalPrice,

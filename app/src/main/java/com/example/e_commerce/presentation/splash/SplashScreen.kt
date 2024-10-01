@@ -53,7 +53,7 @@ fun SplashScreenContent(
 
             BasicButton(AppText.try_again, Modifier.basicButton()) { onAppStart() }
         } else {
-            CircularProgressIndicator(color = MaterialTheme.colors.onBackground)
+            CircularProgressIndicator(color = MaterialTheme.colors.primary)
         }
     }
 
