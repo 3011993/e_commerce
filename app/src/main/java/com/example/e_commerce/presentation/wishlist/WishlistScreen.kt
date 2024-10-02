@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.e_commerce.R
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
@@ -26,7 +25,7 @@ import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
-fun WishlistScreen(modifier: Modifier = Modifier) {
+fun WishlistScreen(onNavigationBackClicked :() -> Unit,modifier: Modifier = Modifier) {
     val viewModel: WishListViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
     WishListContent(
@@ -35,6 +34,7 @@ fun WishlistScreen(modifier: Modifier = Modifier) {
         onCartButtonClicked = {},
         onFavouriteButtonClicked = viewModel::onFavouriteClicked,
         isConnected = true,
+        onNavigationBackClicked = onNavigationBackClicked,
         modifier = modifier
     )
 }
@@ -45,13 +45,14 @@ fun WishListContent(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     onFavouriteButtonClicked : (ProductModel) -> Unit,
+    onNavigationBackClicked :() -> Unit,
     isConnected: Boolean, modifier: Modifier = Modifier,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         CommerceToolBar(
             title= AppText.wishlist_top_bar,
             navigationIcon = AppIcon.back,
-            onNavigationClickedBack = {},
+            onNavigationBackClicked = onNavigationBackClicked,
             modifier = Modifier
         )
         Box(modifier = modifier.fillMaxSize()) {
@@ -137,6 +138,6 @@ fun CategoriesScreenPreview() {
             ),
         )
         val state = ScreenState.Success(products)
-        WishListContent(state, {}, {}, {}, isConnected = true)
+        WishListContent(state, {}, {}, {}, isConnected = true , onNavigationBackClicked = {})
     }
 }

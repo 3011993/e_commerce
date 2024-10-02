@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommerceToolBar(
-    onNavigationClickedBack: () -> Unit,
+    onNavigationBackClicked: () -> Unit,
     @StringRes title: Int,
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int? = null,
@@ -38,7 +38,7 @@ fun CommerceToolBar(
         ),
         navigationIcon = {
             if (navigationIcon != null) {
-                IconButton(onClick = onNavigationClickedBack) {
+                IconButton(onClick = onNavigationBackClicked) {
                     Icon(
                         painter = painterResource(navigationIcon),
                         contentDescription = "Navigate back"

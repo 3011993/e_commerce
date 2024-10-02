@@ -20,12 +20,16 @@ import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.product_details.components.ProductDetailsItem
 
 @Composable
-fun ProductDetailsScreen(modifier: Modifier = Modifier) {
+fun ProductDetailsScreen(
+    onNavigationBackClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val viewModel: ProductDetailsViewModel = hiltViewModel()
     val state by viewModel.product.collectAsState()
     ProductDetailsContent(
         state = state,
         onCartButtonClicked = viewModel::addOrUpdateCart,
+        onNavigationBackClicked = onNavigationBackClicked,
         modifier = modifier
     )
 }
@@ -33,7 +37,9 @@ fun ProductDetailsScreen(modifier: Modifier = Modifier) {
 @Composable
 fun ProductDetailsContent(
     state: ScreenState<ProductModel>,
-    onCartButtonClicked: (ProductModel) -> Unit, modifier: Modifier = Modifier,
+    onCartButtonClicked: (ProductModel) -> Unit,
+    onNavigationBackClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         when (state) {
@@ -54,7 +60,10 @@ fun ProductDetailsContent(
             }
 
             is ScreenState.Success -> {
-                ProductDetailsItem(product = state.data, onCartButtonClicked = onCartButtonClicked)
+                ProductDetailsItem(
+                    product = state.data, onCartButtonClicked = onCartButtonClicked,
+                    onNavigationBackClicked = onNavigationBackClicked
+                )
             }
         }
     }

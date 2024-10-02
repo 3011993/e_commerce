@@ -25,13 +25,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.e_commerce.R
+import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
+import com.example.e_commerce.R.string as AppText
+import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun ProductDetailsItem(
     product: ProductModel,
+    onNavigationBackClicked :() -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit, modifier: Modifier = Modifier,
 ) {
     Column(
@@ -39,6 +43,9 @@ fun ProductDetailsItem(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        CommerceToolBar(title = AppText.product_details_top_bar,
+            navigationIcon = AppIcon.back,
+            onNavigationBackClicked = onNavigationBackClicked)
         AsyncImage(
             model = product.image,
             contentDescription = product.title,
@@ -132,6 +139,6 @@ private fun ProductDetailsItemPreview() {
             title = "Bag",
             id = 0
         )
-        ProductDetailsItem(product, {})
+        ProductDetailsItem(product, {},{})
     }
 }

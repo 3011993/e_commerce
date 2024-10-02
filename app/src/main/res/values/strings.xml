@@ -41,5 +41,7 @@
     <string name= "home_top_bar">Our Store</string>
     <string name= "wishlist_top_bar">Wishlist</string>
     <string name= "account_top_bar">Account</string>
+    <string name= "product_details_top_bar">Product Details</string>
+
 
 </resources>

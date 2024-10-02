@@ -28,7 +28,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
-fun CartScreen(modifier: Modifier = Modifier) {
+fun CartScreen(onNavigationBackClicked: () -> Unit, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         val viewModel: CartViewModel = hiltViewModel()
         val carts by viewModel.carts.collectAsState()
@@ -36,6 +36,7 @@ fun CartScreen(modifier: Modifier = Modifier) {
             onRemoveItem = viewModel::removeProductFromCart,
             onIncreaseQuantity = viewModel::addOrUpdateCart,
             onDecreaseQuantity = viewModel::removeProductFromCart,
+            onNavigationBackClicked = onNavigationBackClicked,
             carts = carts
         )
     }
@@ -47,6 +48,7 @@ fun CartContent(
     onRemoveItem: (CartModel) -> Unit,
     onIncreaseQuantity: (CartModel) -> Unit,
     onDecreaseQuantity: (CartModel) -> Unit,
+    onNavigationBackClicked: () -> Unit,
     carts: List<CartModel>,
     modifier: Modifier = Modifier,
 ) {
@@ -57,11 +59,11 @@ fun CartContent(
             contentPadding = PaddingValues(bottom = 100.dp)
         ) {
             if (carts.isEmpty()) {
-               showLoading = true
+                showLoading = true
             } else {
                 showLoading = false
                 stickyHeader(content = {
-                    CartHeader()
+                    CartHeader(onNavigationBackClicked = onNavigationBackClicked)
                 })
                 items(carts) { cart ->
                     CartItem(
@@ -75,9 +77,11 @@ fun CartContent(
         }
 
         if (showLoading) {
-            Text("You dont have any items in your cart",
+            Text(
+                "You dont have any items in your cart",
                 style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
-                modifier = modifier.align(Alignment.Center))
+                modifier = modifier.align(Alignment.Center)
+            )
         } else {
             val totalPrice = carts.sumOf { it.price }
             CheckOutBottom(
@@ -102,6 +106,11 @@ fun CartScreenPreview() {
 
             )
         )
-        CartContent({}, carts = cartsModels, onDecreaseQuantity = {}, onIncreaseQuantity = {})
+        CartContent(
+            {},
+            carts = cartsModels,
+            onDecreaseQuantity = {},
+            onIncreaseQuantity = {},
+            onNavigationBackClicked = {})
     }
 }

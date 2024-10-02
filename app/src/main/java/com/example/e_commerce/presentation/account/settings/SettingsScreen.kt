@@ -9,10 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.e_commerce.common.composable.BasicToolbar
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.DangerousCardEditor
 import com.example.e_commerce.common.composable.DialogCancelButton
@@ -29,6 +27,7 @@ import com.example.e_commerce.R.string as AppText
 fun SettingsScreen(
     restartApp: (String) -> Unit,
     openScreen: (String) -> Unit,
+    onNavigationBackClicked : () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
@@ -38,7 +37,8 @@ fun SettingsScreen(
         onLoginClick = { viewModel.onLoginClick(openScreen) },
         onSignUpClick = { viewModel.onSignUpClick(openScreen) },
         onSignOutClick = { viewModel.onSignOutClick(restartApp) },
-        onDeleteMyAccountClick = { viewModel.onDeleteMyAccountClick(restartApp) }
+        onDeleteMyAccountClick = { viewModel.onDeleteMyAccountClick(restartApp) },
+        onNavigationBackClicked = onNavigationBackClicked
     )
 }
 
@@ -51,6 +51,7 @@ fun SettingsScreenContent(
     onLoginClick: () -> Unit,
     onSignUpClick: () -> Unit,
     onSignOutClick: () -> Unit,
+    onNavigationBackClicked: () -> Unit,
     onDeleteMyAccountClick: () -> Unit,
 ) {
     Column(
@@ -63,7 +64,7 @@ fun SettingsScreenContent(
         CommerceToolBar(
             title = AppText.account_top_bar,
             navigationIcon = AppIcon.back,
-            onNavigationClickedBack = {},
+            onNavigationBackClicked = onNavigationBackClicked,
             modifier = Modifier
         )
         Spacer(modifier = Modifier.spacer())
@@ -154,7 +155,8 @@ fun SettingsScreenPreview() {
             onLoginClick = { },
             onSignUpClick = { },
             onSignOutClick = { },
-            onDeleteMyAccountClick = { }
+            onDeleteMyAccountClick = { },
+            onNavigationBackClicked = {}
         )
     }
 }

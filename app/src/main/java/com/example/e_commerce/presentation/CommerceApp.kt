@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.CartModel
@@ -126,22 +127,24 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
     }
     composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {
         appState.showBottomNavigation = false
-        ProductDetailsScreen()
+        ProductDetailsScreen(onNavigationBackClicked = { appState.popUp() })
     }
 
     composable(WishList.route) {
         appState.showBottomNavigation = true
-        WishlistScreen()
+        WishlistScreen(onNavigationBackClicked = { appState.popUp() })
     }
     composable(Cart.route) {
         appState.showBottomNavigation = false
-        CartScreen()
+        CartScreen(onNavigationBackClicked = { appState.popUp() })
     }
     composable(Account.route) {
         appState.showBottomNavigation = true
         SettingsScreen(openScreen = { route -> appState.navigate(route) },
             restartApp = { route ->
                 appState.clearAndNavigate(route)
+            }, onNavigationBackClicked = {
+                appState.popUp()
             })
     }
     composable(LOGIN_IN_SCREEN) {

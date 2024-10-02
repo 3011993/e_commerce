@@ -44,7 +44,7 @@ import com.example.e_commerce.presentation.home.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
-import com.example.e_commerce.R.drawable as AppIcon
+
 @Composable
 fun HomeScreen(
     onProductClick: (ProductModel) -> Unit,
@@ -113,7 +113,7 @@ fun HomeContent(
         ) {
             CommerceToolBar(
                 title= AppText.home_top_bar,
-                onNavigationClickedBack = {},
+                onNavigationBackClicked = {},
                 modifier = Modifier
             )
             Text(
