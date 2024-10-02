@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.account.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -45,7 +46,7 @@ fun LoginScreenContent(
     onSignInClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Text(
             "Welcome",
             modifier

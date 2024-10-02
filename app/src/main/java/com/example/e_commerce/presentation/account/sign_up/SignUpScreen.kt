@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.account.sign_up
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -10,7 +11,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.EmailField
 import com.example.e_commerce.common.composable.PasswordField
@@ -45,8 +45,8 @@ fun SignUpScreenContent(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 105.dp),
+            .fillMaxSize().background(MaterialTheme.colorScheme.background)
+            .padding(top = 105.dp)
     ) {
         Text(
             "Sign Up",

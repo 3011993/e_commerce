@@ -206,7 +206,7 @@ fun ProductsLazyVerticalGrid(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         item(span = { GridItemSpan(2) }) {
             if (showSnackBar && !isConnected) {
