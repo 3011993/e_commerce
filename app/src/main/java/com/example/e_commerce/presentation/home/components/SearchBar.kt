@@ -39,6 +39,7 @@ fun SearchBar(
         },
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
         shape = RoundedCornerShape(8.dp),
+        maxLines = 1,
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),

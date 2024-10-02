@@ -3,27 +3,28 @@ package com.example.e_commerce.data
 import com.example.e_commerce.domain.model.ProductModel
 
 class TrieNode {
-    val children : MutableMap<Char, TrieNode> = HashMap()
-    var isEndOfWord : Boolean = false
-    var product : ProductModel? = null
+    val children: MutableMap<Char, TrieNode> = HashMap()
+    var isEndOfWord: Boolean = false
+    var products: MutableList<ProductModel> = mutableListOf()
 }
 
 class Trie {
     private val root = TrieNode()
 
     fun insert(product: ProductModel) {
-        var current = root
         val words = product.title.split(" ")
-        val firstTwoWords =
-            if (words.size >= 2) words.subList(0, 2).joinToString(" ") else product.title
-        for (char in firstTwoWords.lowercase()) {
-            if (!current.children.containsKey(char)) {
-                current.children[char] = TrieNode()
+        val titleFourWords = if (words.size >= 4) words.subList(0, 4) else words
+        for (word in titleFourWords) {
+            var current = root
+            for (char in word.lowercase()) {
+                if (!current.children.containsKey(char)) {
+                    current.children[char] = TrieNode()
+                }
+                current = current.children[char]!!
             }
-            current = current.children[char]!!
+            current.isEndOfWord = true
+            current.products.add(product)
         }
-        current.isEndOfWord = true
-        current.product = product
     }
 
     fun searchPrefix(prefix: String): List<ProductModel> {
@@ -35,22 +36,13 @@ class Trie {
             }
             current = current.children[char]!!
         }
-        products.addAll(collectProducts(current))
-
-        if (prefix.isNotEmpty() && prefix[0].isUpperCase()) {
-            current = root
-            val initial = prefix[0].lowercaseChar()
-            if (current.children.containsKey(initial)) {
-                products.addAll(collectProducts(current.children[initial]!!))
-            }
-        }
-        return products.distinct()
+        return collectProducts(current)
     }
 
     private fun collectProducts(node: TrieNode): List<ProductModel> {
         val products = mutableListOf<ProductModel>()
         if (node.isEndOfWord) {
-            node.product?.let { products.add(it) }
+            products.addAll(node.products)
         }
         for (child in node.children.values) {
             products.addAll(collectProducts(child))
