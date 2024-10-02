@@ -70,7 +70,7 @@ fun HomeContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
-    onFavouriteClicked : (ProductModel) -> Unit,
+    onFavouriteClicked: (ProductModel) -> Unit,
     getAllProducts: () -> Unit,
     searchPrefix: (String) -> List<ProductModel>,
     onCategorySelected: (CategoriesEntries) -> Unit,
@@ -118,13 +118,13 @@ fun HomeContent(
                 .padding(top = 4.dp)
         ) {
             CommerceToolBar(
-                title= AppText.home_top_bar,
+                title = AppText.home_top_bar,
                 onNavigationBackClicked = {},
                 modifier = Modifier
             )
             Text(
                 "Hello", style = MaterialTheme.typography.labelLarge,
-                modifier = modifier.padding(start = 16.dp,top = 8.dp)
+                modifier = modifier.padding(start = 16.dp, top = 8.dp)
             )
             Text(
                 "Welcome to our Store",
@@ -140,9 +140,12 @@ fun HomeContent(
                     } else {
                         searchPrefix(newValue)
                     }
-                }, modifier = modifier.padding(start = 16.dp, end = 16.dp,top = 32.dp)
+                }, modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)
             )
-            CategoriesSection(onCategorySelected = onCategorySelected, modifier = modifier.padding(start = 8.dp,top = 16.dp))
+            CategoriesSection(
+                onCategorySelected = onCategorySelected,
+                modifier = modifier.padding(start = 8.dp, top = 16.dp)
+            )
             Text(
                 "New Arrival", style = MaterialTheme.typography.bodyMedium,
                 modifier = modifier.padding(start = 16.dp, top = 45.dp)
@@ -158,7 +161,7 @@ fun HomeContent(
                         onCartButtonClicked = onCartButtonClicked,
                         onFavouriteClicked = onFavouriteClicked,
                         isConnected = isConnected,
-                        )
+                    )
                     Log.i("Store Screen", state.message ?: "An unexpected error occurred")
                 }
 
@@ -172,7 +175,7 @@ fun HomeContent(
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
                         onFavouriteClicked = onFavouriteClicked,
-                        isConnected = isConnected
+                        isConnected = isConnected,
                     )
                 }
             }
@@ -220,8 +223,15 @@ fun ProductsLazyVerticalGrid(
                 showSnackBar = false
             }
         }
-        items(products) { product ->
-            ProductItem(product = product, onProductClick, onCartButtonClicked,onFavouriteClicked)
+        items(products,) { product ->
+            val showFavourite by remember { mutableStateOf(product.isFavorite) }
+            ProductItem(
+                product = product,
+                onProductClick,
+                onCartButtonClicked,
+                onFavouriteClicked,
+                showFavourite
+            )
         }
     }
 }
@@ -251,7 +261,9 @@ fun StoreScreenPreview() {
 
         )
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
-        HomeContent(state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
-            getAllProducts = {},)
+        HomeContent(
+            state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
+            getAllProducts = {}
+        )
     }
 }

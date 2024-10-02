@@ -91,6 +91,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onToggleFavourite(product: ProductModel) {
+        product.isFavorite = !product.isFavorite
+    }
+
     fun searchProducts(prefix: String): List<ProductModel> {
         return trie?.searchPrefix(prefix) ?: emptyList()
     }

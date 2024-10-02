@@ -19,7 +19,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.CartModel
@@ -132,7 +131,9 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
 
     composable(WishList.route) {
         appState.showBottomNavigation = true
-        WishlistScreen(onNavigationBackClicked = { appState.popUp() })
+        WishlistScreen(clearAndNavigate = { route ->
+            appState.clearAndNavigate(route)
+        })
     }
     composable(Cart.route) {
         appState.showBottomNavigation = false
@@ -143,8 +144,8 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         SettingsScreen(openScreen = { route -> appState.navigate(route) },
             restartApp = { route ->
                 appState.clearAndNavigate(route)
-            }, onNavigationBackClicked = {
-                appState.popUp()
+            }, clearAndNavigate = { route ->
+                appState.clearAndNavigate(route)
             })
     }
     composable(LOGIN_IN_SCREEN) {

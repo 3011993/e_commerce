@@ -5,6 +5,7 @@ import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.presentation.CommerceViewModel
+import com.example.e_commerce.presentation.Home
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,9 @@ class WishListViewModel @Inject constructor(
                 repo.addFavouriteProduct(product.id, isFavourite = true)
             }
         }
+    }
+    fun onNavigateBackClicked(clearAndNavigate: (String) -> Unit){
+        clearAndNavigate(Home.route)
     }
 
 }

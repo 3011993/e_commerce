@@ -7,6 +7,7 @@ import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import com.example.e_commerce.presentation.SIGN_UP_SCREEN
 import com.example.e_commerce.presentation.Home
+import com.example.e_commerce.presentation.SPLASH_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.map
@@ -24,8 +25,11 @@ class SettingsViewModel @Inject constructor(
     fun onSignOutClick(restartApp: (String) -> Unit) {
         launchCatching {
             accountService.signOut()
-            restartApp(Home.route)
+            restartApp(SPLASH_SCREEN)
         }
+    }
+    fun onNavigateBackClicked(clearAndNavigate: (String) -> Unit){
+        clearAndNavigate(Home.route)
     }
 
     fun onDeleteMyAccountClick(restartApp: (String) -> Unit) {

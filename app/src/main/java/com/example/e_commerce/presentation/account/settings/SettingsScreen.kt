@@ -28,7 +28,7 @@ import com.example.e_commerce.R.string as AppText
 fun SettingsScreen(
     restartApp: (String) -> Unit,
     openScreen: (String) -> Unit,
-    onNavigationBackClicked : () -> Unit,
+    clearAndNavigate :(String) -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
@@ -39,7 +39,7 @@ fun SettingsScreen(
         onSignUpClick = { viewModel.onSignUpClick(openScreen) },
         onSignOutClick = { viewModel.onSignOutClick(restartApp) },
         onDeleteMyAccountClick = { viewModel.onDeleteMyAccountClick(restartApp) },
-        onNavigationBackClicked = onNavigationBackClicked
+        onNavigationBackClicked = {viewModel.onNavigateBackClicked(clearAndNavigate)}
     )
 }
 

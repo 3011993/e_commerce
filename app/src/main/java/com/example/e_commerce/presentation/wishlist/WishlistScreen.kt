@@ -25,7 +25,7 @@ import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
-fun WishlistScreen(onNavigationBackClicked :() -> Unit,modifier: Modifier = Modifier) {
+fun WishlistScreen(clearAndNavigate :(String) -> Unit,modifier: Modifier = Modifier) {
     val viewModel: WishListViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
     WishListContent(
@@ -34,7 +34,7 @@ fun WishlistScreen(onNavigationBackClicked :() -> Unit,modifier: Modifier = Modi
         onCartButtonClicked = {},
         onFavouriteButtonClicked = viewModel::onFavouriteClicked,
         isConnected = true,
-        onNavigationBackClicked = onNavigationBackClicked,
+        onNavigationBackClicked = {viewModel.onNavigateBackClicked(clearAndNavigate)},
         modifier = modifier
     )
 }

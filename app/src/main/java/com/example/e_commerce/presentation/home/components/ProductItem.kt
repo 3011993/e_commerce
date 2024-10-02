@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.home.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ fun ProductItem(
     onProductClicked: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     onFavouriteCLicked: (ProductModel) -> Unit,
+    showFavourite : Boolean,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -82,8 +84,8 @@ fun ProductItem(
                         .offset(x = 3.dp)
                 )
             }
-            Icon(
-                painter = if (product.isFavorite) {
+            Image(
+                painter = if (showFavourite) {
                     painterResource(id = R.drawable.heart_selected)
                 } else
                     painterResource(id = R.drawable.heart),
@@ -121,7 +123,7 @@ private fun ProductItemPreview() {
             id = 0,
             isFavorite = true
         )
-        ProductItem(product, {}, {}, {})
+        ProductItem(product, {}, {}, {}, true)
     }
 
 }
