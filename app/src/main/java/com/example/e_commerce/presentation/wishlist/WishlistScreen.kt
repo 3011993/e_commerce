@@ -4,28 +4,26 @@ import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.e_commerce.R
+import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.wishlist.components.WishListAvailableItems
 import com.example.e_commerce.presentation.home.ProductsLazyVerticalGrid
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.R.string as AppText
+import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun WishlistScreen(modifier: Modifier = Modifier) {
@@ -41,7 +39,6 @@ fun WishlistScreen(modifier: Modifier = Modifier) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WishListContent(
     state: ScreenState<List<ProductModel>>,
@@ -51,17 +48,11 @@ fun WishListContent(
     isConnected: Boolean, modifier: Modifier = Modifier,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = {
-                Text(
-                    "Wishlist",
-                    modifier = modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.labelMedium,
-                    textAlign = TextAlign.Center
-                )
-            }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = androidx.compose.material.MaterialTheme.colors.background
-            )
+        CommerceToolBar(
+            title= AppText.wishlist_top_bar,
+            navigationIcon = AppIcon.back,
+            onNavigationClickedBack = {},
+            modifier = Modifier
         )
         Box(modifier = modifier.fillMaxSize()) {
             when (state) {

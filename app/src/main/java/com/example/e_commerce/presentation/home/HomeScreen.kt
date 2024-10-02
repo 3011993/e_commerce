@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.ConnectionState
+import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.rememberConnectivityState
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.ProductModel
@@ -43,7 +44,7 @@ import com.example.e_commerce.presentation.home.components.SearchBar
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
-
+import com.example.e_commerce.R.drawable as AppIcon
 @Composable
 fun HomeScreen(
     onProductClick: (ProductModel) -> Unit,
@@ -110,6 +111,11 @@ fun HomeContent(
                 .fillMaxWidth()
                 .padding(top = 4.dp)
         ) {
+            CommerceToolBar(
+                title= AppText.home_top_bar,
+                onNavigationClickedBack = {},
+                modifier = Modifier
+            )
             Text(
                 "Hello", style = MaterialTheme.typography.labelLarge,
                 modifier = modifier.padding(start = 16.dp,top = 8.dp)

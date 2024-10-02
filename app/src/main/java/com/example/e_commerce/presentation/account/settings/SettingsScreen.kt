@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.BasicToolbar
+import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.DangerousCardEditor
 import com.example.e_commerce.common.composable.DialogCancelButton
 import com.example.e_commerce.common.composable.DialogConfirmButton
@@ -42,7 +43,6 @@ fun SettingsScreen(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreenContent(
@@ -60,17 +60,11 @@ fun SettingsScreenContent(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopAppBar(
-            title = {
-                Text(
-                    "Account",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background
-            )
+        CommerceToolBar(
+            title = AppText.account_top_bar,
+            navigationIcon = AppIcon.back,
+            onNavigationClickedBack = {},
+            modifier = Modifier
         )
         Spacer(modifier = Modifier.spacer())
         if (uiState.isAnonymousAccount) {

@@ -23,7 +23,7 @@ object DatabaseModule {
     fun getCommerceDatabase(@ApplicationContext context: Context): CommerceDataBase {
         return Room.databaseBuilder(
             context, CommerceDataBase::class.java, "commerce_database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

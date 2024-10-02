@@ -36,4 +36,10 @@
     <string name="placeholder_search">Search</string>
     <!-- offline message -->
     <string name="offline_message">connect to Internet to update your data</string>
+    <!-- Top Bar Values -->
+    <string name= "carts_top_bar">Carts</string>
+    <string name= "home_top_bar">Our Store</string>
+    <string name= "wishlist_top_bar">Wishlist</string>
+    <string name= "account_top_bar">Account</string>
+
 </resources>
