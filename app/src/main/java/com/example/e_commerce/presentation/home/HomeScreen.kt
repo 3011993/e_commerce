@@ -83,6 +83,7 @@ fun HomeContent(
     }
     var showRefreshButton by remember { mutableStateOf(false) }
     var displayedProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
+    var allProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
     var searchText by remember { mutableStateOf("") }
 
     LaunchedEffect(key1 = connection) {
@@ -97,6 +98,11 @@ fun HomeContent(
     }
     LaunchedEffect(state) {
         displayedProducts = when (state) {
+            is ScreenState.Success -> state.data
+            is ScreenState.Error -> state.data ?: emptyList()
+            else -> emptyList()
+        }
+        allProducts = when (state) {
             is ScreenState.Success -> state.data
             is ScreenState.Error -> state.data ?: emptyList()
             else -> emptyList()
@@ -130,7 +136,7 @@ fun HomeContent(
                 onSearchTextChange = { newValue ->
                     searchText = newValue
                     displayedProducts = if (newValue.isBlank()) {
-                        displayedProducts
+                        allProducts
                     } else {
                         searchPrefix(newValue)
                     }
