@@ -21,7 +21,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.e_commerce.common.snackbar.SnackBarManager
-import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
@@ -33,7 +32,6 @@ import com.example.e_commerce.presentation.splash.SplashScreen
 import com.example.e_commerce.presentation.home.HomeScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
-import java.util.UUID
 
 @Composable
 fun CommerceApp() {

@@ -24,16 +24,16 @@ class StorageServiceImpl @Inject constructor(
                 .dataObjects()
         }
 
-    override suspend fun addOrUpdateCart(cart: CartModel) {
+    override suspend fun addOrUpdateCart(cart: CartModel,onResult: (Boolean) -> Unit) {
         val document = firestore.collection(CARTS_COLLECTION).document(cart.cartId).get().await()
         if(document.exists()){
-            updateCart(cart)
+            updateCart(cart,onResult)
         } else {
-            addCart(cart)
+            addCart(cart, onResult = onResult)
         }
     }
 
-    override fun addCart(cart: CartModel) {
+    override fun addCart(cart: CartModel,onResult :(Boolean) -> Unit) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
@@ -50,15 +50,21 @@ class StorageServiceImpl @Inject constructor(
                         transaction.update(productRef, "inStock", false)
                     }
                     transaction.set(cartRef, updatedCart)
-
+                    return@runTransaction true
                 } else {
                     Log.i("StorageImpl", "issue in quantity and stock ")
+                    return@runTransaction  false
                 }
             }
+            return@runTransaction false
+        }.addOnSuccessListener { result ->
+            onResult(result)
+        }.addOnFailureListener {
+            onResult(false)
         }
     }
 
-    override fun updateCart(cart: CartModel) {
+    override fun updateCart(cart: CartModel, onResult: (Boolean) -> Unit) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
@@ -81,20 +87,28 @@ class StorageServiceImpl @Inject constructor(
                         val increasedPrice = cart.originalPrice * increasedQuantity
                         transaction.update(cartRef, "quantity", increasedQuantity)
                         transaction.update(cartRef, "price", increasedPrice)
+                        return@runTransaction true
                     } else {
                         transaction.set(cartRef, updatedCart)
+                        return@runTransaction false
                     }
 
                 } else {
                     Log.i("StorageImpl", "Issue in quantity and stock")
+                    return@runTransaction false
                 }
             } else {
                 Log.i("StorageImpl", "Product doesn't exist")
+                return@runTransaction false
             }
+        }.addOnSuccessListener { result ->
+            onResult(result)
+        }.addOnFailureListener {
+            onResult(false)
         }
     }
 
-    override fun removeFromCart(cart: CartModel) {
+    override fun removeFromCart(cart: CartModel,onResult: (Boolean) -> Unit) {
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
         val cartRef = firestore.collection(CARTS_COLLECTION).document(cart.cartId)
@@ -113,11 +127,17 @@ class StorageServiceImpl @Inject constructor(
                     cartRef,
                     mapOf("quantity" to decreasedQuantity, "price" to decreasedPrice)
                 )
+                return@runTransaction true
             } else if (existingQuantity.toInt() == 1) {
                 transaction.delete(cartRef)
+                return@runTransaction true
             } else {
-
+                return@runTransaction false
             }
+        }.addOnSuccessListener { result->
+            onResult(result)
+        }.addOnFailureListener{
+            onResult(false)
         }
     }
 

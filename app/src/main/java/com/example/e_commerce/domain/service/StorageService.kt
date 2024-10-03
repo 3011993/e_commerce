@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface StorageService {
     val carts: Flow<List<CartModel>>
-    fun addCart(cart: CartModel)
-    fun updateCart(cart: CartModel)
-    suspend fun addOrUpdateCart(cart: CartModel)
-    fun removeFromCart(cart: CartModel)
+    fun addCart(cart: CartModel,onResult :(Boolean) -> Unit)
+    fun updateCart(cart: CartModel,onResult: (Boolean) -> Unit)
+    suspend fun addOrUpdateCart(cart: CartModel,onResult: (Boolean) -> Unit)
+    fun removeFromCart(cart: CartModel,onResult: (Boolean) -> Unit)
 }

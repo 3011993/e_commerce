@@ -1,7 +1,9 @@
 package com.example.e_commerce.presentation.product_details
 
 import androidx.lifecycle.SavedStateHandle
+import com.example.e_commerce.R
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
@@ -61,7 +63,14 @@ class ProductDetailsViewModel @Inject constructor(
             originalPrice = productModel.price.toDouble(),
         )
         launchCatching {
-            storageService.addOrUpdateCart(cart)
+            storageService.addOrUpdateCart(cart){ result ->
+                if (result) {
+                    SnackBarManager.showMessage(R.string.added_successfully)
+                } else {
+                    SnackBarManager.showMessage(R.string.out_of_stock)
+                }
+
+            }
         }
         if (repo.getCartIdForProduct(productModel.id.toString()) == null) {
             repo.saveCartIdForProduct(productModel.id.toString(), cartId)

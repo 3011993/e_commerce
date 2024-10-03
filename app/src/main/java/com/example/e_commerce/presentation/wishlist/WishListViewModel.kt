@@ -1,7 +1,8 @@
 package com.example.e_commerce.presentation.wishlist
 
-import android.util.Log
+import com.example.e_commerce.R
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
@@ -58,15 +59,16 @@ class WishListViewModel @Inject constructor(
     }
     fun addOrUpdateCart(cart: CartModel) {
         launchCatching(dispatcher = Dispatchers.IO){
-            storageService.addOrUpdateCart(cart)
+            storageService.addOrUpdateCart(cart){ result ->
+                if (result) {
+                    SnackBarManager.showMessage(R.string.added_successfully)
+                } else {
+                    SnackBarManager.showMessage(R.string.out_of_stock)
+                }
+            }
         }
     }
 
-    fun removeProductFromCart(cart: CartModel) {
-        launchCatching {
-            storageService.removeFromCart(cart)
-        }
-    }
     fun saveCartIdForProduct(productId : String,cartId : String){
         repo.saveCartIdForProduct(productId,cartId)
     }
