@@ -1,9 +1,12 @@
 package com.example.e_commerce.presentation.wishlist
 
+import android.util.Log
 import com.example.e_commerce.common.Resources
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.Home
 import com.example.e_commerce.presentation.ScreenState
@@ -17,6 +20,7 @@ import javax.inject.Inject
 class WishListViewModel @Inject constructor(
     logService: LogService,
     private val repo: CommerceRepository,
+    private val storageService: StorageService,
 ) : CommerceViewModel(logService) {
     private val _allProducts =
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
@@ -51,6 +55,24 @@ class WishListViewModel @Inject constructor(
     }
     fun onNavigateBackClicked(clearAndNavigate: (String) -> Unit){
         clearAndNavigate(Home.route)
+    }
+    fun addOrUpdateCart(cart: CartModel) {
+        launchCatching(dispatcher = Dispatchers.IO){
+            storageService.addOrUpdateCart(cart)
+        }
+    }
+
+    fun removeProductFromCart(cart: CartModel) {
+        launchCatching {
+            storageService.removeFromCart(cart)
+        }
+    }
+    fun saveCartIdForProduct(productId : String,cartId : String){
+        repo.saveCartIdForProduct(productId,cartId)
+    }
+    fun getCartIdForProduct(productId: String) : String?{
+        return repo.getCartIdForProduct(productId)
+
     }
 
 }

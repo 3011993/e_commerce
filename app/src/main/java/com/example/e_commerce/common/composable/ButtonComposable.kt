@@ -13,15 +13,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CommerceWideButton(@StringRes text: Int, modifier: Modifier = Modifier, action:() -> Unit) {
-    CommerceWideButton(text, modifier, action = action)
+fun CommerceWideButton(@StringRes text: Int, modifier: Modifier = Modifier, action: () -> Unit) {
+    CommerceWideButtonWithData(text = text, modifier = modifier, data = null, action = { action() })
 }
+
 @Composable
-fun <T>CommerceWideButton(@StringRes text: Int, modifier: Modifier = Modifier,
-                          data : T? = null,
-                          action:(T?) -> Unit) {
+fun <T> CommerceWideButtonWithData(
+    @StringRes text: Int, modifier: Modifier = Modifier,
+    data: T? = null,
+    action: (T?) -> Unit,
+) {
     Button(
-        onClick = {action(data)},
+        onClick = { action(data) },
         modifier = modifier
             .fillMaxWidth()
             .height(75.dp),

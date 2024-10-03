@@ -3,6 +3,7 @@ package com.example.e_commerce.presentation.cart
 import android.util.Log
 import com.example.e_commerce.data.repo.CommerceRepositoryImpl
 import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
@@ -12,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,24 +37,34 @@ class CartViewModel @Inject constructor(
             }
         }
     }
-
-    fun addOrUpdateCart(cart: CartModel) {
-        launchCatching(dispatcher = Dispatchers.IO){
-             storageService.addOrUpdateCart(cart)
+    fun addOrUpdateCart(productModel: ProductModel) {
+        val cartId =
+            repo.getCartIdForProduct(productModel.id.toString()) ?: UUID.randomUUID().toString()
+        val cart = CartModel(
+            cartId = cartId,
+            image = productModel.image,
+            title = productModel.title,
+            price = productModel.price.toDouble(),
+            quantity = 1,
+            productId = productModel.id,
+            originalPrice = productModel.price.toDouble(),
+        )
+        launchCatching {
+            storageService.addOrUpdateCart(cart)
         }
-        Log.i("userACCountCreate", auth.currentUserId)
+        if (repo.getCartIdForProduct(productModel.id.toString()) == null) {
+            repo.saveCartIdForProduct(productModel.id.toString(), cartId)
+        }
     }
-
+    fun updateCart(cart: CartModel) {
+        launchCatching {
+            storageService.updateCart(cart)
+        }
+    }
     fun removeProductFromCart(cart: CartModel) {
         launchCatching {
             storageService.removeFromCart(cart)
         }
     }
-    fun saveCartIdForProduct(productId : String,cartId : String){
-        repo.saveCartIdForProduct(productId,cartId)
-    }
-    fun getCartIdForProduct(productId: String) : String?{
-        return repo.getCartIdForProduct(productId)
 
-    }
 }

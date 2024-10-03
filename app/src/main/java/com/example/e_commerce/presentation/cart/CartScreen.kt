@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.cart.components.CartHeader
 import com.example.e_commerce.presentation.cart.components.CheckOutBottom
 import com.example.e_commerce.presentation.cart.components.CartItem
@@ -35,7 +36,7 @@ fun CartScreen(onNavigationBackClicked: () -> Unit, modifier: Modifier = Modifie
         val carts by viewModel.carts.collectAsState()
         CartContent(
             onRemoveItem = viewModel::removeProductFromCart,
-            onIncreaseQuantity = viewModel::addOrUpdateCart,
+            onIncreaseQuantity = viewModel::updateCart,
             onDecreaseQuantity = viewModel::removeProductFromCart,
             onNavigationBackClicked = onNavigationBackClicked,
             carts = carts
@@ -59,13 +60,13 @@ fun CartContent(
             modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
             contentPadding = PaddingValues(bottom = 100.dp)
         ) {
+            stickyHeader(content = {
+                CartHeader(onNavigationBackClicked = onNavigationBackClicked)
+            })
             if (carts.isEmpty()) {
                 showLoading = true
             } else {
                 showLoading = false
-                stickyHeader(content = {
-                    CartHeader(onNavigationBackClicked = onNavigationBackClicked)
-                })
                 items(carts) { cart ->
                     CartItem(
                         cartItem = cart,

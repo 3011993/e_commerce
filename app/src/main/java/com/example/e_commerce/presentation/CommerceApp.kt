@@ -106,21 +106,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         HomeScreen(onProductClick = { product ->
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
-            val cartId =
-                viewModel.getCartIdForProduct(product.id.toString()) ?: UUID.randomUUID().toString()
-            val cartItemModel = CartModel(
-                cartId = cartId,
-                price = product.price.toDouble(),
-                quantity = 1,
-                productId = product.id,
-                originalPrice = product.price.toDouble(),
-                title = product.title,
-                image = product.image
-            )
-            viewModel.addOrUpdateCart(cartItemModel)
-            if (viewModel.getCartIdForProduct(product.id.toString()) == null) {
-                viewModel.saveCartIdForProduct(product.id.toString(), cartId)
-            }
+            viewModel.addOrUpdateCart(product)
             appState.navigate(Cart.route)
         })
     }

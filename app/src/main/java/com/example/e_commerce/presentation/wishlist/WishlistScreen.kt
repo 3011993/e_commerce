@@ -16,11 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.CommerceToolBar
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.wishlist.components.WishListAvailableItems
 import com.example.e_commerce.presentation.home.ProductsLazyVerticalGrid
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import java.util.UUID
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
@@ -28,10 +30,27 @@ import com.example.e_commerce.R.drawable as AppIcon
 fun WishlistScreen(clearAndNavigate :(String) -> Unit,modifier: Modifier = Modifier) {
     val viewModel: WishListViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
+
     WishListContent(
         state = state,
         onProductClick = {},
-        onCartButtonClicked = {},
+        onCartButtonClicked = { product ->
+            val cartId =
+                viewModel.getCartIdForProduct(product.id.toString()) ?: UUID.randomUUID().toString()
+            val cartItemModel = CartModel(
+                cartId = cartId,
+                price = product.price.toDouble(),
+                quantity = 1,
+                productId = product.id,
+                originalPrice = product.price.toDouble(),
+                title = product.title,
+                image = product.image
+            )
+            viewModel.addOrUpdateCart(cartItemModel)
+            if (viewModel.getCartIdForProduct(product.id.toString()) == null) {
+                viewModel.saveCartIdForProduct(product.id.toString(), cartId)
+            }
+        },
         onFavouriteButtonClicked = viewModel::onFavouriteClicked,
         isConnected = true,
         onNavigationBackClicked = {viewModel.onNavigateBackClicked(clearAndNavigate)},
