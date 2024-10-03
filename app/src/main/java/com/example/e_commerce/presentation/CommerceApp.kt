@@ -107,7 +107,6 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
             viewModel.addOrUpdateCart(product)
-            appState.navigate(Cart.route)
         })
     }
     composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {

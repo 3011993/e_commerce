@@ -2,6 +2,7 @@
 package com.example.e_commerce.common.ext
 
 import android.util.Patterns
+import java.text.DecimalFormat
 import java.util.regex.Pattern
 
 private const val MIN_PASS_LENGTH = 6
@@ -23,4 +24,8 @@ fun String.passwordMatches(repeated: String): Boolean {
 
 fun String.idFromParameter(): String {
   return this.substring(1, this.length - 1)
+}
+fun Double.adjustPrice(): String {
+  val df = DecimalFormat("#.##")
+  return df.format(this)
 }
