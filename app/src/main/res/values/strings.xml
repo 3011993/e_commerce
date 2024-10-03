@@ -42,6 +42,8 @@
     <string name= "wishlist_top_bar">Wishlist</string>
     <string name= "account_top_bar">Account</string>
     <string name= "product_details_top_bar">Product Details</string>
-
+    <!-- Button values -->
+    <string name="check_out_button">Check Out</string>
+    <string name="add_to_cart_button">Add to cart</string>
 
 </resources>

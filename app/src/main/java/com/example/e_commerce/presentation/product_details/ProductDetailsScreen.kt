@@ -13,11 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.product_details.components.ProductDetailsItem
+import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
 fun ProductDetailsScreen(
@@ -67,4 +69,15 @@ fun ProductDetailsContent(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ProductDetailsContentPreview() {
+    E_commerceTheme {
+        val productModel = ProductModel(title = "Bag", price = "88.00", category = "clothing", id = 0, image = "", description = "ay 7aga")
+        val state = ScreenState.Success(productModel)
+        ProductDetailsContent(state,{},{})
+    }
+
 }

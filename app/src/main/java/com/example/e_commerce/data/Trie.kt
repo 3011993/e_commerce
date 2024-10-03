@@ -29,7 +29,6 @@ class Trie {
 
     fun searchPrefix(prefix: String): List<ProductModel> {
         var current = root
-        val products = mutableListOf<ProductModel>()
         for (char in prefix.lowercase()) {
             if (!current.children.containsKey(char)) {
                 return emptyList()
