@@ -2,7 +2,10 @@ package com.example.e_commerce.presentation
 
 import android.content.res.Resources
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
@@ -20,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.e_commerce.common.ext.fieldModifier
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
@@ -46,7 +50,10 @@ fun CommerceApp() {
                 SnackbarHost(
                     hostState = it, modifier = Modifier.padding(8.dp),
                     snackbar = { snackBarData ->
-                        Snackbar(snackBarData, contentColor = MaterialTheme.colors.onPrimary)
+                        Snackbar(snackBarData,
+                            backgroundColor =
+                            MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary,
+                            shape = RoundedCornerShape(32.dp))
                     }
                 )
             },
