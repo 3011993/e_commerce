@@ -2,24 +2,81 @@ package com.example.e_commerce.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.e_commerce.R
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.common.snackbar.SnackBarMessage.Companion.toSnackBarMessage
+import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.domain.model.ProductModel
+import com.example.e_commerce.domain.repo.CommerceRepository
+import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.account.settings.SettingsUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.UUID
 
-open class CommerceViewModel(private val logService: LogService) : ViewModel() {
-    fun launchCatching(snackBar: Boolean = true, dispatcher : CoroutineDispatcher = Dispatchers.Main , block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(dispatcher +
-            CoroutineExceptionHandler { _, throwable ->
-                if (snackBar) {
-                    SnackBarManager.showMessage(throwable.toSnackBarMessage())
-                }
-                logService.logNonFatalCrash(throwable)
-            }, block = block
+abstract class CommerceViewModel(
+    private val logService: LogService,
+    private val storageService: StorageService,
+    accountService: AccountService,
+    private val repo: CommerceRepository,
+) : ViewModel() {
+
+    protected val _allProducts =
+        MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
+    val allProducts = _allProducts.asStateFlow()
+
+    val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
+
+    fun launchCatching(
+        snackBar : Boolean = true,
+        dispatcher: CoroutineDispatcher = Dispatchers.Main,
+        block: suspend CoroutineScope.() -> Unit,
+    ) {
+        viewModelScope.launch(
+            dispatcher +
+                    CoroutineExceptionHandler { _, throwable ->
+                        if (snackBar){
+                            SnackBarManager.showMessage(throwable.toSnackBarMessage())
+                        }
+                        logService.logNonFatalCrash(throwable)
+                    }, block = block
         )
     }
+
+    fun addOrUpdateCart(productModel: ProductModel) {
+        val cartId =
+            repo.getCartIdForProduct(productModel.id.toString()) ?: UUID.randomUUID().toString()
+        val cart = CartModel(
+            cartId = cartId,
+            image = productModel.image,
+            title = productModel.title,
+            price = productModel.price.toDouble(),
+            quantity = 1,
+            productId = productModel.id,
+            originalPrice = productModel.price.toDouble(),
+        )
+        launchCatching {
+            storageService.addOrUpdateCart(cart) { result ->
+                if (result) {
+                    SnackBarManager.showMessage(R.string.added_successfully)
+                } else {
+                    SnackBarManager.showMessage(R.string.out_of_stock)
+                }
+
+            }
+        }
+        if (repo.getCartIdForProduct(productModel.id.toString()) == null) {
+            repo.saveCartIdForProduct(productModel.id.toString(), cartId)
+        }
+    }
+
+
 }

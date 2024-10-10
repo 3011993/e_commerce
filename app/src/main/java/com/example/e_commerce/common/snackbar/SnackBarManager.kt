@@ -18,7 +18,9 @@ object SnackBarManager {
   fun showMessage(message: SnackBarMessage) {
     messages.value = message
   }
-
+  fun showMessage(message: String){
+    messages.value = SnackBarMessage.StringSnackBar(message)
+  }
   fun clearSnackBarState() {
     messages.value = null
   }

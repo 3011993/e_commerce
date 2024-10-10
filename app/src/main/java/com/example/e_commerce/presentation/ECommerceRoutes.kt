@@ -6,4 +6,5 @@ const val PRODUCT_DETAILS_SCREEN = "ProductDetailsScreen"
 const val PRODUCT_ID = "id"
 const val PRODUCT_ID_ARG = "/{id}"
 const val SPLASH_SCREEN = "SplashScreen"
+const val CHECK_OUT = "checkOutScreen"
 

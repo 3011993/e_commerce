@@ -23,7 +23,7 @@ fun SignUpScreen(
     openAndPopUp: (String, String) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState
+    val uiState by viewModel.uiStateSignUp
 
     SignUpScreenContent(
         uiState = uiState,

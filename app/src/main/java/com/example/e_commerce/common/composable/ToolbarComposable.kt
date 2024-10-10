@@ -50,50 +50,6 @@ fun CommerceToolBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BasicToolbar(@StringRes title: Int) {
-    TopAppBar(title = { Text(stringResource(title)) }, colors = TopAppBarDefaults.topAppBarColors())
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ActionToolbar(
-    modifier: Modifier,
-    @StringRes title: Int,
-    @DrawableRes primaryActionIcon: Int,
-    primaryAction: () -> Unit,
-    @DrawableRes secondaryActionIcon: Int? = null,
-    secondaryAction: (() -> Unit)? = null,
-) {
-    TopAppBar(
-        title = { Text(stringResource(title)) },
-        colors = TopAppBarDefaults.topAppBarColors(),
-        actions = {
-            Box(modifier) {
-                Row(
-                    modifier = Modifier.wrapContentSize(),
-                ) {
-                    IconButton(onClick = primaryAction) {
-                        Icon(
-                            painter = painterResource(primaryActionIcon),
-                            contentDescription = "Primary Action"
-                        )
-                    }
-                    if (secondaryAction != null && secondaryActionIcon != null) {
-                        IconButton(onClick = secondaryAction) {
-                            Icon(
-                                painter = painterResource(secondaryActionIcon),
-                                contentDescription = "Secondary Action"
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    )
-}
-
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
     return if (darkTheme) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary

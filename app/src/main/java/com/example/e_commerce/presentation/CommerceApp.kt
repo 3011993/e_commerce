@@ -1,13 +1,16 @@
 package com.example.e_commerce.presentation
 
 import android.content.res.Resources
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,13 +26,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.e_commerce.common.ext.fieldModifier
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
+import com.example.e_commerce.presentation.account.settings.SettingsUiState
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
+import com.example.e_commerce.presentation.check_out.CheckOutScreen
 import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
@@ -50,10 +54,13 @@ fun CommerceApp() {
                 SnackbarHost(
                     hostState = it, modifier = Modifier.padding(8.dp),
                     snackbar = { snackBarData ->
-                        Snackbar(snackBarData,
+                        Snackbar(
+                            snackBarData,
                             backgroundColor =
-                            MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary,
-                            shape = RoundedCornerShape(32.dp))
+                            MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                            shape = RoundedCornerShape(32.dp)
+                        )
                     }
                 )
             },
@@ -127,7 +134,20 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
     }
     composable(Cart.route) {
         appState.showBottomNavigation = false
-        CartScreen(onNavigationBackClicked = { appState.popUp() })
+        val viewModel: CartViewModel = hiltViewModel()
+        val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
+
+        CartScreen(onNavigationBackClicked = { appState.popUp() },
+            onCheckOutClick = {
+                if (uiState.isAnonymousAccount) {
+                    //Todo change it with dialog
+                    SnackBarManager.showMessage("please sign up to check out")
+                    appState.navigate(Account.route)
+                } else {
+                    appState.navigate(CHECK_OUT)
+                }
+
+            })
     }
     composable(Account.route) {
         appState.showBottomNavigation = true
@@ -149,6 +169,9 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         SignUpScreen(openAndPopUp = { route, popUp ->
             appState.navigateAndPopUp(route, popUp)
         })
+    }
+    composable(CHECK_OUT) {
+        CheckOutScreen()
     }
 }
 

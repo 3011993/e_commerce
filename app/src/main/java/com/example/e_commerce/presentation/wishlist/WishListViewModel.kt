@@ -6,6 +6,7 @@ import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
+import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.CommerceViewModel
@@ -13,19 +14,15 @@ import com.example.e_commerce.presentation.Home
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class WishListViewModel @Inject constructor(
     logService: LogService,
     private val repo: CommerceRepository,
-    private val storageService: StorageService,
-) : CommerceViewModel(logService) {
-    private val _allProducts =
-        MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
-    val allProducts = _allProducts.asStateFlow()
+    accountService: AccountService,
+    storageService: StorageService,
+) : CommerceViewModel(logService,storageService,accountService,repo) {
 
     init {
         getFavouriteProducts()
@@ -45,6 +42,7 @@ class WishListViewModel @Inject constructor(
             }
         }
     }
+
     fun onFavouriteClicked(product: ProductModel) {
         launchCatching(dispatcher = Dispatchers.IO) {
             if (product.isFavorite) {
@@ -54,27 +52,9 @@ class WishListViewModel @Inject constructor(
             }
         }
     }
-    fun onNavigateBackClicked(clearAndNavigate: (String) -> Unit){
+
+    fun onNavigateBackClicked(clearAndNavigate: (String) -> Unit) {
         clearAndNavigate(Home.route)
-    }
-    fun addOrUpdateCart(cart: CartModel) {
-        launchCatching(dispatcher = Dispatchers.IO){
-            storageService.addOrUpdateCart(cart){ result ->
-                if (result) {
-                    SnackBarManager.showMessage(R.string.added_successfully)
-                } else {
-                    SnackBarManager.showMessage(R.string.out_of_stock)
-                }
-            }
-        }
-    }
-
-    fun saveCartIdForProduct(productId : String,cartId : String){
-        repo.saveCartIdForProduct(productId,cartId)
-    }
-    fun getCartIdForProduct(productId: String) : String?{
-        return repo.getCartIdForProduct(productId)
-
     }
 
 }

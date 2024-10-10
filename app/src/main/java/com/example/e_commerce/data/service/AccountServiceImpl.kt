@@ -1,5 +1,6 @@
 package com.example.e_commerce.data.service
 
+import android.util.Log
 import com.example.e_commerce.domain.model.User
 import com.example.e_commerce.domain.service.AccountService
 import com.google.firebase.auth.EmailAuthProvider
@@ -45,15 +46,17 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
 
     override suspend fun linkAccount(email: String, password: String) {
         val credential = EmailAuthProvider.getCredential(email, password)
-        auth.currentUser!!.linkWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                auth.currentUser?.let { User(task.result.user!!.uid) } ?: User()
+        auth.currentUser?.let {
+            it.linkWithCredential(credential).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    auth.currentUser?.let { User(task.result.user!!.uid) } ?: User()
+                }
             }
         }
     }
 
     override suspend fun deleteAccount() {
-        auth.currentUser!!.delete().await()
+        auth.currentUser?.delete()?.await()
     }
 
     override suspend fun signOut() {

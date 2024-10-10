@@ -30,7 +30,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
-fun CartScreen(onNavigationBackClicked: () -> Unit, modifier: Modifier = Modifier) {
+fun CartScreen(onNavigationBackClicked: () -> Unit,onCheckOutClick: () -> Unit ,modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         val viewModel: CartViewModel = hiltViewModel()
         val carts by viewModel.carts.collectAsState()
@@ -39,7 +39,8 @@ fun CartScreen(onNavigationBackClicked: () -> Unit, modifier: Modifier = Modifie
             onIncreaseQuantity = viewModel::updateCart,
             onDecreaseQuantity = viewModel::removeProductFromCart,
             onNavigationBackClicked = onNavigationBackClicked,
-            carts = carts
+            carts = carts,
+            onCheckOutClick = onCheckOutClick
         )
     }
 }
@@ -52,6 +53,7 @@ fun CartContent(
     onDecreaseQuantity: (CartModel) -> Unit,
     onNavigationBackClicked: () -> Unit,
     carts: List<CartModel>,
+    onCheckOutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showLoading by remember { mutableStateOf(false) }
@@ -88,7 +90,7 @@ fun CartContent(
             val totalPrice = carts.sumOf { it.price }
             CheckOutBottom(
                 totalPrice,
-                onCheckOutClick = {},
+                onCheckOutClick = onCheckOutClick,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
@@ -113,6 +115,7 @@ fun CartScreenPreview() {
             carts = cartsModels,
             onDecreaseQuantity = {},
             onIncreaseQuantity = {},
-            onNavigationBackClicked = {})
+            onNavigationBackClicked = {},
+            onCheckOutClick = {})
     }
 }

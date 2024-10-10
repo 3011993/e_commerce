@@ -7,13 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.EmailField
 import com.example.e_commerce.common.composable.PasswordField
@@ -26,7 +24,7 @@ fun LoginScreen(
     openAndPopUp: (String, String) -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState
+    val uiState by viewModel.uiStateLogIn
 
     LoginScreenContent(
         uiState = uiState,

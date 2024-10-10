@@ -17,39 +17,40 @@ limitations under the License.
 package com.example.e_commerce.presentation.account.login
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.common.ext.isValidEmail
 import com.example.e_commerce.common.snackbar.SnackBarManager
+import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.Account
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     logService: LogService,
+    storageService: StorageService,
+    repo : CommerceRepository,
     private val accountService: AccountService,
-) : CommerceViewModel(logService) {
-    var uiState = mutableStateOf(LoginUiState())
+) : CommerceViewModel(logService,storageService,accountService,repo) {
+    var uiStateLogIn = mutableStateOf(LoginUiState())
         private set
 
     private val email
-        get() = uiState.value.email
+        get() = uiStateLogIn.value.email
     private val password
-        get() = uiState.value.password
+        get() = uiStateLogIn.value.password
 
     fun onEmailChange(newValue: String) {
-        uiState.value = uiState.value.copy(email = newValue)
+        uiStateLogIn.value = uiStateLogIn.value.copy(email = newValue)
     }
 
     fun onPasswordChange(newValue: String) {
-        uiState.value = uiState.value.copy(password = newValue)
+        uiStateLogIn.value = uiStateLogIn.value.copy(password = newValue)
     }
 
     fun onSignInClick(openAndPopUp: (String, String) -> Unit) {

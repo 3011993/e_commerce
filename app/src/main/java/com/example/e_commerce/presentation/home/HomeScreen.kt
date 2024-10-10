@@ -223,7 +223,7 @@ fun ProductsLazyVerticalGrid(
                 showSnackBar = false
             }
         }
-        items(products,) { product ->
+        items(products) { product ->
             val showFavourite by remember { mutableStateOf(product.isFavorite) }
             ProductItem(
                 product = product,

@@ -4,7 +4,9 @@ import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.Trie
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
+import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
+import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,15 +14,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     logService: LogService,
+    storageService: StorageService,
     private val repo: CommerceRepository,
-) : CommerceViewModel(logService) {
-    private val _allProducts =
-        MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
-    val allProducts = _allProducts.asStateFlow()
+    accountService: AccountService,
+) : CommerceViewModel(logService,storageService,accountService,repo) {
 
     private var trie: Trie? = null
 

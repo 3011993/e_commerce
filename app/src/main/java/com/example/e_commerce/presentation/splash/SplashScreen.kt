@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -17,10 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.BasicButton
 import com.example.e_commerce.common.ext.basicButton
 import com.example.e_commerce.ui.theme.E_commerceTheme
-import kotlinx.coroutines.delay
 import com.example.e_commerce.R.string as AppText
-
-private const val SPLASH_TIMEOUT = 2000L
 
 @Composable
 fun SplashScreen(
@@ -43,7 +38,7 @@ fun SplashScreenContent(
         modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(color = MaterialTheme.colors.background)
+            .background(color = MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -53,7 +48,7 @@ fun SplashScreenContent(
 
             BasicButton(AppText.try_again, Modifier.basicButton()) { onAppStart() }
         } else {
-            CircularProgressIndicator(color = MaterialTheme.colors.primary)
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
     }
 

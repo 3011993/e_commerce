@@ -16,44 +16,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.CommerceToolBar
-import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.wishlist.components.WishListAvailableItems
 import com.example.e_commerce.presentation.home.ProductsLazyVerticalGrid
 import com.example.e_commerce.ui.theme.E_commerceTheme
-import java.util.UUID
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
-fun WishlistScreen(clearAndNavigate :(String) -> Unit,modifier: Modifier = Modifier) {
+fun WishlistScreen(clearAndNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: WishListViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
 
     WishListContent(
         state = state,
         onProductClick = {},
-        onCartButtonClicked = { product ->
-            val cartId =
-                viewModel.getCartIdForProduct(product.id.toString()) ?: UUID.randomUUID().toString()
-            val cartItemModel = CartModel(
-                cartId = cartId,
-                price = product.price.toDouble(),
-                quantity = 1,
-                productId = product.id,
-                originalPrice = product.price.toDouble(),
-                title = product.title,
-                image = product.image
-            )
-            viewModel.addOrUpdateCart(cartItemModel)
-            if (viewModel.getCartIdForProduct(product.id.toString()) == null) {
-                viewModel.saveCartIdForProduct(product.id.toString(), cartId)
-            }
-        },
+        onCartButtonClicked = viewModel::addOrUpdateCart,
         onFavouriteButtonClicked = viewModel::onFavouriteClicked,
         isConnected = true,
-        onNavigationBackClicked = {viewModel.onNavigateBackClicked(clearAndNavigate)},
+        onNavigationBackClicked = { viewModel.onNavigateBackClicked(clearAndNavigate) },
         modifier = modifier
     )
 }
@@ -63,13 +45,13 @@ fun WishListContent(
     state: ScreenState<List<ProductModel>>,
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
-    onFavouriteButtonClicked : (ProductModel) -> Unit,
-    onNavigationBackClicked :() -> Unit,
+    onFavouriteButtonClicked: (ProductModel) -> Unit,
+    onNavigationBackClicked: () -> Unit,
     isConnected: Boolean, modifier: Modifier = Modifier,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         CommerceToolBar(
-            title= AppText.wishlist_top_bar,
+            title = AppText.wishlist_top_bar,
             navigationIcon = AppIcon.back,
             onNavigationBackClicked = onNavigationBackClicked,
             modifier = Modifier
@@ -157,6 +139,6 @@ fun CategoriesScreenPreview() {
             ),
         )
         val state = ScreenState.Success(products)
-        WishListContent(state, {}, {}, {}, isConnected = true , onNavigationBackClicked = {})
+        WishListContent(state, {}, {}, {}, isConnected = true, onNavigationBackClicked = {})
     }
 }
