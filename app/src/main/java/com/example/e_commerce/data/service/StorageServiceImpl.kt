@@ -140,7 +140,16 @@ class StorageServiceImpl @Inject constructor(
             onResult(false)
         }
     }
-
+    override fun getInStockStatus(productId: String, callBack :(Boolean) -> Unit) {
+        val productDoc =firestore.collection(INVENTORY_COLLECTION).document(productId)
+        productDoc.get().addOnSuccessListener { snapShot ->
+            if (snapShot != null && snapShot.exists()){
+                 callBack(snapShot.getBoolean("inStock") ?: false)
+            } else {
+                callBack(false)
+            }
+        }
+    }
     companion object {
         const val CARTS_COLLECTION = "carts"
         const val USER_ID_FIELD = "userId"

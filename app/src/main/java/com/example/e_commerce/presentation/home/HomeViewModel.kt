@@ -14,17 +14,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     logService: LogService,
-    storageService: StorageService,
+    private val storageService: StorageService,
     private val repo: CommerceRepository,
     accountService: AccountService,
 ) : CommerceViewModel(logService,storageService,accountService,repo) {
 
     private var trie: Trie? = null
+    private val _isInStock = MutableStateFlow<Map<String,Boolean>>(emptyMap())
+    val isInStock= _isInStock.asStateFlow()
 
     init {
         getAllProducts()
@@ -48,6 +49,7 @@ class HomeViewModel @Inject constructor(
 
                     is Resources.Success -> {
                         _allProducts.value = ScreenState.Success(result.data ?: emptyList())
+                        getIsInStockStatus(result.data?: emptyList())
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
@@ -91,6 +93,15 @@ class HomeViewModel @Inject constructor(
                 repo.addFavouriteProduct(product.id, isFavourite = true)
             }
         }
+    }
+
+    fun getIsInStockStatus(products : List<ProductModel>){
+        products.forEach{ product ->
+            storageService.getInStockStatus(product.id.toString()){ inStock ->
+                _isInStock.value = _isInStock.value + (product.id.toString() to inStock)
+            }
+        }
+
     }
 
     fun onToggleFavourite(product: ProductModel) {

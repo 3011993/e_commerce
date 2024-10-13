@@ -69,6 +69,7 @@ fun WishListContent(
                             onProductClick = onProductClick,
                             onCartButtonClicked = onCartButtonClicked,
                             isConnected = isConnected,
+                            productsInStock = emptyMap(),
                             onFavouriteClicked = {},
                         )
                         Log.i("Store Screen", state.message ?: "An unexpected error occurred")
@@ -91,6 +92,7 @@ fun WishListContent(
                             onCartButtonClicked = onCartButtonClicked,
                             isConnected = isConnected,
                             onFavouriteClicked = onFavouriteButtonClicked,
+                            productsInStock = emptyMap(),
                             modifier = modifier
                         )
                     }

@@ -9,4 +9,5 @@ interface StorageService {
     fun updateCart(cart: CartModel,onResult: (Boolean) -> Unit)
     suspend fun addOrUpdateCart(cart: CartModel,onResult: (Boolean) -> Unit)
     fun removeFromCart(cart: CartModel,onResult: (Boolean) -> Unit)
+    fun getInStockStatus(productId : String, callBack :(Boolean) -> Unit)
 }

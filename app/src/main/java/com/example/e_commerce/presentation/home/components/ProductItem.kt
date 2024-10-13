@@ -14,6 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,20 +29,29 @@ import coil.compose.AsyncImage
 import com.example.e_commerce.R
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.warningColor
 
 @Composable
 fun ProductItem(
     product: ProductModel,
     onProductClicked: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    isInStock : Boolean,
     onFavouriteCLicked: (ProductModel) -> Unit,
-    showFavourite : Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var productIcon by remember { mutableStateOf(R.drawable.heart) }
+    LaunchedEffect(product.isFavorite) {
+        productIcon = if (product.isFavorite) {
+            R.drawable.heart_selected
+        } else {
+            R.drawable.heart
+        }
+    }
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(257.dp)
+            .height(260.dp)
             .padding(8.dp),
         elevation = CardDefaults.elevatedCardElevation(2.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
@@ -53,6 +67,7 @@ fun ProductItem(
             Column(
                 modifier = modifier
                     .fillMaxSize()
+
             ) {
 
                 AsyncImage(
@@ -83,12 +98,14 @@ fun ProductItem(
                         .width(26.dp)
                         .offset(x = 3.dp)
                 )
+                if (!isInStock){
+                    Text("Out of Stock", style = MaterialTheme.typography.titleSmall.copy(color = warningColor),
+                        modifier = Modifier.align(Alignment.End).padding(end = 8.dp))
+                }
+
             }
             Image(
-                painter = if (showFavourite) {
-                    painterResource(id = R.drawable.heart_selected)
-                } else
-                    painterResource(id = R.drawable.heart),
+                painter = painterResource(productIcon),
                 contentDescription = null,
                 modifier = modifier
                     .size(25.dp)
@@ -121,9 +138,9 @@ private fun ProductItemPreview() {
             description = "this is ay 7age",
             title = "Bag",
             id = 0,
-            isFavorite = true
+            isFavorite = false
         )
-        ProductItem(product, {}, {}, {}, true)
+        ProductItem(product, {}, {}, isInStock = false ,{},)
     }
 
 }

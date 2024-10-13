@@ -53,6 +53,7 @@ fun HomeScreen(
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
+    val isInStock by viewModel.isInStock.collectAsState()
     HomeContent(
         state = state,
         onProductClick = onProductClick,
@@ -61,6 +62,7 @@ fun HomeScreen(
         searchPrefix = viewModel::searchProducts,
         onCategorySelected = viewModel::getProductsByCategory,
         onFavouriteClicked = viewModel::onFavouriteClicked,
+        productsInStock = isInStock,
         modifier = modifier
     )
 }
@@ -74,6 +76,7 @@ fun HomeContent(
     getAllProducts: () -> Unit,
     searchPrefix: (String) -> List<ProductModel>,
     onCategorySelected: (CategoriesEntries) -> Unit,
+    productsInStock: Map<String, Boolean>,
     modifier: Modifier = Modifier,
 ) {
     val connection by rememberConnectivityState()
@@ -160,6 +163,7 @@ fun HomeContent(
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
                         onFavouriteClicked = onFavouriteClicked,
+                        productsInStock = productsInStock,
                         isConnected = isConnected,
                     )
                     Log.i("Store Screen", state.message ?: "An unexpected error occurred")
@@ -175,6 +179,7 @@ fun HomeContent(
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
                         onFavouriteClicked = onFavouriteClicked,
+                        productsInStock = productsInStock,
                         isConnected = isConnected,
                     )
                 }
@@ -204,6 +209,7 @@ fun ProductsLazyVerticalGrid(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
     onFavouriteClicked: (ProductModel) -> Unit,
+    productsInStock: Map<String, Boolean>,
     isConnected: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -223,14 +229,14 @@ fun ProductsLazyVerticalGrid(
                 showSnackBar = false
             }
         }
-        items(products) { product ->
-            val showFavourite by remember { mutableStateOf(product.isFavorite) }
+        items(products, key = {it.id}) { product ->
+            val inStock  = productsInStock[product.id.toString()] ?: false
             ProductItem(
                 product = product,
                 onProductClick,
                 onCartButtonClicked,
+                isInStock = inStock,
                 onFavouriteClicked,
-                showFavourite
             )
         }
     }
@@ -263,7 +269,7 @@ fun StoreScreenPreview() {
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
         HomeContent(
             state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
-            getAllProducts = {}
+            getAllProducts = {}, productsInStock = emptyMap(),
         )
     }
 }
