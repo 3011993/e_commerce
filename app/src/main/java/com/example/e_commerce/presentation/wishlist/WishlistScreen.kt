@@ -28,6 +28,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 fun WishlistScreen(clearAndNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: WishListViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
+    val isInStock by viewModel.inStock.collectAsState()
 
     WishListContent(
         state = state,
@@ -36,6 +37,7 @@ fun WishlistScreen(clearAndNavigate: (String) -> Unit, modifier: Modifier = Modi
         onFavouriteButtonClicked = viewModel::onFavouriteClicked,
         isConnected = true,
         onNavigationBackClicked = { viewModel.onNavigateBackClicked(clearAndNavigate) },
+        isInStock = isInStock,
         modifier = modifier
     )
 }
@@ -47,6 +49,7 @@ fun WishListContent(
     onCartButtonClicked: (ProductModel) -> Unit,
     onFavouriteButtonClicked: (ProductModel) -> Unit,
     onNavigationBackClicked: () -> Unit,
+    isInStock: Map<String,Boolean>,
     isConnected: Boolean, modifier: Modifier = Modifier,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -69,7 +72,7 @@ fun WishListContent(
                             onProductClick = onProductClick,
                             onCartButtonClicked = onCartButtonClicked,
                             isConnected = isConnected,
-                            productsInStock = emptyMap(),
+                            productsInStock = isInStock,
                             onFavouriteClicked = {},
                         )
                         Log.i("Store Screen", state.message ?: "An unexpected error occurred")
@@ -92,7 +95,7 @@ fun WishListContent(
                             onCartButtonClicked = onCartButtonClicked,
                             isConnected = isConnected,
                             onFavouriteClicked = onFavouriteButtonClicked,
-                            productsInStock = emptyMap(),
+                            productsInStock = isInStock,
                             modifier = modifier
                         )
                     }
@@ -141,6 +144,8 @@ fun CategoriesScreenPreview() {
             ),
         )
         val state = ScreenState.Success(products)
-        WishListContent(state, {}, {}, {}, isConnected = true, onNavigationBackClicked = {})
+        WishListContent(state, {}, {}, {}, isConnected = true, onNavigationBackClicked = {},
+            isInStock = emptyMap()
+        )
     }
 }

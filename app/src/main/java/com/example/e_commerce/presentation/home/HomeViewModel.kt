@@ -11,21 +11,17 @@ import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     logService: LogService,
-    private val storageService: StorageService,
+    storageService: StorageService,
     private val repo: CommerceRepository,
     accountService: AccountService,
-) : CommerceViewModel(logService,storageService,accountService,repo) {
+) : CommerceViewModel(logService, storageService, accountService, repo) {
 
     private var trie: Trie? = null
-    private val _isInStock = MutableStateFlow<Map<String,Boolean>>(emptyMap())
-    val isInStock= _isInStock.asStateFlow()
 
     init {
         getAllProducts()
@@ -40,6 +36,7 @@ class HomeViewModel @Inject constructor(
                             message = result.message ?: "Unknown error occurred",
                             data = result.data
                         )
+                        getIsInStockStatus(result.data ?: emptyList())
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
@@ -49,7 +46,7 @@ class HomeViewModel @Inject constructor(
 
                     is Resources.Success -> {
                         _allProducts.value = ScreenState.Success(result.data ?: emptyList())
-                        getIsInStockStatus(result.data?: emptyList())
+                        getIsInStockStatus(result.data ?: emptyList())
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
@@ -67,6 +64,7 @@ class HomeViewModel @Inject constructor(
                             message = result.message ?: "Unknown error occurred",
                             data = result.data ?: emptyList()
                         )
+                        getIsInStockStatus(result.data ?: emptyList())
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
                     }
 
@@ -77,6 +75,7 @@ class HomeViewModel @Inject constructor(
                     is Resources.Success -> {
                         _allProducts.value =
                             ScreenState.Success(result.data ?: emptyList())
+                        getIsInStockStatus(result.data ?: emptyList())
                         trie = Trie.preprocessProducts(result.data ?: emptyList())
 
                     }
@@ -95,14 +94,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getIsInStockStatus(products : List<ProductModel>){
-        products.forEach{ product ->
-            storageService.getInStockStatus(product.id.toString()){ inStock ->
-                _isInStock.value = _isInStock.value + (product.id.toString() to inStock)
-            }
-        }
-
-    }
 
     fun onToggleFavourite(product: ProductModel) {
         product.isFavorite = !product.isFavorite

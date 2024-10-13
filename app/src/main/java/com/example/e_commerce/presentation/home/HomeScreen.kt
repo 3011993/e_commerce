@@ -53,7 +53,7 @@ fun HomeScreen(
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.allProducts.collectAsState()
-    val isInStock by viewModel.isInStock.collectAsState()
+    val productsInStock by viewModel.inStock.collectAsState()
     HomeContent(
         state = state,
         onProductClick = onProductClick,
@@ -62,7 +62,7 @@ fun HomeScreen(
         searchPrefix = viewModel::searchProducts,
         onCategorySelected = viewModel::getProductsByCategory,
         onFavouriteClicked = viewModel::onFavouriteClicked,
-        productsInStock = isInStock,
+        productsInStock = productsInStock,
         modifier = modifier
     )
 }

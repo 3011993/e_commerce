@@ -35,15 +35,18 @@ abstract class CommerceViewModel(
 
     val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
 
+    private val _inStock = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    val inStock = _inStock.asStateFlow()
+
     fun launchCatching(
-        snackBar : Boolean = true,
+        snackBar: Boolean = true,
         dispatcher: CoroutineDispatcher = Dispatchers.Main,
         block: suspend CoroutineScope.() -> Unit,
     ) {
         viewModelScope.launch(
             dispatcher +
                     CoroutineExceptionHandler { _, throwable ->
-                        if (snackBar){
+                        if (snackBar) {
                             SnackBarManager.showMessage(throwable.toSnackBarMessage())
                         }
                         logService.logNonFatalCrash(throwable)
@@ -75,6 +78,14 @@ abstract class CommerceViewModel(
         }
         if (repo.getCartIdForProduct(productModel.id.toString()) == null) {
             repo.saveCartIdForProduct(productModel.id.toString(), cartId)
+        }
+    }
+
+    fun getIsInStockStatus(products: List<ProductModel>) {
+        products.forEach { product ->
+            storageService.getInStockStatus(product.id.toString()) { inStock ->
+                this._inStock.value += (product.id.toString() to inStock)
+            }
         }
     }
 
