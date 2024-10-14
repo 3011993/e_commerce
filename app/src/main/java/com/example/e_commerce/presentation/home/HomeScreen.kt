@@ -230,7 +230,7 @@ fun ProductsLazyVerticalGrid(
             }
         }
         items(products, key = {it.id}) { product ->
-            val inStock  = productsInStock[product.id.toString()] ?: false
+            val inStock  = productsInStock[product.id.toString()] ?: true
             ProductItem(
                 product = product,
                 onProductClick,
