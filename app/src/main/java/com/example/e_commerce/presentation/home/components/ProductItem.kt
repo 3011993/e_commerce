@@ -40,14 +40,6 @@ fun ProductItem(
     onFavouriteCLicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var productIcon by remember { mutableStateOf(R.drawable.heart) }
-    LaunchedEffect(product.isFavorite) {
-        productIcon = if (product.isFavorite) {
-            R.drawable.heart_selected
-        } else {
-            R.drawable.heart
-        }
-    }
     Card(
         modifier = modifier
             .width(160.dp)
@@ -105,7 +97,8 @@ fun ProductItem(
 
             }
             Image(
-                painter = painterResource(productIcon),
+                painter = if(product.isFavorite) painterResource(R.drawable.heart_selected) else
+                    painterResource(R.drawable.heart),
                 contentDescription = null,
                 modifier = modifier
                     .size(25.dp)

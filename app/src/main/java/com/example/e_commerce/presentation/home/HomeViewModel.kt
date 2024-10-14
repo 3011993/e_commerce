@@ -87,16 +87,13 @@ class HomeViewModel @Inject constructor(
     fun onFavouriteClicked(product: ProductModel) {
         launchCatching(dispatcher = Dispatchers.IO) {
             if (product.isFavorite) {
-                repo.removeFavouriteProduct(product.id, isFavourite = false)
+                val products = repo.removeFavouriteFromHome(product.id, isFavourite = false)
+                _allProducts.value = ScreenState.Success(data = products)
             } else {
-                repo.addFavouriteProduct(product.id, isFavourite = true)
+                val products = repo.addFavouriteFromHome(product.id, isFavourite = true)
+                _allProducts.value = ScreenState.Success(data = products)
             }
         }
-    }
-
-
-    fun onToggleFavourite(product: ProductModel) {
-        product.isFavorite = !product.isFavorite
     }
 
     fun searchProducts(prefix: String): List<ProductModel> {

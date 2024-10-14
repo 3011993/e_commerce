@@ -34,6 +34,7 @@ class WishListViewModel @Inject constructor(
                             ScreenState.Error(result.message, data = result.data)
                         getIsInStockStatus(result.data ?: emptyList())
                     }
+
                     is Resources.Loading -> _allProducts.value = ScreenState.Loading()
                     is Resources.Success -> {
                         _allProducts.value =
@@ -48,9 +49,11 @@ class WishListViewModel @Inject constructor(
     fun onFavouriteClicked(product: ProductModel) {
         launchCatching(dispatcher = Dispatchers.IO) {
             if (product.isFavorite) {
-                repo.removeFavouriteProduct(product.id, isFavourite = false)
+                val products = repo.removeFavouriteFromWishList(product.id, isFavourite = false)
+                _allProducts.value = ScreenState.Success(data = products)
             } else {
-                repo.addFavouriteProduct(product.id, isFavourite = true)
+                val products = repo.addFavouriteFromWishList(product.id, isFavourite = true)
+                _allProducts.value = ScreenState.Success(data = products)
             }
         }
     }

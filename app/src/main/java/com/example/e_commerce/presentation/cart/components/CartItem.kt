@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.e_commerce.common.ext.adjustPrice
 import com.example.e_commerce.R.drawable as AppIcon
 import com.example.e_commerce.domain.model.CartModel
 
@@ -72,7 +73,7 @@ fun CartItem(
                     fontSize = 13.sp
                 )
                 Text(
-                    "$${cartItem.price}",
+                    cartItem.price.adjustPrice(),
                     style = MaterialTheme.typography.titleSmall.copy(color = secondaryOnBackGround),
                     modifier = modifier.padding(start = 8.dp, top = 2.dp),
                 )

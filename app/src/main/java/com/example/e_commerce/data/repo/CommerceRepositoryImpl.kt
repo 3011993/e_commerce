@@ -113,15 +113,29 @@ class CommerceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addFavouriteProduct(productId: Int, isFavourite: Boolean) {
+    override suspend fun addFavouriteFromHome(productId: Int, isFavourite: Boolean) : List<ProductModel> {
         val favouriteEntity = FavouriteEntity(productId, isFavourite)
         dao.insertFavourite(favouriteEntity)
         dao.updateFavourites(productId,isFavourite)
+        return dao.getAllProducts().map { it.toModel() }
     }
 
-    override suspend fun removeFavouriteProduct(productId: Int, isFavourite: Boolean) {
+    override suspend fun removeFavouriteFromHome(productId: Int, isFavourite: Boolean) : List<ProductModel> {
         dao.deleteFavourite(productId)
         dao.updateFavourites(productId,isFavourite)
+        return dao.getAllProducts().map { it.toModel() }
+    }
+    override suspend fun addFavouriteFromWishList(productId: Int, isFavourite: Boolean) : List<ProductModel> {
+        val favouriteEntity = FavouriteEntity(productId, isFavourite)
+        dao.insertFavourite(favouriteEntity)
+        dao.updateFavourites(productId,isFavourite)
+        return dao.getFavoriteProducts().map { it.toModel() }
+    }
+
+    override suspend fun removeFavouriteFromWishList(productId: Int, isFavourite: Boolean) : List<ProductModel> {
+        dao.deleteFavourite(productId)
+        dao.updateFavourites(productId,isFavourite)
+        return dao.getFavoriteProducts().map { it.toModel() }
     }
 
     override suspend fun getProductsByCategory(category: String): Flow<Resources<List<ProductModel>>> {
