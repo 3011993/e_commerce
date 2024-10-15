@@ -1,59 +1,204 @@
 package com.example.e_commerce.presentation.check_out
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
+import com.example.e_commerce.common.ext.adjustPrice
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 
-
 @Composable
-fun CheckOutScreen(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize()) {
-        Text("This is Check Out Screen", modifier.align(Alignment.Center))
-    }
+fun OrderConfirmationScreen(modifier: Modifier = Modifier) {
+    val cartItems = listOf(
+        CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
+        CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
+    )
+    OrderConfirmationContent(cartItems)
 }
 
 @Composable
-fun OrderConfirmationContent(modifier: Modifier = Modifier) {
-    Column(modifier= Modifier.fillMaxSize()) {
+fun OrderConfirmationContent(carts: List<CartModel>, modifier: Modifier = Modifier) {
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         CommerceToolBar(
             title = AppText.order_confirmation_bar,
             navigationIcon = AppIcon.back,
             onNavigationBackClicked = {})
+        OrderSummarySection(carts)
+        AddressSection()
+        PaymentSection()
         Spacer(modifier.weight(1f))
         CommerceWideButton(AppText.place_order_button, action = {})
     }
 }
 
 @Composable
-fun OrderSummarySection(modifier: Modifier = Modifier) {
-    
+fun OrderSummarySection(cartItems: List<CartModel>, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text("Order Summary:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+        LazyColumn(modifier = modifier.fillMaxWidth()) {
+            items(cartItems) { cartItem ->
+                OrderItem(cartItem)
+            }
+        }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                "SubToTal",
+                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+            )
+            Text("440 $", style = MaterialTheme.typography.bodyMedium)
+        }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                "Shipping",
+                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+            )
+            Text("5 $", style = MaterialTheme.typography.bodyMedium)
+        }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                "Total",
+                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+            )
+            Text("445 $", style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+}
+
+@Composable
+fun OrderItem(
+    cartItem: CartModel,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier
+            .height(80.dp)
+            .fillMaxWidth()
+            .padding(
+                start = 16.dp, end = 16.dp,
+                top = 8.dp, bottom = 8.dp
+            ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+    ) {
+        Row(modifier = modifier.fillMaxWidth()) {
+            AsyncImage(
+                model = cartItem.image,
+                contentDescription = cartItem.title,
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .padding(top = 8.dp, start = 8.dp)
+                    .weight(1f)
+            )
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .weight(2f),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    cartItem.title,
+                    modifier = modifier.padding(start = 8.dp, top = 8.dp),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
+                    fontSize = 13.sp
+                )
+                Text(
+                    cartItem.price.adjustPrice(),
+                    style = MaterialTheme.typography.titleSmall.copy(color = secondaryOnBackGround),
+                    modifier = modifier.padding(start = 8.dp, top = 2.dp),
+                )
+                Text(
+                    text = "${cartItem.quantity}",
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+        }
+
+    }
 }
 
 @Composable
 fun AddressSection(modifier: Modifier = Modifier) {
-    
+    Column(modifier = modifier.fillMaxWidth().padding(8.dp)) {
+        Text("Address:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+        Text(
+            "31 Mohmaed Street, Cairo, Egypt",
+            style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+        )
+    }
 }
 
 @Composable
 fun PaymentSection(modifier: Modifier = Modifier) {
-    
+    Column(modifier = modifier.fillMaxWidth().padding(8.dp)) {
+        Text("Payment:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+        Text(
+            "Card Details",
+            style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+        )
+    }
+
 }
+
 @Preview(showBackground = true)
 @Composable
 fun OrderConfirmationPreview() {
     E_commerceTheme {
-        OrderConfirmationContent()
+        val cartItems = listOf(
+            CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
+            CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
+        )
+        OrderConfirmationContent(cartItems)
     }
 }

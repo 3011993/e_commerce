@@ -25,11 +25,11 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun OrderConfirmedScreen(modifier: Modifier = Modifier) {
-    OrderConfirmedContent(modifier)
+    OrderConfirmedContent(onContinueShoppingClicked = {},modifier)
 }
 
 @Composable
-fun OrderConfirmedContent(modifier: Modifier = Modifier) {
+fun OrderConfirmedContent(onContinueShoppingClicked : () -> Unit,modifier: Modifier = Modifier,) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,7 +57,7 @@ fun OrderConfirmedContent(modifier: Modifier = Modifier) {
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        CommerceWideButton(AppText.continue_shopping_button, action = {})
+        CommerceWideButton(AppText.continue_shopping_button, action = onContinueShoppingClicked)
     }
 }
 
@@ -65,6 +65,6 @@ fun OrderConfirmedContent(modifier: Modifier = Modifier) {
 @Composable
 private fun OrderConfirmedContentPreview() {
     E_commerceTheme {
-        OrderConfirmedContent()
+        OrderConfirmedContent(onContinueShoppingClicked = {})
     }
 }

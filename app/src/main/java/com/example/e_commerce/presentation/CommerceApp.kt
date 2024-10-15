@@ -1,9 +1,6 @@
 package com.example.e_commerce.presentation
 
 import android.content.res.Resources
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -33,7 +30,11 @@ import com.example.e_commerce.presentation.account.settings.SettingsUiState
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
-import com.example.e_commerce.presentation.check_out.CheckOutScreen
+import com.example.e_commerce.presentation.check_out.AddNewPaymentContent
+import com.example.e_commerce.presentation.check_out.AddNewPaymentScreen
+import com.example.e_commerce.presentation.check_out.AddressScreen
+import com.example.e_commerce.presentation.check_out.OrderConfirmationScreen
+import com.example.e_commerce.presentation.check_out.OrderConfirmedScreen
 import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
@@ -144,7 +145,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
                     SnackBarManager.showMessage("please sign up to check out")
                     appState.navigate(Account.route)
                 } else {
-                    appState.navigate(CHECK_OUT)
+                    appState.navigate(ORDER_CONFIRMATION)
                 }
 
             })
@@ -170,15 +171,16 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigateAndPopUp(route, popUp)
         })
     }
-    composable(CHECK_OUT) {
-        CheckOutScreen()
+    composable(ORDER_CONFIRMATION) {
+        OrderConfirmationScreen()
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CommerceAppPreview() {
-    E_commerceTheme {
-        CommerceApp()
+    composable(ADDRESS){
+        AddressScreen()
+    }
+    composable(ADD_NEW_PAYMENT){
+        AddNewPaymentScreen()
+    }
+    composable(ORDER_CONFIRMED){
+        OrderConfirmedScreen()
     }
 }
