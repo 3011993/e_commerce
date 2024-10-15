@@ -49,5 +49,18 @@
     <string name="out_of_stock">Out of Stock</string>
     <string name="removed_successfully">Item removed from cart</string>
     <string name="removed_failed">Item failed from cart</string>
+    <!-- Payment values -->
+    <string name="add_new_payment_bar">Add New Card</string>
+    <string name="address_bar">Address</string>
+    <string name="order_confirmation_bar">Order Confirmation</string>
+    <string name="card_owner">Name on The card</string>
+    <string name="card_number">Card Number</string>
+    <string name="place_order_button">Place Order</string>
+    <string name="add_new_card_button">Add Card</string>
+    <string name="save_address_card_button">Save Address</string>
+    <string name="continue_shopping_button">Continue Shopping</string>
+    <string name="secondary_order_confirmed_text">Your order has been confirmed, we will send you confirmation email shortly.</string>
+
+
 
 </resources>

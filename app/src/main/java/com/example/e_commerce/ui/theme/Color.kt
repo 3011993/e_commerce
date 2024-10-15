@@ -2,7 +2,7 @@ package com.example.e_commerce.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFF9775FA)
+val primaryLight = Color(0xFF3D93F8)
 val onPrimaryLight = Color(0XFFFEFEFE)
 val backgroundLight = Color(0xFFFEFEFE)
 val onBackgroundLight = Color(0xFF1D1E20)
