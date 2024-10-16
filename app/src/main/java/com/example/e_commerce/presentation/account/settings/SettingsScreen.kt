@@ -66,7 +66,7 @@ fun SettingsScreenContent(
         CommerceToolBar(
             title = AppText.account_top_bar,
             navigationIcon = AppIcon.back,
-            onNavigationBackClicked = onNavigationBackClicked,
+            onNavigationBack = onNavigationBackClicked,
             modifier = Modifier
         )
         Spacer(modifier = Modifier.spacer())

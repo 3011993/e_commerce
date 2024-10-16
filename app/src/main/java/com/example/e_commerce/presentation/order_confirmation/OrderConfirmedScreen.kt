@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.check_out
+package com.example.e_commerce.presentation.order_confirmation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.check_out
+package com.example.e_commerce.presentation.order_confirmation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,13 +24,13 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 
 @Composable
-fun AddressScreen(modifier: Modifier = Modifier) {
-    AddressContent(modifier)
+fun AddressScreen(onNavigateBack: () -> Unit,modifier: Modifier = Modifier) {
+    AddressContent(onNavigateBack = onNavigateBack, modifier)
 }
 @Composable
-fun AddressContent(modifier: Modifier = Modifier) {
+fun AddressContent(onNavigateBack : () -> Unit,modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)){
-        CommerceToolBar(title = AppText.address_bar, navigationIcon = AppIcon.back, onNavigationBackClicked = {})
+        CommerceToolBar(title = AppText.address_bar, navigationIcon = AppIcon.back, onNavigationBack = onNavigateBack)
         Text(
             "Name", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp),
             modifier = modifier.padding(start = 16.dp, end = 16.dp)
@@ -66,6 +66,6 @@ fun AddressContent(modifier: Modifier = Modifier) {
 @Composable
 fun AddressContentPreview(modifier: Modifier = Modifier) {
     E_commerceTheme {
-        AddressContent()
+        AddressContent({})
     }
 }

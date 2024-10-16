@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.check_out
+package com.example.e_commerce.presentation.order_confirmation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,14 +32,19 @@ import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
-fun AddNewPaymentScreen(modifier: Modifier = Modifier) {
-    AddNewPaymentContent(modifier)
+fun AddNewPaymentScreen(onNavigateBack: () ->Unit,modifier: Modifier = Modifier) {
+    AddNewPaymentContent(onNavigateBack = onNavigateBack, modifier)
 }
 
 @Composable
-fun AddNewPaymentContent(modifier: Modifier = Modifier) {
+fun AddNewPaymentContent(onNavigateBack : () -> Unit,modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        AddNewPaymentTopBar()
+        CommerceToolBar(
+            onNavigationBack =onNavigateBack,
+            title = AppText.add_new_payment_bar,
+            modifier = modifier,
+            navigationIcon = AppIcon.back
+        )
         PaymentMethodsSection()
         Text(
             "Card Owner", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp),
@@ -65,17 +69,6 @@ fun AddNewPaymentContent(modifier: Modifier = Modifier) {
         Spacer(modifier.weight(1f))
         CommerceWideButton(text = AppText.add_new_card_button, action = {})
     }
-}
-
-@Composable
-fun AddNewPaymentTopBar(modifier: Modifier = Modifier) {
-    CommerceToolBar(
-        onNavigationBackClicked = {},
-        title = AppText.add_new_payment_bar,
-        modifier = modifier,
-        navigationIcon = AppIcon.back
-    )
-
 }
 
 @Composable
@@ -136,7 +129,7 @@ fun PaymentMethodsSection(modifier: Modifier = Modifier) {
 @Composable
 private fun AddNewPaymentPreview() {
     E_commerceTheme {
-        AddNewPaymentContent()
+        AddNewPaymentContent({})
     }
 
 }

@@ -122,7 +122,7 @@ fun HomeContent(
         ) {
             CommerceToolBar(
                 title = AppText.home_top_bar,
-                onNavigationBackClicked = {},
+                onNavigationBack = {},
                 modifier = Modifier
             )
             Text(

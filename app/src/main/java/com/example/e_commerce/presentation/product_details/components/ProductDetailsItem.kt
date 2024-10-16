@@ -46,7 +46,7 @@ fun ProductDetailsItem(
             CommerceToolBar(
                 title = AppText.product_details_top_bar,
                 navigationIcon = AppIcon.back,
-                onNavigationBackClicked = onNavigationBackClicked
+                onNavigationBack = onNavigationBackClicked
             )
             AsyncImage(
                 model = product.image,

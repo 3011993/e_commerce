@@ -14,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -30,11 +29,10 @@ import com.example.e_commerce.presentation.account.settings.SettingsUiState
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
-import com.example.e_commerce.presentation.check_out.AddNewPaymentContent
-import com.example.e_commerce.presentation.check_out.AddNewPaymentScreen
-import com.example.e_commerce.presentation.check_out.AddressScreen
-import com.example.e_commerce.presentation.check_out.OrderConfirmationScreen
-import com.example.e_commerce.presentation.check_out.OrderConfirmedScreen
+import com.example.e_commerce.presentation.order_confirmation.AddNewPaymentScreen
+import com.example.e_commerce.presentation.order_confirmation.AddressScreen
+import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationScreen
+import com.example.e_commerce.presentation.order_confirmation.OrderConfirmedScreen
 import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
@@ -172,15 +170,19 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         })
     }
     composable(ORDER_CONFIRMATION) {
-        OrderConfirmationScreen()
+        OrderConfirmationScreen(openAddressScreen = { route ->
+            appState.navigate(route)
+        }, openPaymentScreen = { route ->
+            appState.navigate(route)
+        }, onNavigationBack = {appState.popUp()})
     }
-    composable(ADDRESS){
-        AddressScreen()
+    composable(ADDRESS) {
+        AddressScreen(onNavigateBack = {appState.popUp()})
     }
-    composable(ADD_NEW_PAYMENT){
-        AddNewPaymentScreen()
+    composable(ADD_NEW_PAYMENT) {
+        AddNewPaymentScreen(onNavigateBack = {appState.popUp()})
     }
-    composable(ORDER_CONFIRMED){
+    composable(ORDER_CONFIRMED) {
         OrderConfirmedScreen()
     }
 }

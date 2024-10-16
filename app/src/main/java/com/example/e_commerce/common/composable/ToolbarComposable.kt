@@ -3,10 +3,7 @@ package com.example.e_commerce.common.composable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommerceToolBar(
-    onNavigationBackClicked: () -> Unit,
+    onNavigationBack: () -> Unit,
     @StringRes title: Int,
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int? = null,
@@ -38,7 +35,7 @@ fun CommerceToolBar(
         ),
         navigationIcon = {
             if (navigationIcon != null) {
-                IconButton(onClick = onNavigationBackClicked) {
+                IconButton(onClick = onNavigationBack) {
                     Icon(
                         painter = painterResource(navigationIcon),
                         contentDescription = "Navigate back"

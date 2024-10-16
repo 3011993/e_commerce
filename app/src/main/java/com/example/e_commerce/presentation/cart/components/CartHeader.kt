@@ -13,7 +13,7 @@ fun CartHeader(onNavigationBackClicked: () -> Unit, modifier: Modifier = Modifie
     CommerceToolBar(
         title = AppText.carts_top_bar,
         navigationIcon = AppIcon.back,
-        onNavigationBackClicked = onNavigationBackClicked,
+        onNavigationBack = onNavigationBackClicked,
         modifier = modifier
     )
 }

@@ -56,7 +56,7 @@ fun WishListContent(
         CommerceToolBar(
             title = AppText.wishlist_top_bar,
             navigationIcon = AppIcon.back,
-            onNavigationBackClicked = onNavigationBackClicked,
+            onNavigationBack = onNavigationBackClicked,
             modifier = Modifier
         )
         Box(modifier = modifier.fillMaxSize()) {

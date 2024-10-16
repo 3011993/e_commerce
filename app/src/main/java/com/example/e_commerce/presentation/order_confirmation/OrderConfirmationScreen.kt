@@ -1,7 +1,6 @@
-package com.example.e_commerce.presentation.check_out
+package com.example.e_commerce.presentation.order_confirmation
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,8 +12,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,22 +42,36 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 
 @Composable
-fun OrderConfirmationScreen(modifier: Modifier = Modifier) {
+fun OrderConfirmationScreen(
+    openAddressScreen: (String) -> Unit,
+    openPaymentScreen: (String) -> Unit,
+    onNavigationBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
     val carts by viewModel.carts.collectAsState()
-    OrderConfirmationContent(carts, modifier)
+    OrderConfirmationContent(
+        carts = carts, onAddressClicked = { viewModel.onAddressClicked(openAddressScreen) },
+        onPaymentClicked = { viewModel.onPaymentClicked(openPaymentScreen) },
+        onNavigationBack = onNavigationBack, modifier = modifier
+    )
 }
 
 @Composable
-fun OrderConfirmationContent(carts: List<CartModel>, modifier: Modifier = Modifier) {
+fun OrderConfirmationContent(
+    carts: List<CartModel>, onAddressClicked: () -> Unit, onPaymentClicked: () -> Unit,
+    onNavigationBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         CommerceToolBar(
             title = AppText.order_confirmation_bar,
             navigationIcon = AppIcon.back,
-            onNavigationBackClicked = {})
+            onNavigationBack = onNavigationBack
+        )
         OrderSummarySection(carts)
-        AddressSection()
-        PaymentSection()
+        AddressSection(onAddressClicked)
+        PaymentSection(onPaymentClicked)
         Spacer(modifier.weight(1f))
         CommerceWideButton(AppText.place_order_button, action = {})
     }
@@ -172,27 +188,62 @@ fun OrderItem(
 }
 
 @Composable
-fun AddressSection(modifier: Modifier = Modifier) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .padding(8.dp)) {
-        Text("Address:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Row(
+            modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Delivery Address:",
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+            )
+            IconButton(onClick = onAddressClicked) {
+                Icon(painter = painterResource(AppIcon.arrow_icon), contentDescription = null)
+            }
+        }
         Text(
-            "31 Mohmaed Street, Cairo, Egypt",
-            style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+            "31 Mohmaed Street",
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
+        )
+        Text(
+            "Giza",
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
         )
     }
 }
 
 @Composable
-fun PaymentSection(modifier: Modifier = Modifier) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .padding(8.dp)) {
-        Text("Payment:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+fun PaymentSection(onPaymentClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Row(
+            modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Payment Method:",
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+            )
+            IconButton(onClick = onPaymentClicked) {
+                Icon(painter = painterResource(AppIcon.arrow_icon), contentDescription = null)
+            }
+        }
         Text(
             "Card Details",
-            style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
+        )
+        Text(
+            "**** 6777",
+            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
         )
     }
 
@@ -206,6 +257,6 @@ fun OrderConfirmationPreview() {
             CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
             CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
         )
-        OrderConfirmationContent(cartItems)
+        OrderConfirmationContent(cartItems, {}, {},{})
     }
 }
