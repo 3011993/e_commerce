@@ -10,4 +10,3 @@ const val ORDER_CONFIRMATION = "orderConfirmationScreen"
 const val ADD_NEW_PAYMENT = "addNewPaymentScreen"
 const val ADDRESS = "addressScreen"
 const val ORDER_CONFIRMED = "orderConfirmedScreen"
-

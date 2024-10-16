@@ -32,11 +32,20 @@ abstract class CommerceViewModel(
     protected val _allProducts =
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
     val allProducts = _allProducts.asStateFlow()
-
+    protected val _carts = MutableStateFlow<List<CartModel>>(emptyList())
+    val carts = _carts.asStateFlow()
     val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
 
     private val _inStock = MutableStateFlow<Map<String, Boolean>>(emptyMap())
     val inStock = _inStock.asStateFlow()
+
+    protected fun getCarts() {
+        launchCatching {
+            storageService.carts.collect {
+                _carts.value = it
+            }
+        }
+    }
 
     fun launchCatching(
         snackBar: Boolean = true,
@@ -88,7 +97,6 @@ abstract class CommerceViewModel(
             }
         }
     }
-
 
 
 }

@@ -18,6 +18,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
@@ -38,11 +41,9 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun OrderConfirmationScreen(modifier: Modifier = Modifier) {
-    val cartItems = listOf(
-        CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
-        CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
-    )
-    OrderConfirmationContent(cartItems)
+    val viewModel: OrderConfirmationViewModel = hiltViewModel()
+    val carts by viewModel.carts.collectAsState()
+    OrderConfirmationContent(carts, modifier)
 }
 
 @Composable
@@ -80,11 +81,12 @@ fun OrderSummarySection(cartItems: List<CartModel>, modifier: Modifier = Modifie
                 .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            val subTotal = cartItems.sumOf { it.price }
             Text(
                 "SubToTal",
                 style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
             )
-            Text("440 $", style = MaterialTheme.typography.bodyMedium)
+            Text(subTotal.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
         }
         Row(
             modifier = modifier
@@ -104,11 +106,12 @@ fun OrderSummarySection(cartItems: List<CartModel>, modifier: Modifier = Modifie
                 .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            val total = cartItems.sumOf { it.price } + 5
             Text(
                 "Total",
                 style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
             )
-            Text("445 $", style = MaterialTheme.typography.bodyMedium)
+            Text(total.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
@@ -120,7 +123,7 @@ fun OrderItem(
 ) {
     Card(
         modifier = modifier
-            .height(80.dp)
+            .height(110.dp)
             .fillMaxWidth()
             .padding(
                 start = 16.dp, end = 16.dp,
@@ -170,7 +173,9 @@ fun OrderItem(
 
 @Composable
 fun AddressSection(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth().padding(8.dp)) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
         Text("Address:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
         Text(
             "31 Mohmaed Street, Cairo, Egypt",
@@ -181,7 +186,9 @@ fun AddressSection(modifier: Modifier = Modifier) {
 
 @Composable
 fun PaymentSection(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth().padding(8.dp)) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
         Text("Payment:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
         Text(
             "Card Details",

@@ -22,20 +22,10 @@ class CartViewModel @Inject constructor(
     accountService: AccountService,
 ) : CommerceViewModel(logService,storageService,accountService,repo) {
 
-    private val _carts = MutableStateFlow<List<CartModel>>(emptyList())
-    val carts = _carts.asStateFlow()
-
     init {
         getCarts()
     }
 
-    private fun getCarts() {
-        launchCatching {
-            storageService.carts.collect {
-                _carts.value = it
-            }
-        }
-    }
     fun updateCart(cart: CartModel) {
         launchCatching {
             storageService.updateCart(cart) { result ->

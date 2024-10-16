@@ -26,6 +26,6 @@ fun String.idFromParameter(): String {
   return this.substring(1, this.length - 1)
 }
 fun Double.adjustPrice(): String {
-  val df = DecimalFormat("#.##")
+  val df = DecimalFormat("#.##$")
   return df.format(this)
 }
