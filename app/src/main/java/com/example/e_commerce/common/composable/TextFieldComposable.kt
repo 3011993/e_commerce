@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,37 +29,58 @@ fun PaymentField(
     @StringRes text: Int,
     value: String,
     onNewValue: (String) -> Unit,
+    placeholder: Int,
     modifier: Modifier = Modifier,
+    keyboardType: KeyboardType? = null
 ) {
     OutlinedTextField(
         singleLine = true,
-        modifier = modifier.background(
-            color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(8.dp)
-        ).fillMaxWidth().padding(start = 16.dp, end = 16.dp),
-        textStyle =MaterialTheme.typography.bodyMedium,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType ?: KeyboardType.Text) ,
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp),
+        textStyle = MaterialTheme.typography.bodyMedium,
         value = value,
         onValueChange = { onNewValue(it) },
-        placeholder = { Text(stringResource(text)) }
+        placeholder = { Text(stringResource(placeholder)) },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.surface,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surface,
+        ),
     )
 }
 @Composable
 fun SmallPaymentField(
     value: String,
     onNewValue: (String) -> Unit,
+    placeholder: Int,
     modifier: Modifier = Modifier,
+    keyboardType: KeyboardType? = null
 ) {
     OutlinedTextField(
         singleLine = true,
-        modifier = modifier.background(
-            color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(8.dp)
-        ).width(160.dp).height(50.dp),
-        textStyle =MaterialTheme.typography.bodyMedium,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType ?: KeyboardType.Text) ,
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .width(160.dp)
+            .height(50.dp),
+        textStyle = MaterialTheme.typography.bodyMedium,
         value = value,
-        onValueChange = { onNewValue(it) },
-        )
+        onValueChange = { onNewValue(it) }, colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.surface,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surface,
+        ),
+        placeholder = { Text(stringResource(placeholder)) }
+    )
 }
+
 @Composable
 fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(

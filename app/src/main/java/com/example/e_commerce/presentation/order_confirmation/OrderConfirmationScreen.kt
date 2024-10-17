@@ -1,5 +1,7 @@
 package com.example.e_commerce.presentation.order_confirmation
 
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -257,6 +262,6 @@ fun OrderConfirmationPreview() {
             CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
             CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
         )
-        OrderConfirmationContent(cartItems, {}, {},{})
+        OrderConfirmationContent(cartItems, {}, {}, {})
     }
 }

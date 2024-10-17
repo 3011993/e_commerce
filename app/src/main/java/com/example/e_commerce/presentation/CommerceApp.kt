@@ -29,10 +29,10 @@ import com.example.e_commerce.presentation.account.settings.SettingsUiState
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
-import com.example.e_commerce.presentation.order_confirmation.AddNewPaymentScreen
-import com.example.e_commerce.presentation.order_confirmation.AddressScreen
+import com.example.e_commerce.presentation.order_confirmation.payment.AddNewPaymentScreen
+import com.example.e_commerce.presentation.order_confirmation.address.AddressScreen
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationScreen
-import com.example.e_commerce.presentation.order_confirmation.OrderConfirmedScreen
+import com.example.e_commerce.presentation.order_confirmation.order_confirmed.OrderConfirmedScreen
 import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
