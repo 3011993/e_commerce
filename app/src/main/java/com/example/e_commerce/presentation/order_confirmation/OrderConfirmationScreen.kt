@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -40,6 +42,7 @@ import coil.compose.AsyncImage
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
 import com.example.e_commerce.common.ext.adjustPrice
+import com.example.e_commerce.common.ext.fieldModifier
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
@@ -87,54 +90,23 @@ fun OrderConfirmationContent(
             }
             item {
                 Text(
-                    "Order Summary",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+                    "Order Summary :",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp),
+                    modifier = Modifier.fillMaxWidth().align(Alignment.CenterStart).padding(start = 8.dp)
                 )
             }
             items(carts) { cartItem ->
                 OrderItem(cartItem)
             }
             item {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    val subTotal = carts.sumOf { it.price }
-                    Text(
-                        "SubToTal",
-                        style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
-                    )
-                    Text(subTotal.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
-                }
+                val subTotal = carts.sumOf { it.price }
+                PriceRow(label = "SubTotal", value = subTotal.adjustPrice(), modifier)
             }
 
+            item { PriceRow(label = "Shipping", value = "5$", modifier) }
             item {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        "Shipping",
-                        style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
-                    )
-                    Text("5 $", style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-            item {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    val total = carts.sumOf { it.price } + 5
-                    Text(
-                        "Total",
-                        style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
-                    )
-                    Text(total.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
-                }
+                val total = carts.sumOf { it.price } + 5
+                PriceRow(label = "Total", value = total.adjustPrice(), modifier)
             }
 
             item { AddressSection(onAddressClicked, modifier) }
@@ -147,6 +119,20 @@ fun OrderConfirmationContent(
         )
     }
 
+}
+
+@Composable
+fun PriceRow(label: String, value: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+        )
+        Text(value, style = MaterialTheme.typography.bodyMedium)
+    }
 }
 
 @Composable
@@ -271,7 +257,8 @@ fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) 
     ) {
         Column(
             modifier = modifier
-                .fillMaxWidth().padding(8.dp),
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Row(
@@ -302,13 +289,16 @@ fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) 
 @Composable
 fun PaymentSection(onPaymentClicked: () -> Unit, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier.fillMaxSize().padding(bottom = 8.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RectangleShape,
     ) {
         Column(
             modifier = modifier
-                .fillMaxWidth().padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
+                .fillMaxWidth()
+                .padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Row(
                 modifier = modifier.fillMaxWidth(),
