@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.order_confirmation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,6 +60,7 @@ fun OrderConfirmationScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrderConfirmationContent(
     carts: List<CartModel>, onAddressClicked: () -> Unit, onPaymentClicked: () -> Unit,
@@ -66,18 +68,74 @@ fun OrderConfirmationContent(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 90.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CommerceToolBar(
-                title = AppText.order_confirmation_bar,
-                navigationIcon = AppIcon.back,
-                onNavigationBack = onNavigationBack
-            )
-            OrderSummarySection(carts)
-            AddressSection(onAddressClicked)
-            PaymentSection(onPaymentClicked)
+            stickyHeader {
+                CommerceToolBar(
+                    title = AppText.order_confirmation_bar,
+                    navigationIcon = AppIcon.back,
+                    onNavigationBack = onNavigationBack
+                )
+            }
+            item {
+                Text(
+                    "Order Summary",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+                )
+            }
+            items(carts) { cartItem ->
+                OrderItem(cartItem)
+            }
+            item {
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    val subTotal = carts.sumOf { it.price }
+                    Text(
+                        "SubToTal",
+                        style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+                    )
+                    Text(subTotal.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+
+            item {
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        "Shipping",
+                        style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+                    )
+                    Text("5 $", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+            item {
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    val total = carts.sumOf { it.price } + 5
+                    Text(
+                        "Total",
+                        style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
+                    )
+                    Text(total.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+
+            item { AddressSection(onAddressClicked,modifier) }
+            item { PaymentSection(onPaymentClicked,modifier) }
         }
         CommerceWideButton(
             AppText.place_order_button,
@@ -85,6 +143,7 @@ fun OrderConfirmationContent(
             modifier = modifier.align(Alignment.BottomCenter)
         )
     }
+
 }
 
 @Composable
@@ -95,7 +154,10 @@ fun OrderSummarySection(cartItems: List<CartModel>, modifier: Modifier = Modifie
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text("Order Summary:", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp))
+        Text(
+            "Order Summary:",
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+        )
         LazyColumn(modifier = modifier.fillMaxWidth()) {
             items(cartItems) { cartItem ->
                 OrderItem(cartItem)
@@ -201,12 +263,12 @@ fun OrderItem(
 fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -232,11 +294,11 @@ fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) 
 fun PaymentSection(onPaymentClicked: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
+            .fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
