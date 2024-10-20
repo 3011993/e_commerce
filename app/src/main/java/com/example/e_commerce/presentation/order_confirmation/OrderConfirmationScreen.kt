@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -71,7 +74,7 @@ fun OrderConfirmationContent(
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 90.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 77.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -134,8 +137,8 @@ fun OrderConfirmationContent(
                 }
             }
 
-            item { AddressSection(onAddressClicked,modifier) }
-            item { PaymentSection(onPaymentClicked,modifier) }
+            item { AddressSection(onAddressClicked, modifier) }
+            item { PaymentSection(onPaymentClicked, modifier) }
         }
         CommerceWideButton(
             AppText.place_order_button,
@@ -261,64 +264,75 @@ fun OrderItem(
 
 @Composable
 fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+    Card(
+        modifier = modifier.fillMaxSize(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RectangleShape,
     ) {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = modifier
+                .fillMaxWidth().padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(
-                "Delivery Address:",
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
-            )
-            IconButton(onClick = onAddressClicked) {
-                Icon(painter = painterResource(AppIcon.arrow_icon), contentDescription = null)
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Delivery Address:",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+                )
+                IconButton(onClick = onAddressClicked, modifier = Modifier.size(10.dp)) {
+                    Icon(painter = painterResource(AppIcon.arrow_icon), contentDescription = null)
+                }
             }
+            Text(
+                "31 Mohmaed Street",
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
+            )
+            Text(
+                "Giza",
+                style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
+            )
         }
-        Text(
-            "31 Mohmaed Street",
-            style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
-        )
-        Text(
-            "Giza",
-            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
-        )
     }
 }
 
 @Composable
 fun PaymentSection(onPaymentClicked: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)
+    Card(
+        modifier = modifier.fillMaxSize().padding(bottom = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RectangleShape,
     ) {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = modifier
+                .fillMaxWidth().padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(
-                "Payment Method:",
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
-            )
-            IconButton(onClick = onPaymentClicked) {
-                Icon(painter = painterResource(AppIcon.arrow_icon), contentDescription = null)
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Payment Method:",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
+                )
+                IconButton(onClick = onPaymentClicked, modifier = Modifier.size(10.dp)) {
+                    Icon(painter = painterResource(AppIcon.arrow_icon), contentDescription = null)
+                }
             }
+            Text(
+                "Card Details",
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
+            )
+            Text(
+                "**** 6777",
+                style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
+            )
         }
-        Text(
-            "Card Details",
-            style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
-        )
-        Text(
-            "**** 6777",
-            style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
-        )
     }
-
 }
 
 @Preview(showBackground = true)
