@@ -11,17 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,8 +37,9 @@ import coil.compose.AsyncImage
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
 import com.example.e_commerce.common.ext.adjustPrice
-import com.example.e_commerce.common.ext.fieldModifier
 import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.presentation.order_confirmation.address.AddressUiState
+import com.example.e_commerce.presentation.order_confirmation.payment.PaymentUiState
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
@@ -59,8 +55,13 @@ fun OrderConfirmationScreen(
 ) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
     val carts by viewModel.carts.collectAsState()
+    val addressState by viewModel.addressUiState
+    val paymentState by viewModel.paymentUiState
     OrderConfirmationContent(
-        carts = carts, onAddressClicked = { viewModel.onAddressClicked(openAddressScreen) },
+        carts = carts,
+        addressState = addressState,
+        paymentState = paymentState,
+        onAddressClicked = { viewModel.onAddressClicked(openAddressScreen) },
         onPaymentClicked = { viewModel.onPaymentClicked(openPaymentScreen) },
         onNavigationBack = onNavigationBack, modifier = modifier
     )
@@ -70,6 +71,8 @@ fun OrderConfirmationScreen(
 @Composable
 fun OrderConfirmationContent(
     carts: List<CartModel>, onAddressClicked: () -> Unit, onPaymentClicked: () -> Unit,
+    addressState: AddressUiState,
+    paymentState: PaymentUiState,
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -92,7 +95,10 @@ fun OrderConfirmationContent(
                 Text(
                     "Order Summary :",
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp),
-                    modifier = Modifier.fillMaxWidth().align(Alignment.CenterStart).padding(start = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterStart)
+                        .padding(start = 8.dp)
                 )
             }
             items(carts) { cartItem ->
@@ -109,8 +115,8 @@ fun OrderConfirmationContent(
                 PriceRow(label = "Total", value = total.adjustPrice(), modifier)
             }
 
-            item { AddressSection(onAddressClicked, modifier) }
-            item { PaymentSection(onPaymentClicked, modifier) }
+            item { AddressSection(addressState, onAddressClicked, modifier) }
+            item { PaymentSection(paymentState, onPaymentClicked, modifier) }
         }
         CommerceWideButton(
             AppText.place_order_button,
@@ -132,64 +138,6 @@ fun PriceRow(label: String, value: String, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
         )
         Text(value, style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Composable
-fun OrderSummarySection(cartItems: List<CartModel>, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            "Order Summary:",
-            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
-        )
-        LazyColumn(modifier = modifier.fillMaxWidth()) {
-            items(cartItems) { cartItem ->
-                OrderItem(cartItem)
-            }
-        }
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            val subTotal = cartItems.sumOf { it.price }
-            Text(
-                "SubToTal",
-                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
-            )
-            Text(subTotal.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
-        }
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                "Shipping",
-                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
-            )
-            Text("5 $", style = MaterialTheme.typography.bodyMedium)
-        }
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            val total = cartItems.sumOf { it.price } + 5
-            Text(
-                "Total",
-                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround)
-            )
-            Text(total.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
-        }
     }
 }
 
@@ -249,7 +197,11 @@ fun OrderItem(
 }
 
 @Composable
-fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) {
+fun AddressSection(
+    addressState: AddressUiState,
+    onAddressClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier.fillMaxSize(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -275,11 +227,11 @@ fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) 
                 }
             }
             Text(
-                "31 Mohmaed Street",
+                addressState.address,
                 style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
             )
             Text(
-                "Giza",
+                addressState.city,
                 style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
             )
         }
@@ -287,7 +239,11 @@ fun AddressSection(onAddressClicked: () -> Unit, modifier: Modifier = Modifier) 
 }
 
 @Composable
-fun PaymentSection(onPaymentClicked: () -> Unit, modifier: Modifier = Modifier) {
+fun PaymentSection(
+    paymentState: PaymentUiState,
+    onPaymentClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier
             .fillMaxSize()
@@ -318,7 +274,7 @@ fun PaymentSection(onPaymentClicked: () -> Unit, modifier: Modifier = Modifier) 
                 style = MaterialTheme.typography.labelSmall.copy(fontSize = 15.sp)
             )
             Text(
-                "**** 6777",
+                paymentState.cardNumber,
                 style = MaterialTheme.typography.labelSmall.copy(color = secondaryOnBackGround)
             )
         }
@@ -333,6 +289,14 @@ fun OrderConfirmationPreview() {
             CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
             CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
         )
-        OrderConfirmationContent(cartItems, {}, {}, {})
+        val addressState = AddressUiState(address = "31 Mohamed abdo", city = "Cairo")
+        val paymentState = PaymentUiState(cardNumber = "00012i238921828")
+        OrderConfirmationContent(
+            addressState = addressState,
+            paymentState = paymentState,
+            carts = cartItems,
+            onNavigationBack = {},
+            onAddressClicked = {},
+            onPaymentClicked = {})
     }
 }

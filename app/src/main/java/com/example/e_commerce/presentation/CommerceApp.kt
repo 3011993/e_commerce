@@ -174,13 +174,18 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate(route)
         }, openPaymentScreen = { route ->
             appState.navigate(route)
-        }, onNavigationBack = {appState.popUp()})
+        }, onNavigationBack = { appState.popUp() })
     }
     composable(ADDRESS) {
-        AddressScreen(onNavigateBack = {appState.popUp()})
+        AddressScreen(openScreen = { route ->
+            appState.navigate(route)
+        }, onNavigateBack = { appState.popUp() })
+
     }
     composable(ADD_NEW_PAYMENT) {
-        AddNewPaymentScreen(onNavigateBack = {appState.popUp()})
+        AddNewPaymentScreen(openScreen = { route ->
+            appState.navigate(route)
+        }, onNavigateBack = { appState.popUp() })
     }
     composable(ORDER_CONFIRMED) {
         OrderConfirmedScreen()

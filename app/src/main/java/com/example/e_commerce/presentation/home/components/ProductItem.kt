@@ -2,10 +2,13 @@ package com.example.e_commerce.presentation.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -14,11 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -36,14 +34,14 @@ fun ProductItem(
     product: ProductModel,
     onProductClicked: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
-    isInStock : Boolean,
+    isInStock: Boolean,
     onFavouriteCLicked: (ProductModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(260.dp)
+            .height(270.dp)
             .padding(8.dp),
         elevation = CardDefaults.elevatedCardElevation(2.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
@@ -82,22 +80,27 @@ fun ProductItem(
                         .width(117.dp)
                         .offset(3.dp)
                 )
-                Text(
-                    text = "$${product.price}",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = modifier
-                        .height(14.dp)
-                        .width(26.dp)
-                        .offset(x = 3.dp)
-                )
-                if (!isInStock){
-                    Text("Out of Stock", style = MaterialTheme.typography.titleSmall.copy(color = warningColor),
-                        modifier = Modifier.align(Alignment.End).padding(end = 8.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
+                    Text(
+                        text = "$${product.price}",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = modifier
+                            .height(14.dp)
+                            .width(26.dp)
+                            .offset(x = 3.dp)
+                    )
+                    if (!isInStock) {
+                        Text(
+                            "Out of Stock",
+                            style = MaterialTheme.typography.titleSmall.copy(color = warningColor),
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                        )
+                    }
                 }
-
             }
             Image(
-                painter = if(product.isFavorite) painterResource(R.drawable.heart_selected) else
+                painter = if (product.isFavorite) painterResource(R.drawable.heart_selected) else
                     painterResource(R.drawable.heart),
                 contentDescription = null,
                 modifier = modifier
@@ -114,7 +117,7 @@ fun ProductItem(
                     .size(25.dp)
                     .align(Alignment.BottomEnd)
                     .clickable { onCartButtonClicked(product) }
-                    .padding(end = 8.dp, bottom = 8.dp),
+                    .padding(end = 8.dp, bottom = 4.dp),
             )
         }
     }
@@ -133,7 +136,7 @@ private fun ProductItemPreview() {
             id = 0,
             isFavorite = false
         )
-        ProductItem(product, {}, {}, isInStock = false ,{},)
+        ProductItem(product, {}, {}, isInStock = false, {})
     }
 
 }

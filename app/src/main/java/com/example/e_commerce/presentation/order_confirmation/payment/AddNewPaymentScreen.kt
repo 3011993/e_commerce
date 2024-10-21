@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +38,7 @@ import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
-fun AddNewPaymentScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
+fun AddNewPaymentScreen(openScreen : (String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
     val paymentUiState by viewModel.paymentUiState
     AddNewPaymentContent(
@@ -47,6 +48,7 @@ fun AddNewPaymentScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifie
         onExpChange = viewModel::onExpChange,
         onCvvChange = viewModel::onCvvChange,
         onNavigateBack = onNavigateBack,
+        onSavePaymentClicked = {viewModel.onSavePaymentClicked(openScreen)},
         modifier = modifier
     )
 }
@@ -58,6 +60,7 @@ fun AddNewPaymentContent(
     onCardNumberChange: (String) -> Unit,
     onExpChange: (String) -> Unit,
     onCvvChange: (String) -> Unit,
+    onSavePaymentClicked : () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -117,7 +120,7 @@ fun AddNewPaymentContent(
             }
         }
         Spacer(modifier.weight(1f))
-        CommerceWideButton(text = AppText.add_new_card_button, action = {})
+        CommerceWideButton(text = AppText.add_new_card_button, action = onSavePaymentClicked)
     }
 }
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,7 +30,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 
 @Composable
-fun AddressScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
+fun AddressScreen(openScreen:(String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
     val addressUiState by viewModel.addressUiState
     AddressContent(
@@ -39,6 +40,7 @@ fun AddressScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
         onCityChange = viewModel::onCityChange,
         onAddressChange = viewModel::onAddressChange,
         onPhoneNumberChange = viewModel::onPhoneNumberChange,
+        onSaveAddressClicked = {viewModel.onSaveAddressClicked(openScreen)},
         onNavigateBack = onNavigateBack,
         modifier = modifier
     )
@@ -52,6 +54,7 @@ fun AddressContent(
     onCityChange: (String) -> Unit,
     onPhoneNumberChange: (String) -> Unit,
     onAddressChange: (String) -> Unit,
+    onSaveAddressClicked : () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -119,7 +122,7 @@ fun AddressContent(
             placeholder = AppText.address
         )
         Spacer(modifier.weight(1f))
-        CommerceWideButton(text = AppText.save_address_card_button, action = {})
+        CommerceWideButton(text = AppText.save_address_card_button, action = onSaveAddressClicked)
 
     }
 
