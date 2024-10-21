@@ -20,6 +20,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +39,7 @@ fun DangerousCardEditor(
   modifier: Modifier,
   onEditClick: () -> Unit
 ) {
-  CardEditor(title, icon, content, onEditClick, MaterialTheme.colors.primary, modifier)
+  CardEditor(title, icon, content, onEditClick, MaterialTheme.colorScheme.primary, modifier)
 }
 
 @ExperimentalMaterialApi
@@ -50,7 +51,7 @@ fun RegularCardEditor(
   modifier: Modifier,
   onEditClick: () -> Unit
 ) {
-  CardEditor(title, icon, content, onEditClick, MaterialTheme.colors.onSurface, modifier)
+  CardEditor(title, icon, content, onEditClick, MaterialTheme.colorScheme.onBackground, modifier)
 }
 
 @ExperimentalMaterialApi
@@ -64,7 +65,7 @@ private fun CardEditor(
   modifier: Modifier
 ) {
   Card(
-    backgroundColor = MaterialTheme.colors.onPrimary,
+    backgroundColor = MaterialTheme.colorScheme.onPrimary,
     modifier = modifier,
     onClick = onEditClick
   ) {
@@ -92,7 +93,7 @@ fun CardSelector(
   modifier: Modifier,
   onNewValue: (String) -> Unit
 ) {
-  Card(backgroundColor = MaterialTheme.colors.onPrimary, modifier = modifier) {
+  Card(backgroundColor = MaterialTheme.colorScheme.onPrimary, modifier = modifier) {
     DropdownSelector(label, options, selection, Modifier.dropdownSelector(), onNewValue)
   }
 
