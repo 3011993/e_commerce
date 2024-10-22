@@ -26,14 +26,9 @@ private val darkScheme = darkColorScheme(
 
 @Composable
 fun E_commerceTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit,
 ) {
-    val colorScheme = if (darkTheme) {
-        darkScheme
-    } else {
-        lightScheme
-    }
+    val colorScheme = lightScheme
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
