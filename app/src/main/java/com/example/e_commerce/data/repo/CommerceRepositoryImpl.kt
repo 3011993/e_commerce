@@ -183,7 +183,7 @@ class CommerceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPayments(): PaymentModel {
-        return dao.getAllPayments().toModel()
+        return dao.getAllPayments().last().toModel()
     }
 
     override suspend fun saveAddress(address: AddressModel) {
@@ -191,7 +191,7 @@ class CommerceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAddress(): AddressModel {
-        return dao.getAllAddresses().toModel()
+        return dao.getAllAddresses().last().toModel()
     }
 
 }

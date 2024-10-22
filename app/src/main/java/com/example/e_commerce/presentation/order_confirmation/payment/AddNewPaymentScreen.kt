@@ -39,7 +39,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun AddNewPaymentScreen(openScreen : (String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
-    val viewModel: OrderConfirmationViewModel = hiltViewModel()
+    val viewModel: PaymentViewModel = hiltViewModel()
     val paymentUiState by viewModel.paymentModel
     AddNewPaymentContent(
         uiState = paymentUiState,

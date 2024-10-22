@@ -40,11 +40,11 @@ interface CommerceDao {
     @Upsert
     fun insertPayment(paymentEntity: PaymentEntity)
     @Query("SELECT * FROM PaymentEntity")
-    fun getAllPayments(): PaymentEntity
+    fun getAllPayments(): List<PaymentEntity>
     @Upsert
     fun insertAddress(addressEntity: AddressEntity)
     @Query("SELECT * FROM AddressEntity")
-    fun getAllAddresses(): AddressEntity
+    fun getAllAddresses(): List<AddressEntity>
 
 
 }

@@ -192,6 +192,8 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
     composable(ORDER_CONFIRMED) {
         OrderConfirmedScreen(openScreen = { route ->
             appState.clearAndNavigate(route)
+        }, navigateBack = { route ->
+            appState.clearAndNavigate(route)
         })
     }
 }

@@ -22,31 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-abstract class CommerceViewModel(
-    private val logService: LogService,
-    private val storageService: StorageService,
-    accountService: AccountService,
-    private val repo: CommerceRepository,
-) : ViewModel() {
-
-    protected val _allProducts =
-        MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
-    val allProducts = _allProducts.asStateFlow()
-    protected val _carts = MutableStateFlow<List<CartModel>>(emptyList())
-    val carts = _carts.asStateFlow()
-    val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
-
-    private val _inStock = MutableStateFlow<Map<String, Boolean>>(emptyMap())
-    val inStock = _inStock.asStateFlow()
-
-    protected fun getCarts() {
-        launchCatching {
-            storageService.carts.collect {
-                _carts.value = it
-            }
-        }
-    }
-
+abstract class BaseCommerceViewModel(private val logService: LogService) : ViewModel() {
     fun launchCatching(
         snackBar: Boolean = true,
         dispatcher: CoroutineDispatcher = Dispatchers.Main,
@@ -61,6 +37,33 @@ abstract class CommerceViewModel(
                         logService.logNonFatalCrash(throwable)
                     }, block = block
         )
+    }
+}
+
+abstract class CommerceViewModel(
+    logService: LogService,
+    private val storageService: StorageService,
+    accountService: AccountService,
+    private val repo: CommerceRepository,
+) : BaseCommerceViewModel(logService) {
+    protected val _allProducts =
+        MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
+    val allProducts = _allProducts.asStateFlow()
+
+    protected val _carts = MutableStateFlow<List<CartModel>>(emptyList())
+    val carts = _carts.asStateFlow()
+
+    val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
+
+    private val _inStock = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    val inStock = _inStock.asStateFlow()
+
+    protected fun getCarts() {
+        launchCatching {
+            storageService.carts.collect {
+                _carts.value = it
+            }
+        }
     }
 
     fun addOrUpdateCart(productModel: ProductModel) {

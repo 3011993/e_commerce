@@ -40,6 +40,8 @@ import com.example.e_commerce.common.ext.adjustPrice
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.AddressModel
 import com.example.e_commerce.domain.model.PaymentModel
+import com.example.e_commerce.presentation.order_confirmation.address.AddressViewModel
+import com.example.e_commerce.presentation.order_confirmation.payment.PaymentViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
@@ -55,9 +57,11 @@ fun OrderConfirmationScreen(
     modifier: Modifier = Modifier,
 ) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
+    val paymentViewModel : PaymentViewModel = hiltViewModel()
+    val addressViewModel : AddressViewModel = hiltViewModel()
     val carts by viewModel.carts.collectAsState()
-    val addressState by viewModel.addressModel
-    val paymentState by viewModel.paymentModel
+    val addressState by addressViewModel.addressModel
+    val paymentState by paymentViewModel.paymentModel
     OrderConfirmationContent(
         carts = carts,
         addressState = addressState,

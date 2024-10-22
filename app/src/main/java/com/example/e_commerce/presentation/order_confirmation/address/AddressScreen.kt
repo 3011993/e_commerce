@@ -31,7 +31,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun AddressScreen(openScreen:(String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
-    val viewModel: OrderConfirmationViewModel = hiltViewModel()
+    val viewModel: AddressViewModel = hiltViewModel()
     val addressUiState by viewModel.addressModel
     AddressContent(
         uiState = addressUiState,
