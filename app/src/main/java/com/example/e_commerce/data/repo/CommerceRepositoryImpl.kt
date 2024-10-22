@@ -6,11 +6,14 @@ import com.example.e_commerce.common.Resources
 import com.example.e_commerce.data.db.CategoriesEntity
 import com.example.e_commerce.data.db.CommerceDao
 import com.example.e_commerce.data.db.FavouriteEntity
+import com.example.e_commerce.data.db.fromModel
 import com.example.e_commerce.data.db.toModel
 import com.example.e_commerce.data.remote.ApiService
 import com.example.e_commerce.data.remote.dto.toDatabase
 import com.example.e_commerce.data.remote.dto.toModel
+import com.example.e_commerce.domain.model.AddressModel
 import com.example.e_commerce.domain.model.CategoriesModel
+import com.example.e_commerce.domain.model.PaymentModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import kotlinx.coroutines.flow.Flow
@@ -173,6 +176,22 @@ class CommerceRepositoryImpl @Inject constructor(
 
     override fun getCartIdForProduct(productId: String): String? {
         return sharedPreferences.getString(productId, null)
+    }
+
+    override suspend fun savePayment(payment: PaymentModel) {
+        dao.insertPayment(payment.fromModel())
+    }
+
+    override suspend fun getPayments(): PaymentModel {
+        return dao.getAllPayments().toModel()
+    }
+
+    override suspend fun saveAddress(address: AddressModel) {
+        dao.insertAddress(address.fromModel())
+    }
+
+    override suspend fun getAddress(): AddressModel {
+        return dao.getAllAddresses().toModel()
     }
 
 }

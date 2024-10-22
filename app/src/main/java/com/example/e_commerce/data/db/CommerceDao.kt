@@ -5,6 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import androidx.room.Upsert
 
 @Dao
 interface CommerceDao {
@@ -35,6 +37,14 @@ interface CommerceDao {
 
     @Query("SELECT * FROM PRODUCTENTITY WHERE isFavorite= 1")
     fun getFavoriteProducts(): List<ProductEntity>
+    @Upsert
+    fun insertPayment(paymentEntity: PaymentEntity)
+    @Query("SELECT * FROM PaymentEntity")
+    fun getAllPayments(): PaymentEntity
+    @Upsert
+    fun insertAddress(addressEntity: AddressEntity)
+    @Query("SELECT * FROM AddressEntity")
+    fun getAllAddresses(): AddressEntity
 
 
 }

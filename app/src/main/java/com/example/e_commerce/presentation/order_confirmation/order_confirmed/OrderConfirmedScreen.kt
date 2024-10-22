@@ -17,15 +17,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.CommerceWideButton
+import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
-fun OrderConfirmedScreen(modifier: Modifier = Modifier) {
-    OrderConfirmedContent(onContinueShoppingClicked = {},modifier)
+fun OrderConfirmedScreen(openScreen: (String) -> Unit,modifier: Modifier = Modifier) {
+    val viewModel : OrderConfirmationViewModel = hiltViewModel()
+    OrderConfirmedContent(onContinueShoppingClicked = {viewModel.onContinueShoppingClicked(openScreen)},modifier)
 }
 
 @Composable

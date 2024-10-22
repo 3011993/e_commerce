@@ -38,8 +38,8 @@ import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
 import com.example.e_commerce.common.ext.adjustPrice
 import com.example.e_commerce.domain.model.CartModel
-import com.example.e_commerce.presentation.order_confirmation.address.AddressUiState
-import com.example.e_commerce.presentation.order_confirmation.payment.PaymentUiState
+import com.example.e_commerce.domain.model.AddressModel
+import com.example.e_commerce.domain.model.PaymentModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
@@ -50,19 +50,21 @@ import com.example.e_commerce.R.drawable as AppIcon
 fun OrderConfirmationScreen(
     openAddressScreen: (String) -> Unit,
     openPaymentScreen: (String) -> Unit,
+    openOrderConfirmedAndPopup: (String,String) -> Unit,
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
     val carts by viewModel.carts.collectAsState()
-    val addressState by viewModel.addressUiState
-    val paymentState by viewModel.paymentUiState
+    val addressState by viewModel.addressModel
+    val paymentState by viewModel.paymentModel
     OrderConfirmationContent(
         carts = carts,
         addressState = addressState,
         paymentState = paymentState,
         onAddressClicked = { viewModel.onAddressClicked(openAddressScreen) },
         onPaymentClicked = { viewModel.onPaymentClicked(openPaymentScreen) },
+        onPlaceOrderClicked = {viewModel.onPlaceOrderClicked(openOrderConfirmedAndPopup)},
         onNavigationBack = onNavigationBack, modifier = modifier
     )
 }
@@ -71,8 +73,9 @@ fun OrderConfirmationScreen(
 @Composable
 fun OrderConfirmationContent(
     carts: List<CartModel>, onAddressClicked: () -> Unit, onPaymentClicked: () -> Unit,
-    addressState: AddressUiState,
-    paymentState: PaymentUiState,
+    addressState: AddressModel,
+    paymentState: PaymentModel,
+    onPlaceOrderClicked :() -> Unit,
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -120,7 +123,7 @@ fun OrderConfirmationContent(
         }
         CommerceWideButton(
             AppText.place_order_button,
-            action = {},
+            action = onPlaceOrderClicked,
             modifier = modifier.align(Alignment.BottomCenter)
         )
     }
@@ -198,7 +201,7 @@ fun OrderItem(
 
 @Composable
 fun AddressSection(
-    addressState: AddressUiState,
+    addressState: AddressModel,
     onAddressClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -240,7 +243,7 @@ fun AddressSection(
 
 @Composable
 fun PaymentSection(
-    paymentState: PaymentUiState,
+    paymentState: PaymentModel,
     onPaymentClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -289,14 +292,15 @@ fun OrderConfirmationPreview() {
             CartModel(title = "bag", price = 100.0, productId = 1, quantity = 2),
             CartModel(title = "sanDisk", price = 200.0, productId = 1, quantity = 1)
         )
-        val addressState = AddressUiState(address = "31 Mohamed abdo", city = "Cairo")
-        val paymentState = PaymentUiState(cardNumber = "00012i238921828")
+        val addressState = AddressModel(address = "31 Mohamed abdo", city = "Cairo")
+        val paymentState = PaymentModel(cardNumber = "00012i238921828")
         OrderConfirmationContent(
             addressState = addressState,
             paymentState = paymentState,
             carts = cartItems,
             onNavigationBack = {},
             onAddressClicked = {},
+            onPlaceOrderClicked = {},
             onPaymentClicked = {})
     }
 }

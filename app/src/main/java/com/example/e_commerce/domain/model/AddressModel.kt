@@ -1,10 +1,10 @@
-package com.example.e_commerce.presentation.order_confirmation.address
+package com.example.e_commerce.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AddressUiState(
+data class AddressModel(
     val name: String = "",
     val country: String = "",
     val city: String = "",

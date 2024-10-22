@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,6 +22,7 @@ import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
 import com.example.e_commerce.common.composable.PaymentField
 import com.example.e_commerce.common.composable.SmallPaymentField
+import com.example.e_commerce.domain.model.AddressModel
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.R.string as AppText
@@ -32,7 +32,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 @Composable
 fun AddressScreen(openScreen:(String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
-    val addressUiState by viewModel.addressUiState
+    val addressUiState by viewModel.addressModel
     AddressContent(
         uiState = addressUiState,
         onNameChange = viewModel::onNameChange,
@@ -48,7 +48,7 @@ fun AddressScreen(openScreen:(String) -> Unit,onNavigateBack: () -> Unit, modifi
 
 @Composable
 fun AddressContent(
-    uiState: AddressUiState,
+    uiState: AddressModel,
     onNameChange: (String) -> Unit,
     onCountryChange: (String) -> Unit,
     onCityChange: (String) -> Unit,
