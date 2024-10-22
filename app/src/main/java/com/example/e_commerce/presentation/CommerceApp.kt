@@ -29,6 +29,7 @@ import com.example.e_commerce.presentation.account.settings.SettingsUiState
 import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
+import com.example.e_commerce.presentation.cart.components.CheckOutDialog
 import com.example.e_commerce.presentation.order_confirmation.payment.AddNewPaymentScreen
 import com.example.e_commerce.presentation.order_confirmation.address.AddressScreen
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationScreen

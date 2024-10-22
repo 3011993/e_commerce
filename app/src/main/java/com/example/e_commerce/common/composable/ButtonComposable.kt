@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,11 +59,11 @@ fun DialogConfirmButton(@StringRes text: Int, action: () -> Unit) {
         onClick = action,
         colors =
         ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
         )
     ) {
-        Text(text = stringResource(text))
+        Text(text = stringResource(text), style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -76,6 +77,33 @@ fun DialogCancelButton(@StringRes text: Int, action: () -> Unit) {
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = stringResource(text))
+        Text(text = stringResource(text),style = MaterialTheme.typography.bodyMedium)
     }
 }
+@Composable
+fun DangerousDialogConfirmButton(@StringRes text: Int, action: () -> Unit) {
+    Button(
+        onClick = action,
+        colors =
+        ButtonDefaults.buttonColors(
+            containerColor = Color.Red,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Text(text = stringResource(text), style = MaterialTheme.typography.bodyMedium)
+    }
+}
+@Composable
+fun DangerousDialogCancelButton(@StringRes text: Int, action: () -> Unit) {
+    Button(
+        onClick = action,
+        colors =
+        ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        )
+    ) {
+        Text(text = stringResource(text),style = MaterialTheme.typography.bodyMedium)
+    }
+}
+

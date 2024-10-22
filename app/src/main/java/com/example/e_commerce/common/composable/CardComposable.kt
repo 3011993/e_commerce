@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.e_commerce.common.ext.dropdownSelector
+import com.example.e_commerce.ui.theme.warningColor
 
 @ExperimentalMaterialApi
 @Composable
@@ -39,7 +40,7 @@ fun DangerousCardEditor(
   modifier: Modifier,
   onEditClick: () -> Unit
 ) {
-  CardEditor(title, icon, content, onEditClick, MaterialTheme.colorScheme.primary, modifier)
+  CardEditor(title, icon, content, onEditClick, Color.Red, modifier)
 }
 
 @ExperimentalMaterialApi
@@ -84,17 +85,3 @@ private fun CardEditor(
   }
 }
 
-@Composable
-@ExperimentalMaterialApi
-fun CardSelector(
-  @StringRes label: Int,
-  options: List<String>,
-  selection: String,
-  modifier: Modifier,
-  onNewValue: (String) -> Unit
-) {
-  Card(backgroundColor = MaterialTheme.colorScheme.onPrimary, modifier = modifier) {
-    DropdownSelector(label, options, selection, Modifier.dropdownSelector(), onNewValue)
-  }
-
-}

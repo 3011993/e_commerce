@@ -14,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.DangerousCardEditor
+import com.example.e_commerce.common.composable.DangerousDialogCancelButton
+import com.example.e_commerce.common.composable.DangerousDialogConfirmButton
 import com.example.e_commerce.common.composable.DialogCancelButton
 import com.example.e_commerce.common.composable.DialogConfirmButton
 import com.example.e_commerce.common.composable.RegularCardEditor
@@ -133,9 +135,9 @@ private fun DeleteMyAccountCard(deleteMyAccount: () -> Unit) {
         AlertDialog(
             title = { Text(stringResource(AppText.delete_account_title)) },
             text = { Text(stringResource(AppText.delete_account_description)) },
-            dismissButton = { DialogCancelButton(AppText.cancel) { showWarningDialog = false } },
+            dismissButton = { DangerousDialogCancelButton(AppText.cancel) { showWarningDialog = false } },
             confirmButton = {
-                DialogConfirmButton(AppText.delete_my_account) {
+                DangerousDialogConfirmButton(AppText.delete_my_account) {
                     deleteMyAccount()
                     showWarningDialog = false
                 }
