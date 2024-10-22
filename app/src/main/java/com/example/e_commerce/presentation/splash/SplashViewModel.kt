@@ -5,6 +5,7 @@ import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.SPLASH_SCREEN
 import com.example.e_commerce.presentation.Home
@@ -15,10 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val accountService: AccountService,
-    storageService: StorageService,
-    repo : CommerceRepository,
     logService: LogService,
-) : CommerceViewModel(logService,storageService,accountService,repo) {
+) : BaseCommerceViewModel(logService) {
     val showError = mutableStateOf(false)
 
     fun onAppStart(openAndPopUp: (String, String) -> Unit) {

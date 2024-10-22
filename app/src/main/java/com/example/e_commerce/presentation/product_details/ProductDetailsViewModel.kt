@@ -10,6 +10,7 @@ import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.PRODUCT_ID
 import com.example.e_commerce.presentation.ScreenState
@@ -17,15 +18,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     logService: LogService,
-    private val storageService: StorageService,
-    private val accountService: AccountService,
     private val repo: CommerceRepository,
+    storageService: StorageService,
+    accountService: AccountService,
     savedStateHandle: SavedStateHandle,
 ) : CommerceViewModel(logService,storageService,accountService,repo) {
 
@@ -52,6 +52,5 @@ class ProductDetailsViewModel @Inject constructor(
             }
         }
     }
-
 
 }

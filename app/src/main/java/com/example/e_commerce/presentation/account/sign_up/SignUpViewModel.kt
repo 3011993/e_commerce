@@ -27,6 +27,7 @@ import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.Account
+import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.SIGN_UP_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,10 +36,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     logService: LogService,
-    repo : CommerceRepository,
-    storageService: StorageService,
     private val accountService: AccountService,
-) : CommerceViewModel(logService,storageService,accountService,repo) {
+) : BaseCommerceViewModel(logService) {
 
     var uiStateSignUp = mutableStateOf(SignUpUiState())
         private set
@@ -75,7 +74,7 @@ class SignUpViewModel @Inject constructor(
             SnackBarManager.showMessage(AppText.password_match_error)
             return
         }
-       launchCatching{
+        launchCatching {
             accountService.linkAccount(email, password)
         }
         openAndPopUp(Account.route, SIGN_UP_SCREEN)

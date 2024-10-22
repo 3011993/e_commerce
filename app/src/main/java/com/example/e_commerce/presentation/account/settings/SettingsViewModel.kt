@@ -5,6 +5,8 @@ import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.BaseCommerceViewModel
+import com.example.e_commerce.presentation.BaseCommerceViewModelWithAccountService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import com.example.e_commerce.presentation.SIGN_UP_SCREEN
@@ -17,10 +19,8 @@ import kotlinx.coroutines.flow.map
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     logService: LogService,
-    storageService: StorageService,
-    repo : CommerceRepository,
     private val accountService: AccountService,
-) : CommerceViewModel(logService,storageService,accountService,repo) {
+) : BaseCommerceViewModelWithAccountService(logService,accountService) {
 
     fun onLoginClick(openScreen: (String) -> Unit) = openScreen(LOGIN_IN_SCREEN)
     fun onSignUpClick(openScreen: (String) -> Unit) = openScreen(SIGN_UP_SCREEN)

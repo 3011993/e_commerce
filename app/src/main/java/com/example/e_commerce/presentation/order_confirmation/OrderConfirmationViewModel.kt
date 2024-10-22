@@ -23,7 +23,7 @@ class OrderConfirmationViewModel @Inject constructor(
     logService: LogService,
     accountService: AccountService,
     storageService: StorageService,
-    private val repo: CommerceRepository,
+    repo: CommerceRepository,
 ) : CommerceViewModel(logService, storageService, accountService, repo) {
 
     init {
@@ -33,11 +33,9 @@ class OrderConfirmationViewModel @Inject constructor(
     fun onAddressClicked(openScreen: (String) -> Unit) {
         openScreen(ADDRESS)
     }
-
     fun onPaymentClicked(openScreen: (String) -> Unit) {
         openScreen(ADD_NEW_PAYMENT)
     }
-
     fun onPlaceOrderClicked(openScreenAndPopup: (String, String) -> Unit) {
 //        if (address.isBlank()) {
 //            SnackBarManager.showMessage("address is empty")

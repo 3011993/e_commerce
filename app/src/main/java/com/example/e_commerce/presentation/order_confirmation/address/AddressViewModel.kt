@@ -6,6 +6,7 @@ import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ORDER_CONFIRMATION
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,9 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddressViewModel @Inject constructor(
-    logService: LogService, storageService: StorageService,
-    accountService: AccountService, private val repo: CommerceRepository
-) : CommerceViewModel(logService,storageService,accountService,repo) {
+    logService: LogService, private val repo: CommerceRepository
+) : BaseCommerceViewModel(logService) {
 
     var addressModel = mutableStateOf(AddressModel())
         private set
@@ -25,10 +25,12 @@ class AddressViewModel @Inject constructor(
         get() = addressModel.value.address
     private val city: String
         get() = addressModel.value.city
+
     init {
         getAddress()
 
     }
+
     fun onNameChange(newValue: String) {
         addressModel.value = addressModel.value.copy(name = newValue)
     }
@@ -55,7 +57,8 @@ class AddressViewModel @Inject constructor(
         }
         openScreen(ORDER_CONFIRMATION)
     }
-    private fun getAddress(){
+
+    private fun getAddress() {
         launchCatching(dispatcher = Dispatchers.IO) {
             addressModel.value = repo.getAddress()
         }

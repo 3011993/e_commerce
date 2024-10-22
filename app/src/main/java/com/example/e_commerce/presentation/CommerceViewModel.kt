@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.UUID
+import kotlin.math.log
 
 abstract class BaseCommerceViewModel(private val logService: LogService) : ViewModel() {
     fun launchCatching(
@@ -40,12 +41,18 @@ abstract class BaseCommerceViewModel(private val logService: LogService) : ViewM
     }
 }
 
+abstract class BaseCommerceViewModelWithAccountService(
+    logService: LogService, accountService: AccountService
+) : BaseCommerceViewModel(logService) {
+    val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
+}
+
 abstract class CommerceViewModel(
     logService: LogService,
     private val storageService: StorageService,
     accountService: AccountService,
     private val repo: CommerceRepository,
-) : BaseCommerceViewModel(logService) {
+) : BaseCommerceViewModelWithAccountService(logService, accountService) {
     protected val _allProducts =
         MutableStateFlow<ScreenState<List<ProductModel>>>(ScreenState.Loading())
     val allProducts = _allProducts.asStateFlow()
@@ -53,7 +60,6 @@ abstract class CommerceViewModel(
     protected val _carts = MutableStateFlow<List<CartModel>>(emptyList())
     val carts = _carts.asStateFlow()
 
-    val uiState = accountService.currentUser.map { SettingsUiState(it.isAnonymous) }
 
     private val _inStock = MutableStateFlow<Map<String, Boolean>>(emptyMap())
     val inStock = _inStock.asStateFlow()
@@ -100,6 +106,5 @@ abstract class CommerceViewModel(
             }
         }
     }
-
 
 }

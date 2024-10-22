@@ -6,6 +6,7 @@ import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
+import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ORDER_CONFIRMATION
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,9 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    logService: LogService, storageService: StorageService,
-    accountService: AccountService, private val repo: CommerceRepository
-) : CommerceViewModel(logService, storageService, accountService, repo) {
+    logService: LogService, private val repo: CommerceRepository
+) : BaseCommerceViewModel(logService) {
     var paymentModel = mutableStateOf(PaymentModel())
         private set
     private val cardNumber: String

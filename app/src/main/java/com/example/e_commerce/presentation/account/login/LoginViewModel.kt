@@ -25,6 +25,7 @@ import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.Account
+import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.LOGIN_IN_SCREEN
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,10 +34,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     logService: LogService,
-    storageService: StorageService,
-    repo : CommerceRepository,
     private val accountService: AccountService,
-) : CommerceViewModel(logService,storageService,accountService,repo) {
+) : BaseCommerceViewModel(logService) {
     var uiStateLogIn = mutableStateOf(LoginUiState())
         private set
 
@@ -64,7 +63,7 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        launchCatching{
+        launchCatching {
             accountService.authenticate(email, password)
             openAndPopUp(Account.route, LOGIN_IN_SCREEN)
         }
