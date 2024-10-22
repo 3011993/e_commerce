@@ -1,6 +1,7 @@
 package com.example.e_commerce.presentation.order_confirmation.address
 
 import androidx.compose.runtime.mutableStateOf
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.AddressModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
@@ -21,10 +22,17 @@ class AddressViewModel @Inject constructor(
     var addressModel = mutableStateOf(AddressModel())
         private set
 
+    private val name : String
+        get() = addressModel.value.name
+    private val country : String
+        get() = addressModel.value.country
+    private val phoneNumber : String
+        get() = addressModel.value.phoneNumber
     private val address: String
         get() = addressModel.value.address
     private val city: String
         get() = addressModel.value.city
+
 
     init {
         getAddress()
@@ -52,6 +60,27 @@ class AddressViewModel @Inject constructor(
     }
 
     fun onSaveAddressClicked(openScreen: (String) -> Unit) {
+        if (name.isBlank()){
+            SnackBarManager.showMessage("please add your name")
+            return
+        }
+        if (country.isBlank()){
+            SnackBarManager.showMessage("please add your country")
+            return
+        }
+        if (city.isBlank()){
+            SnackBarManager.showMessage("please add your city")
+            return
+        }
+        if (phoneNumber.isBlank()){
+            SnackBarManager.showMessage("please add your phone number")
+            return
+        }
+        if (address.isBlank()){
+            SnackBarManager.showMessage("please add your full address")
+            return
+        }
+
         launchCatching(dispatcher = Dispatchers.IO) {
             repo.saveAddress(addressModel.value)
         }

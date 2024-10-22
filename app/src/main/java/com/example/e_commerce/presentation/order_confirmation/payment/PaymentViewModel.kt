@@ -1,6 +1,9 @@
 package com.example.e_commerce.presentation.order_confirmation.payment
 
 import androidx.compose.runtime.mutableStateOf
+import com.example.e_commerce.common.ext.isValidCardNumber
+import com.example.e_commerce.common.ext.isValidCvv
+import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.PaymentModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
@@ -19,10 +22,12 @@ class PaymentViewModel @Inject constructor(
 ) : BaseCommerceViewModel(logService) {
     var paymentModel = mutableStateOf(PaymentModel())
         private set
-    private val cardNumber: String
-        get() = paymentModel.value.cardNumber
     private val cardOwner: String
         get() = paymentModel.value.cardOwner
+    private val cardNumber: String
+        get() = paymentModel.value.cardNumber
+    private val exp : String
+        get() = paymentModel.value.exp
     private val cvv: String
         get() = paymentModel.value.cvv
 
@@ -47,6 +52,22 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun onSavePaymentClicked(openScreen: (String) -> Unit) {
+        if (cardOwner.isBlank()){
+            SnackBarManager.showMessage("please add name on your card")
+            return
+        }
+        if (cardNumber.isValidCardNumber()){
+            SnackBarManager.showMessage("please add your card number right")
+            return
+        }
+        if (exp.isBlank()){
+            SnackBarManager.showMessage("please add your card expiration date")
+            return
+        }
+        if (!cvv.isValidCvv()){
+            SnackBarManager.showMessage("please add valid Cvv")
+            return
+        }
         launchCatching(dispatcher = Dispatchers.IO) {
             repo.savePayment(paymentModel.value)
         }
