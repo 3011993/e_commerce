@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -136,18 +138,19 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         appState.showBottomNavigation = false
         val viewModel: CartViewModel = hiltViewModel()
         val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
+        var showDialog by remember { mutableStateOf(false) }
 
         CartScreen(onNavigationBackClicked = { appState.popUp() },
             onCheckOutClick = {
                 if (uiState.isAnonymousAccount) {
-                    //Todo change it with dialog
-                    SnackBarManager.showMessage("please sign up to check out")
-                    appState.navigate(Account.route)
+                    showDialog = true
                 } else {
                     appState.navigate(ORDER_CONFIRMATION)
                 }
-
             })
+        CheckOutDialog(
+            showDialog,
+            onDismiss = { showDialog = false }) { appState.navigate(Account.route) }
     }
     composable(Account.route) {
         appState.showBottomNavigation = true

@@ -12,10 +12,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -25,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.e_commerce.R
 import com.example.e_commerce.common.composable.CommerceWideButton
-import com.example.e_commerce.common.composable.DialogCancelButton
-import com.example.e_commerce.common.composable.DialogConfirmButton
+import com.example.e_commerce.common.composable.DialogCancelLoginButton
+import com.example.e_commerce.common.composable.DialogConfirmLoginButton
 import com.example.e_commerce.common.ext.adjustPrice
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
@@ -68,20 +64,18 @@ fun CheckOutBottom(
     }
 }
 @Composable
-fun CheckOutDialog(openScreen :()-> Unit) {
-    var showWarningDialog by remember { mutableStateOf(false) }
-    if (showWarningDialog) {
+fun CheckOutDialog(showDialog : Boolean,onDismiss : () -> Unit,openScreen :()-> Unit) {
+    if (showDialog) {
         AlertDialog(
-            title = { Text(stringResource(R.string.sign_in_title)) },
-            text = { Text(stringResource(R.string.sign_in_description)) },
-            dismissButton = { DialogCancelButton(R.string.cancel) { showWarningDialog = false } },
+            title = { Text(stringResource(R.string.log_in_title)) },
+            text = { Text(stringResource(R.string.log_in_description)) },
+            dismissButton = { DialogCancelLoginButton(action = onDismiss)  },
             confirmButton = {
-                DialogConfirmButton(R.string.sign_in) {
+                DialogConfirmLoginButton () {
                     openScreen()
-                    showWarningDialog = false
                 }
             },
-            onDismissRequest = { showWarningDialog = false }
+            onDismissRequest = onDismiss
         )
     }
 

@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.e_commerce.R.string as AppText
 
 @Composable
 fun CommerceWideButton(@StringRes text: Int, modifier: Modifier = Modifier, action: () -> Unit) {
@@ -107,3 +108,30 @@ fun DangerousDialogCancelButton(@StringRes text: Int, action: () -> Unit) {
     }
 }
 
+@Composable
+fun DialogConfirmLoginButton(action: () -> Unit) {
+    Button(
+        onClick = action,
+        colors =
+        ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Text(text = stringResource(AppText.log_in_title), style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+@Composable
+fun DialogCancelLoginButton(action: () -> Unit) {
+    Button(
+        onClick = action,
+        colors =
+        ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        )
+    ) {
+        Text(text = stringResource(AppText.cancel),style = MaterialTheme.typography.bodyMedium)
+    }
+}
