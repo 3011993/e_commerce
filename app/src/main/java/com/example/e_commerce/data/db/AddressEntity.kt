@@ -6,7 +6,7 @@ import com.example.e_commerce.domain.model.AddressModel
 
 @Entity
 data class AddressEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int = 0,
     val name: String = "",
     val country: String = "",
@@ -16,6 +16,7 @@ data class AddressEntity(
 )
 
 fun AddressEntity.toModel() = AddressModel(
+    id = id,
     name = name,
     country = country,
     city = city,
@@ -23,6 +24,7 @@ fun AddressEntity.toModel() = AddressModel(
     address = address
 )
 fun AddressModel.fromModel() = AddressEntity(
+    id = id,
     name = name,
     country = country,
     city = city,

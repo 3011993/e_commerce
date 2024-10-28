@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PaymentModel(
+    val id : Int = 0,
     val cardOwner: String = "",
     val cardNumber: String ="",
     val exp : String = "",

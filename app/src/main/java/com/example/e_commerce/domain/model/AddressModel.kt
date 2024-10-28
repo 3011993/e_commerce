@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AddressModel(
+    val id : Int = 0,
     val name: String = "",
     val country: String = "",
     val city: String = "",

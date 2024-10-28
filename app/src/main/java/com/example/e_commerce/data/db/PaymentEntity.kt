@@ -6,7 +6,7 @@ import com.example.e_commerce.domain.model.PaymentModel
 
 @Entity
 class PaymentEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey val id: Int = 0,
     val cardOwner: String = "",
     val cardNumber: String = "",
     val exp: String = "",
@@ -14,6 +14,7 @@ class PaymentEntity(
 )
 
 fun PaymentEntity.toModel() = PaymentModel(
+    id =  id,
     cardOwner = cardOwner,
     cardNumber = cardNumber,
     exp = exp,
@@ -21,6 +22,7 @@ fun PaymentEntity.toModel() = PaymentModel(
 )
 
 fun PaymentModel.fromModel() = PaymentEntity(
+    id = id,
     cardOwner = cardOwner,
     cardNumber = cardNumber,
     exp = exp,

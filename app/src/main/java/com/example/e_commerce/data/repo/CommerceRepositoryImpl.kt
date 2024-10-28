@@ -179,7 +179,8 @@ class CommerceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun savePayment(payment: PaymentModel) {
-        dao.insertPayment(payment.fromModel())
+        val updatedPayment = payment.copy(id = 0)
+        dao.insertPayment(updatedPayment.fromModel())
     }
 
     override suspend fun getPayments(): PaymentModel {
@@ -187,7 +188,8 @@ class CommerceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveAddress(address: AddressModel) {
-        dao.insertAddress(address.fromModel())
+        val updatedAddress = address.copy(id = 0)
+        dao.insertAddress(updatedAddress.fromModel())
     }
 
     override suspend fun getAddress(): AddressModel {

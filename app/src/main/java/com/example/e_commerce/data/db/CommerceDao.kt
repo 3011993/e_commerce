@@ -37,11 +37,11 @@ interface CommerceDao {
 
     @Query("SELECT * FROM PRODUCTENTITY WHERE isFavorite= 1")
     fun getFavoriteProducts(): List<ProductEntity>
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPayment(paymentEntity: PaymentEntity)
     @Query("SELECT * FROM PaymentEntity")
     fun getAllPayments(): List<PaymentEntity>
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAddress(addressEntity: AddressEntity)
     @Query("SELECT * FROM AddressEntity")
     fun getAllAddresses(): List<AddressEntity>
