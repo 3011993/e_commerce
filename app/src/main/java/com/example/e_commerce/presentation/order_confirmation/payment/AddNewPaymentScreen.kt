@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +41,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 @Composable
 fun AddNewPaymentScreen(openScreen : (String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
     val viewModel: PaymentViewModel = hiltViewModel()
-    val paymentUiState by viewModel.paymentModel
+    val paymentUiState by viewModel.paymentModel.collectAsState()
     AddNewPaymentContent(
         uiState = paymentUiState,
         onCardOwnerChange = viewModel::onCardOwnerChange,

@@ -12,6 +12,7 @@ import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ORDER_CONFIRMATION
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +20,7 @@ class AddressViewModel @Inject constructor(
     logService: LogService, private val repo: CommerceRepository
 ) : BaseCommerceViewModel(logService) {
 
-    var addressModel = mutableStateOf(AddressModel())
+    var addressModel = MutableStateFlow(AddressModel())
         private set
 
     private val name : String

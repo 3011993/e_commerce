@@ -14,13 +14,14 @@ import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ORDER_CONFIRMATION
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     logService: LogService, private val repo: CommerceRepository
 ) : BaseCommerceViewModel(logService) {
-    var paymentModel = mutableStateOf(PaymentModel())
+    var paymentModel = MutableStateFlow(PaymentModel())
         private set
     private val cardOwner: String
         get() = paymentModel.value.cardOwner

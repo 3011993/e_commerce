@@ -60,8 +60,8 @@ fun OrderConfirmationScreen(
     val paymentViewModel : PaymentViewModel = hiltViewModel()
     val addressViewModel : AddressViewModel = hiltViewModel()
     val carts by viewModel.carts.collectAsState()
-    val addressState by addressViewModel.addressModel
-    val paymentState by paymentViewModel.paymentModel
+    val addressState by addressViewModel.addressModel.collectAsState()
+    val paymentState by paymentViewModel.paymentModel.collectAsState()
     OrderConfirmationContent(
         carts = carts,
         addressState = addressState,
