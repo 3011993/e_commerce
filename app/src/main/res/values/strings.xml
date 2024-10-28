@@ -29,10 +29,10 @@
     <!-- Dialogs -->
     <string name="sign_out_title">Sign out?</string>
     <string name="log_in_title">Log in?</string>
-    <string name="sign_out_description">You will have to sign in again to see your tasks.</string>
+    <string name="sign_out_description">You will have to sign in again to place your order.</string>
     <string name="log_in_description">You have to sign up or sign in to check out and place order.</string>
     <string name="delete_account_title">Delete account?</string>
-    <string name="delete_account_description">You will lose all your tasks and your account will be deleted. This action is irreversible.</string>
+    <string name="delete_account_description">You will lose all your orders and your account will be deleted. This action is irreversible.</string>
 
     <!-- Search BAr -->
     <string name="placeholder_search">Search</string>

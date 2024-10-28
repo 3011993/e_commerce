@@ -192,7 +192,7 @@ fun HomeContent(
                     },
                     modifier = modifier
                         .clip(CircleShape)
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.primary)
                         .align(Alignment.TopCenter),
                 ) {
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
