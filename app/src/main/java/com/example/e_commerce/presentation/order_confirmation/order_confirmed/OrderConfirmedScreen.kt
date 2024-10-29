@@ -18,8 +18,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.e_commerce.R
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
+import com.example.e_commerce.common.composable.DialogCancelLoginButton
+import com.example.e_commerce.common.composable.DialogConfirmLoginButton
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
@@ -67,7 +70,24 @@ fun OrderConfirmedContent(onContinueShoppingClicked : () -> Unit,
         CommerceWideButton(AppText.continue_shopping_button, action = onContinueShoppingClicked)
     }
 }
+@Composable
+fun ConfirmOrderDialog(showDialog : Boolean,onDismiss : () -> Unit,openScreen :()-> Unit) {
+    if (showDialog) {
+        AlertDialog(
+            title = { Text(stringResource(R.string.confirm_order_title)) },
+            text = { Text(stringResource(R.string.confirm_order_description)) },
+            dismissButton = { DialogCancelLoginButton(action = onDismiss)  },
+            confirmButton = {
+                DialogConfirmLoginButton (text = AppText.pay_now_button) {
+                    openScreen()
 
+                }
+            },
+            onDismissRequest = onDismiss
+        )
+    }
+
+}
 @Preview(showBackground = true)
 @Composable
 private fun OrderConfirmedContentPreview() {

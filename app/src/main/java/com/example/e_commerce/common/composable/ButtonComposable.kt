@@ -109,7 +109,7 @@ fun DangerousDialogCancelButton(@StringRes text: Int, action: () -> Unit) {
 }
 
 @Composable
-fun DialogConfirmLoginButton(action: () -> Unit) {
+fun DialogConfirmLoginButton(@StringRes text: Int, action: () -> Unit) {
     Button(
         onClick = action,
         colors =
@@ -118,7 +118,7 @@ fun DialogConfirmLoginButton(action: () -> Unit) {
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = stringResource(AppText.log_in_title), style = MaterialTheme.typography.bodyMedium)
+        Text(text = stringResource(text), style = MaterialTheme.typography.bodyMedium)
     }
 }
 

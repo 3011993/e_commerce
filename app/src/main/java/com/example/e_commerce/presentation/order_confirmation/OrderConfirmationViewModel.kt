@@ -36,7 +36,7 @@ class OrderConfirmationViewModel @Inject constructor(
     fun onPaymentClicked(openScreen: (String) -> Unit) {
         openScreen(ADD_NEW_PAYMENT)
     }
-    fun onPlaceOrderClicked(openScreenAndPopup: (String, String) -> Unit) {
+    fun onPlaceOrderClicked(showDialog : Boolean,openScreenAndPopup: (String, String) -> Unit) {
 //        if (address.isBlank()) {
 //            SnackBarManager.showMessage("address is empty")
 //        } else if (city.isBlank()) {

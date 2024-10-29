@@ -33,6 +33,9 @@
     <string name="log_in_description">You have to sign up or sign in to check out and place order.</string>
     <string name="delete_account_title">Delete account?</string>
     <string name="delete_account_description">You will lose all your orders and your account will be deleted. This action is irreversible.</string>
+    <string name="confirm_order_title">Pay now?</string>
+    <string name="confirm_order_description">please confirm you will pay this amount for your order.</string>
+    <string name="pay_now_button">Pay Now</string>
 
     <!-- Search BAr -->
     <string name="placeholder_search">Search</string>

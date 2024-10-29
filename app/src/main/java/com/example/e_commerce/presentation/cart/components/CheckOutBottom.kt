@@ -71,7 +71,7 @@ fun CheckOutDialog(showDialog : Boolean,onDismiss : () -> Unit,openScreen :()-> 
             text = { Text(stringResource(R.string.log_in_description)) },
             dismissButton = { DialogCancelLoginButton(action = onDismiss)  },
             confirmButton = {
-                DialogConfirmLoginButton () {
+                DialogConfirmLoginButton (text = AppText.log_in_title) {
                     openScreen()
                 }
             },

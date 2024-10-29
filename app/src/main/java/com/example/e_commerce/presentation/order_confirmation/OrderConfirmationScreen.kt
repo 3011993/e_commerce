@@ -52,7 +52,7 @@ import com.example.e_commerce.R.drawable as AppIcon
 fun OrderConfirmationScreen(
     openAddressScreen: (String) -> Unit,
     openPaymentScreen: (String) -> Unit,
-    openOrderConfirmedAndPopup: (String,String) -> Unit,
+    onPlaceOrderClicked: () -> Unit,
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +68,7 @@ fun OrderConfirmationScreen(
         paymentState = paymentState,
         onAddressClicked = { viewModel.onAddressClicked(openAddressScreen) },
         onPaymentClicked = { viewModel.onPaymentClicked(openPaymentScreen) },
-        onPlaceOrderClicked = {viewModel.onPlaceOrderClicked(openOrderConfirmedAndPopup)},
+        onPlaceOrderClicked = onPlaceOrderClicked,
         onNavigationBack = onNavigationBack, modifier = modifier
     )
 }

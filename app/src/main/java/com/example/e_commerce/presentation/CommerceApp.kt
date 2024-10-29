@@ -40,6 +40,7 @@ import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
 import com.example.e_commerce.presentation.splash.SplashScreen
 import com.example.e_commerce.presentation.home.HomeScreen
+import com.example.e_commerce.presentation.order_confirmation.order_confirmed.ConfirmOrderDialog
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
 
@@ -174,13 +175,20 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         })
     }
     composable(ORDER_CONFIRMATION) {
+        var showDialog by remember { mutableStateOf(false) }
         OrderConfirmationScreen(openAddressScreen = { route ->
             appState.navigate(route)
         }, openPaymentScreen = { route ->
             appState.navigate(route)
-        }, openOrderConfirmedAndPopup = { route, popUp ->
-            appState.navigateAndPopUp(route, popUp)
+        }, onPlaceOrderClicked = {
+            showDialog = true
         }, onNavigationBack = { appState.popUp() })
+        ConfirmOrderDialog(
+            showDialog,
+            onDismiss = { showDialog = false }) {
+            appState.navigateAndPopUp(ORDER_CONFIRMED,Cart.route)
+            showDialog = false
+        }
     }
     composable(ADDRESS) {
         AddressScreen(openScreen = { route ->
