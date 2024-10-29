@@ -21,6 +21,9 @@ fun String.isValidPassword(): Boolean {
 fun String.passwordMatches(repeated: String): Boolean {
   return this == repeated
 }
+fun String.isValidPhoneNumber() :Boolean{
+  return this.isNotBlank() && this.length == 11
+}
 fun String.isValidCardNumber() :Boolean{
   return this.isNotBlank() && this.length == 14
 }

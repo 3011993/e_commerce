@@ -1,6 +1,7 @@
 package com.example.e_commerce.presentation.order_confirmation.address
 
 import androidx.compose.runtime.mutableStateOf
+import com.example.e_commerce.common.ext.isValidCardNumber
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.AddressModel
 import com.example.e_commerce.domain.repo.CommerceRepository
@@ -73,7 +74,7 @@ class AddressViewModel @Inject constructor(
             SnackBarManager.showMessage("please add your city")
             return
         }
-        if (phoneNumber.isBlank()){
+        if (phoneNumber.isValidCardNumber()){
             SnackBarManager.showMessage("please add your phone number")
             return
         }
