@@ -132,7 +132,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
     composable(WishList.route) {
         appState.showBottomNavigation = true
         WishlistScreen(clearAndNavigate = { route ->
-            appState.clearAndNavigate(route)
+            appState.navigate(route)
         })
     }
     composable(Cart.route) {
