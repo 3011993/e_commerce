@@ -1,7 +1,5 @@
 package com.example.e_commerce.presentation.order_confirmation
 
-import androidx.compose.runtime.mutableStateOf
-import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
@@ -10,10 +8,7 @@ import com.example.e_commerce.presentation.ADDRESS
 import com.example.e_commerce.presentation.ADD_NEW_PAYMENT
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.Home
-import com.example.e_commerce.presentation.ORDER_CONFIRMATION
 import com.example.e_commerce.presentation.ORDER_CONFIRMED
-import com.example.e_commerce.domain.model.AddressModel
-import com.example.e_commerce.domain.model.PaymentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -22,8 +17,8 @@ import javax.inject.Inject
 class OrderConfirmationViewModel @Inject constructor(
     logService: LogService,
     accountService: AccountService,
-    storageService: StorageService,
-    repo: CommerceRepository,
+    private val storageService: StorageService,
+    private val repo: CommerceRepository,
 ) : CommerceViewModel(logService, storageService, accountService, repo) {
 
     init {
@@ -45,6 +40,13 @@ class OrderConfirmationViewModel @Inject constructor(
 //            openScreenAndPopup(ORDER_CONFIRMED, Home.route)
 //        }
         openScreenAndPopup(ORDER_CONFIRMED, Home.route)
+    }
+    fun resetData(){
+        launchCatching(dispatcher = Dispatchers.IO) {
+            storageService.deleteCarts()
+            repo.resetUiStates()
+        }
+
     }
 
     fun onContinueShoppingClicked(openScreen: (String) -> Unit) {

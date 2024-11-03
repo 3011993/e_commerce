@@ -24,16 +24,16 @@ class StorageServiceImpl @Inject constructor(
                 .dataObjects()
         }
 
-    override suspend fun addOrUpdateCart(cart: CartModel,onResult: (Boolean) -> Unit) {
+    override suspend fun addOrUpdateCart(cart: CartModel, onResult: (Boolean) -> Unit) {
         val document = firestore.collection(CARTS_COLLECTION).document(cart.cartId).get().await()
-        if(document.exists()){
-            updateCart(cart,onResult)
+        if (document.exists()) {
+            updateCart(cart, onResult)
         } else {
             addCart(cart, onResult = onResult)
         }
     }
 
-    override fun addCart(cart: CartModel,onResult :(Boolean) -> Unit) {
+    override fun addCart(cart: CartModel, onResult: (Boolean) -> Unit) {
         val updatedCart = cart.copy(userId = auth.currentUserId)
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
@@ -53,7 +53,7 @@ class StorageServiceImpl @Inject constructor(
                     return@runTransaction true
                 } else {
                     Log.i("StorageImpl", "issue in quantity and stock ")
-                    return@runTransaction  false
+                    return@runTransaction false
                 }
             }
             return@runTransaction false
@@ -108,7 +108,7 @@ class StorageServiceImpl @Inject constructor(
         }
     }
 
-    override fun removeFromCart(cart: CartModel,onResult: (Boolean) -> Unit) {
+    override fun removeFromCart(cart: CartModel, onResult: (Boolean) -> Unit) {
         val productRef =
             firestore.collection(INVENTORY_COLLECTION).document(cart.productId.toString())
         val cartRef = firestore.collection(CARTS_COLLECTION).document(cart.cartId)
@@ -134,22 +134,35 @@ class StorageServiceImpl @Inject constructor(
             } else {
                 return@runTransaction false
             }
-        }.addOnSuccessListener { result->
+        }.addOnSuccessListener { result ->
             onResult(result)
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             onResult(false)
         }
     }
-    override fun getInStockStatus(productId: String, callBack :(Boolean) -> Unit) {
-        val productDoc =firestore.collection(INVENTORY_COLLECTION).document(productId)
+
+    override fun getInStockStatus(productId: String, callBack: (Boolean) -> Unit) {
+        val productDoc = firestore.collection(INVENTORY_COLLECTION).document(productId)
         productDoc.get().addOnSuccessListener { snapShot ->
-            if (snapShot != null && snapShot.exists()){
-                 callBack(snapShot.getBoolean("inStock") ?: false)
+            if (snapShot != null && snapShot.exists()) {
+                callBack(snapShot.getBoolean("inStock") ?: false)
             } else {
                 callBack(false)
             }
         }
     }
+
+    override suspend fun deleteCarts() {
+        val userId = auth.currentUserId
+        val cartQuery =   firestore.collection(CARTS_COLLECTION).whereEqualTo(USER_ID_FIELD, userId)
+        val cartDocuments = cartQuery.get().await().documents
+        firestore.runBatch { batch ->
+            cartDocuments.forEach{ document ->
+                batch.delete(document.reference)
+            }
+        }.await()
+    }
+
     companion object {
         const val CARTS_COLLECTION = "carts"
         const val USER_ID_FIELD = "userId"

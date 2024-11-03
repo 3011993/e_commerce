@@ -27,4 +27,5 @@ interface CommerceRepository {
     suspend fun getPayments(): PaymentModel
     suspend fun saveAddress(address: AddressModel)
     suspend fun getAddress(): AddressModel
+    suspend fun resetUiStates()
 }

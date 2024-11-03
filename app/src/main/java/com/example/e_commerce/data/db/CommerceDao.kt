@@ -45,6 +45,10 @@ interface CommerceDao {
     fun insertAddress(addressEntity: AddressEntity)
     @Query("SELECT * FROM AddressEntity")
     fun getAllAddresses(): List<AddressEntity>
+    @Query("Delete From PAYMENTENTITY")
+    fun deletePayment()
+    @Query("Delete From AddressEntity")
+    fun deleteAddress()
 
 
 }

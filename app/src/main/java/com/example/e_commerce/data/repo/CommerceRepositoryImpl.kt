@@ -196,4 +196,9 @@ class CommerceRepositoryImpl @Inject constructor(
         return dao.getAllAddresses().last().toModel()
     }
 
+    override suspend fun resetUiStates() {
+        dao.deleteAddress()
+        dao.deletePayment()
+    }
+
 }
