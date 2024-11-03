@@ -21,11 +21,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.UUID
-import kotlin.math.log
 
 abstract class BaseCommerceViewModel(private val logService: LogService) : ViewModel() {
     fun launchCatching(
-        snackBar: Boolean = true,
+        snackBar: Boolean = false,
         dispatcher: CoroutineDispatcher = Dispatchers.Main,
         block: suspend CoroutineScope.() -> Unit,
     ) {
