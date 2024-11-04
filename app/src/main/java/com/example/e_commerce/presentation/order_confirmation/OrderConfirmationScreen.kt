@@ -52,13 +52,13 @@ import com.example.e_commerce.R.drawable as AppIcon
 fun OrderConfirmationScreen(
     openAddressScreen: (String) -> Unit,
     openPaymentScreen: (String) -> Unit,
-    onPlaceOrderClicked: () -> Unit,
+    callBack : (Boolean) -> Unit,
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: OrderConfirmationViewModel = hiltViewModel()
-    val paymentViewModel : PaymentViewModel = hiltViewModel()
-    val addressViewModel : AddressViewModel = hiltViewModel()
+    val paymentViewModel: PaymentViewModel = hiltViewModel()
+    val addressViewModel: AddressViewModel = hiltViewModel()
     val carts by viewModel.carts.collectAsState()
     val addressState by addressViewModel.addressModel.collectAsState()
     val paymentState by paymentViewModel.paymentModel.collectAsState()
@@ -68,7 +68,14 @@ fun OrderConfirmationScreen(
         paymentState = paymentState,
         onAddressClicked = { viewModel.onAddressClicked(openAddressScreen) },
         onPaymentClicked = { viewModel.onPaymentClicked(openPaymentScreen) },
-        onPlaceOrderClicked = onPlaceOrderClicked,
+        onPlaceOrderClicked = {
+            viewModel.onPlaceOrderClicked(
+                addressState,
+                paymentState,
+            ) { isNavigated ->
+                callBack(isNavigated)
+            }
+        },
         onNavigationBack = onNavigationBack, modifier = modifier
     )
 }
@@ -79,7 +86,7 @@ fun OrderConfirmationContent(
     carts: List<CartModel>, onAddressClicked: () -> Unit, onPaymentClicked: () -> Unit,
     addressState: AddressModel,
     paymentState: PaymentModel,
-    onPlaceOrderClicked :() -> Unit,
+    onPlaceOrderClicked: () -> Unit,
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

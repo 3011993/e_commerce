@@ -182,22 +182,21 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate(route)
         }, openPaymentScreen = { route ->
             appState.navigate(route)
-        }, onPlaceOrderClicked = {
-            showDialog = true
+        }, callBack = { isNavigated ->
+            showDialog = isNavigated
         }, onNavigationBack = { appState.popUp() })
         ConfirmOrderDialog(
             showDialog,
             onDismiss = { showDialog = false }) {
-            showDialog = false
+            appState.navigateAndPopUp(ORDER_CONFIRMED, Home.route)
             viewModel.resetData()
-            appState.navigateAndPopUp(ORDER_CONFIRMED,Cart.route)
+            showDialog = false
         }
     }
     composable(ADDRESS) {
         AddressScreen(openScreen = { route ->
             appState.navigate(route)
         }, onNavigateBack = { appState.popUp() })
-
     }
     composable(ADD_NEW_PAYMENT) {
         AddNewPaymentScreen(openScreen = { route ->
