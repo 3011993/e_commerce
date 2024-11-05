@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,7 +83,8 @@ fun AddNewPaymentContent(
             text = AppText.card_owner,
             value = uiState.cardOwner,
             onNewValue = onCardOwnerChange,
-            placeholder = AppText.card_owner
+            placeholder = AppText.card_owner,
+            modifier = modifier.padding(start = 16.dp, end = 16.dp)
         )
         Text(
             stringResource(AppText.card_number),
@@ -94,20 +96,21 @@ fun AddNewPaymentContent(
             value = uiState.cardNumber,
             keyboardType = KeyboardType.Number,
             onNewValue = onCardNumberChange,
-            placeholder = AppText.card_owner
+            placeholder = AppText.card_owner,
+            modifier = modifier.padding(start = 16.dp, end = 16.dp)
         )
-        Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-            Column {
+        Row(modifier = modifier.fillMaxWidth().padding(2.dp), horizontalArrangement = Arrangement.SpaceAround) {
+            Column (verticalArrangement = Arrangement.spacedBy(2.dp)){
                 Text(
                     stringResource(AppText.exp),
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
                 )
                 SmallPaymentField(
                     value = uiState.exp, onNewValue = onExpChange,
-                    keyboardType = KeyboardType.Number, placeholder = AppText.exp
+                    keyboardType = KeyboardType.Number, placeholder = AppText.exp_place_holder
                 )
             }
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)){
                 Text(
                     stringResource(AppText.cvv),
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp)
@@ -183,7 +186,7 @@ fun PaymentMethodsSection(modifier: Modifier = Modifier) {
 @Composable
 private fun AddNewPaymentPreview() {
     E_commerceTheme {
-//        AddNewPaymentContent("",{},{})
+        AddNewPaymentContent(PaymentModel(),{},{},{},{},{},{})
     }
 
 }

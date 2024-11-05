@@ -31,7 +31,11 @@ import com.example.e_commerce.R.drawable as AppIcon
 
 
 @Composable
-fun AddressScreen(openScreen:(String) -> Unit,onNavigateBack: () -> Unit, modifier: Modifier = Modifier) {
+fun AddressScreen(
+    openScreen: (String) -> Unit,
+    onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val viewModel: AddressViewModel = hiltViewModel()
     val addressUiState by viewModel.addressModel.collectAsState()
     AddressContent(
@@ -41,7 +45,7 @@ fun AddressScreen(openScreen:(String) -> Unit,onNavigateBack: () -> Unit, modifi
         onCityChange = viewModel::onCityChange,
         onAddressChange = viewModel::onAddressChange,
         onPhoneNumberChange = viewModel::onPhoneNumberChange,
-        onSaveAddressClicked = {viewModel.onSaveAddressClicked(openScreen)},
+        onSaveAddressClicked = { viewModel.onSaveAddressClicked(openScreen) },
         onNavigateBack = onNavigateBack,
         modifier = modifier
     )
@@ -55,7 +59,7 @@ fun AddressContent(
     onCityChange: (String) -> Unit,
     onPhoneNumberChange: (String) -> Unit,
     onAddressChange: (String) -> Unit,
-    onSaveAddressClicked : () -> Unit,
+    onSaveAddressClicked: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -74,9 +78,10 @@ fun AddressContent(
             text = AppText.name,
             value = uiState.name,
             onNewValue = onNameChange,
-            AppText.name
+            AppText.name,
+            modifier = modifier.padding(start = 16.dp, end = 16.dp)
         )
-        Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+        Row(modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp), horizontalArrangement = Arrangement.SpaceAround) {
             Column {
                 Text(
                     stringResource(AppText.country),
@@ -110,7 +115,8 @@ fun AddressContent(
             value = uiState.phoneNumber,
             onNewValue = onPhoneNumberChange,
             keyboardType = KeyboardType.Number,
-            placeholder = AppText.phone_number
+            placeholder = AppText.phone_number,
+            modifier = modifier.padding(start = 16.dp, end = 16.dp)
         )
         Text(
             "Address", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 17.sp),
@@ -120,7 +126,8 @@ fun AddressContent(
             text = AppText.address,
             value = uiState.address,
             onNewValue = onAddressChange,
-            placeholder = AppText.address
+            placeholder = AppText.address,
+            modifier = modifier.padding(start = 16.dp, end = 16.dp)
         )
         Spacer(modifier.weight(1f))
         CommerceWideButton(text = AppText.save_address_card_button, action = onSaveAddressClicked)
@@ -133,6 +140,6 @@ fun AddressContent(
 @Composable
 fun AddressContentPreview(modifier: Modifier = Modifier) {
     E_commerceTheme {
-//        AddressContent({})
+        AddressContent(AddressModel(), {}, {}, {}, {}, {}, {}, {})
     }
 }
