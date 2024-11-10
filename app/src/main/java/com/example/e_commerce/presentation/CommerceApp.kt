@@ -152,7 +152,9 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             })
         CheckOutDialog(
             showDialog,
-            onDismiss = { showDialog = false }) { appState.navigate(Account.route) }
+            onDismiss = { showDialog = false }) {
+            showDialog = false
+            appState.navigate(Account.route) }
     }
     composable(Account.route) {
         appState.showBottomNavigation = true

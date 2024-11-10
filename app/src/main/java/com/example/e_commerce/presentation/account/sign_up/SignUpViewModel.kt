@@ -76,8 +76,7 @@ class SignUpViewModel @Inject constructor(
         }
         launchCatching {
             accountService.linkAccount(email, password)
+            openAndPopUp(Account.route, SIGN_UP_SCREEN)
         }
-        openAndPopUp(Account.route, SIGN_UP_SCREEN)
-
     }
 }
