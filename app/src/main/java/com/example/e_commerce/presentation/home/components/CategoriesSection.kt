@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.home.components
 
+import android.content.ClipData.Item
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,15 +28,18 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.e_commerce.presentation.home.CategoriesEntries
+import com.example.e_commerce.presentation.home.NewArrivals
 import com.example.e_commerce.presentation.home.ecommerceCategories
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
 @Composable
 fun CategoriesSection(
+    onNewArrivalsClicked: () -> Unit,
     onCategorySelected: (CategoriesEntries) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedCategory by remember { mutableStateOf<CategoriesEntries?>(null) }
+    var newArrivalsSelected by remember { mutableStateOf(false) }
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = "Choose Category",
@@ -48,11 +52,25 @@ fun CategoriesSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(end = 8.dp)
         ) {
+           item {
+               CategoryChip(
+                   category = NewArrivals.category,
+                   icon = NewArrivals.icon,
+                   selected = newArrivalsSelected,
+                   onCategorySelected = {
+                       newArrivalsSelected = !newArrivalsSelected
+                       if(newArrivalsSelected) selectedCategory = null
+                       onNewArrivalsClicked()
+                   }
+               )
+           }
             items(ecommerceCategories) { category ->
-                CategoryChip(category = category.category, icon = category.icon,
+                CategoryChip(
+                    category = category.category, icon = category.icon,
                     selected = category == selectedCategory,
                     onCategorySelected = {
-                        selectedCategory = category
+                        selectedCategory = if (selectedCategory == category) null else category
+                        newArrivalsSelected = false
                         onCategorySelected(category)
                     })
             }
@@ -90,6 +108,6 @@ fun CategoryChip(
 @Composable
 private fun CategoriesSectionPreview() {
     E_commerceTheme {
-        CategoriesSection({})
+        CategoriesSection({},{})
     }
 }

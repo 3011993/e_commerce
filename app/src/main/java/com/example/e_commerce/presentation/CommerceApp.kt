@@ -42,6 +42,7 @@ import com.example.e_commerce.presentation.splash.SplashScreen
 import com.example.e_commerce.presentation.home.HomeScreen
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
 import com.example.e_commerce.presentation.order_confirmation.order_confirmed.ConfirmOrderDialog
+import com.example.e_commerce.presentation.store.StoreScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import kotlinx.coroutines.CoroutineScope
 
@@ -123,7 +124,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
             viewModel.addOrUpdateCart(product)
-        })
+        }, onStoreClicked = {appState.navigate(STORE_SCREEN)})
     }
     composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {
         appState.showBottomNavigation = false
@@ -211,5 +212,14 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         }, navigateBack = { route ->
             appState.navigate(route)
         })
+    }
+    composable(STORE_SCREEN){
+        appState.showBottomNavigation = true
+        val viewModel: CartViewModel = hiltViewModel()
+        HomeScreen(onProductClick = { product ->
+            appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
+        }, onCartButtonClicked = { product ->
+            viewModel.addOrUpdateCart(product)
+        }, onStoreClicked = {})
     }
 }

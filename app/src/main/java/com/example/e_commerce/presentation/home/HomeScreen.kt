@@ -2,10 +2,12 @@ package com.example.e_commerce.presentation.home
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -49,6 +51,7 @@ import com.example.e_commerce.R.string as AppText
 fun HomeScreen(
     onProductClick: (ProductModel) -> Unit,
     onCartButtonClicked: (ProductModel) -> Unit,
+    onStoreClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
@@ -63,6 +66,7 @@ fun HomeScreen(
         onCategorySelected = viewModel::getProductsByCategory,
         onFavouriteClicked = viewModel::onFavouriteClicked,
         productsInStock = productsInStock,
+        onStoreClicked = onStoreClicked,
         modifier = modifier
     )
 }
@@ -74,6 +78,7 @@ fun HomeContent(
     onCartButtonClicked: (ProductModel) -> Unit,
     onFavouriteClicked: (ProductModel) -> Unit,
     getAllProducts: () -> Unit,
+    onStoreClicked: () -> Unit,
     searchPrefix: (String) -> List<ProductModel>,
     onCategorySelected: (CategoriesEntries) -> Unit,
     productsInStock: Map<String, Boolean>,
@@ -146,13 +151,26 @@ fun HomeContent(
                 }, modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)
             )
             CategoriesSection(
+                onNewArrivalsClicked = getAllProducts,
                 onCategorySelected = onCategorySelected,
                 modifier = modifier.padding(start = 8.dp, top = 16.dp)
             )
-            Text(
-                "New Arrival", style = MaterialTheme.typography.bodyMedium,
-                modifier = modifier.padding(start = 16.dp, top = 45.dp)
-            )
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    "New Arrival", style = MaterialTheme.typography.bodyMedium,
+                    modifier = modifier.padding(start = 16.dp, top = 45.dp)
+                )
+                Text(
+                    "View All",
+                    style = MaterialTheme.typography.bodySmall.copy(color = secondaryOnBackGround),
+                    modifier = modifier
+                        .padding(end = 16.dp, top = 45.dp)
+                        .clickable { onStoreClicked() },
+                )
+            }
         }
 
         Box(modifier = modifier.fillMaxSize()) {
@@ -202,7 +220,6 @@ fun HomeContent(
     }
 }
 
-
 @Composable
 fun ProductsLazyVerticalGrid(
     products: List<ProductModel>,
@@ -229,8 +246,8 @@ fun ProductsLazyVerticalGrid(
                 showSnackBar = false
             }
         }
-        items(products, key = {it.id}) { product ->
-            val inStock  = productsInStock[product.id.toString()] ?: true
+        items(products, key = { it.id }) { product ->
+            val inStock = productsInStock[product.id.toString()] ?: true
             ProductItem(
                 product = product,
                 onProductClick,
@@ -269,7 +286,7 @@ fun StoreScreenPreview() {
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
         HomeContent(
             state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
-            getAllProducts = {}, productsInStock = emptyMap(),
+            getAllProducts = {}, onStoreClicked = {}, productsInStock = emptyMap(),
         )
     }
 }
