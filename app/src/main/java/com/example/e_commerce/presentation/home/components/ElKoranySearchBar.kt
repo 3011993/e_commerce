@@ -20,7 +20,7 @@ import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
 
 @Composable
-fun SearchBar(
+fun ElKoranySearchBar(
     searchText: String,
     onSearchTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -56,6 +56,6 @@ fun SearchBar(
 @Composable
 private fun SearchBarPreview() {
     E_commerceTheme {
-        SearchBar(searchText = "", onSearchTextChange = {})
+        ElKoranySearchBar(searchText = "", onSearchTextChange = {})
     }
 }

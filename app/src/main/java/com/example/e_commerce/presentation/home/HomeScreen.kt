@@ -6,15 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -30,19 +25,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.ConnectionState
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.rememberConnectivityState
-import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
+import com.example.e_commerce.presentation.StoreProducts
 import com.example.e_commerce.presentation.home.components.CategoriesSection
-import com.example.e_commerce.presentation.home.components.ProductItem
-import com.example.e_commerce.presentation.home.components.SearchBar
+import com.example.e_commerce.presentation.home.components.ElKoranySearchBar
+import com.example.e_commerce.presentation.home.components.NewArrivalsLandingImage
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 import com.example.e_commerce.R.string as AppText
@@ -131,30 +125,13 @@ fun HomeContent(
                 modifier = Modifier
             )
             Text(
-                "Hello", style = MaterialTheme.typography.labelLarge,
-                modifier = modifier.padding(start = 16.dp, top = 8.dp)
-            )
-            Text(
-                "Welcome to our Store",
+                "Welcome to El Korany Store",
                 style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
                 modifier = modifier.padding(start = 16.dp)
             )
-            SearchBar(
-                searchText = searchText,
-                onSearchTextChange = { newValue ->
-                    searchText = newValue
-                    displayedProducts = if (newValue.isBlank()) {
-                        allProducts
-                    } else {
-                        searchPrefix(newValue)
-                    }
-                }, modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)
-            )
-            CategoriesSection(
-                onNewArrivalsClicked = getAllProducts,
-                onCategorySelected = onCategorySelected,
-                modifier = modifier.padding(start = 8.dp, top = 16.dp)
-            )
+
+            NewArrivalsLandingImage()
+
             Row(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -176,7 +153,7 @@ fun HomeContent(
         Box(modifier = modifier.fillMaxSize()) {
             when (state) {
                 is ScreenState.Error -> {
-                    ProductsLazyVerticalGrid(
+                    StoreProducts(
                         products = state.data ?: emptyList(),
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
@@ -192,7 +169,7 @@ fun HomeContent(
                 }
 
                 is ScreenState.Success -> {
-                    ProductsLazyVerticalGrid(
+                    StoreProducts(
                         products = displayedProducts,
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
@@ -216,45 +193,6 @@ fun HomeContent(
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun ProductsLazyVerticalGrid(
-    products: List<ProductModel>,
-    onProductClick: (ProductModel) -> Unit,
-    onCartButtonClicked: (ProductModel) -> Unit,
-    onFavouriteClicked: (ProductModel) -> Unit,
-    productsInStock: Map<String, Boolean>,
-    isConnected: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    var showSnackBar by remember { mutableStateOf(true) }
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(vertical = 6.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        item(span = { GridItemSpan(2) }) {
-            if (showSnackBar && !isConnected) {
-                SnackBarManager.showMessage(AppText.offline_message)
-                showSnackBar = false
-            }
-        }
-        items(products, key = { it.id }) { product ->
-            val inStock = productsInStock[product.id.toString()] ?: true
-            ProductItem(
-                product = product,
-                onProductClick,
-                onCartButtonClicked,
-                isInStock = inStock,
-                onFavouriteClicked,
-            )
         }
     }
 }

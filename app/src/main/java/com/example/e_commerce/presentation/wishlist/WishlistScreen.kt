@@ -18,8 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
+import com.example.e_commerce.presentation.StoreProducts
 import com.example.e_commerce.presentation.wishlist.components.WishListAvailableItems
-import com.example.e_commerce.presentation.home.ProductsLazyVerticalGrid
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
@@ -67,7 +67,7 @@ fun WishListContent(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
                         WishListAvailableItems(state.data?.size ?: 0)
-                        ProductsLazyVerticalGrid(
+                        StoreProducts(
                             products = state.data ?: emptyList(),
                             onProductClick = onProductClick,
                             onCartButtonClicked = onCartButtonClicked,
@@ -89,7 +89,7 @@ fun WishListContent(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
                         WishListAvailableItems(state.data.size)
-                        ProductsLazyVerticalGrid(
+                        StoreProducts(
                             products = state.data,
                             onProductClick = onProductClick,
                             onCartButtonClicked = onCartButtonClicked,
