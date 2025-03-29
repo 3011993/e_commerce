@@ -9,6 +9,7 @@ import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.ScreenState
+import com.example.e_commerce.presentation.store.CategoriesEntries
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject

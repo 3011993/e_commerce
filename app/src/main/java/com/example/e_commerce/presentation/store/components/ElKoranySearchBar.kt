@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.home.components
+package com.example.e_commerce.presentation.store.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

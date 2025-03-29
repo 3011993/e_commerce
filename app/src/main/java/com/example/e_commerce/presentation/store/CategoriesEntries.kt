@@ -1,4 +1,4 @@
-package com.example.e_commerce.presentation.home
+package com.example.e_commerce.presentation.store
 
 import com.example.e_commerce.R
 
