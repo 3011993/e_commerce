@@ -11,9 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,8 +40,6 @@ import com.example.e_commerce.common.composable.rememberConnectivityState
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.StoreProducts
-import com.example.e_commerce.presentation.home.components.CategoriesSection
-import com.example.e_commerce.presentation.home.components.ElKoranySearchBar
 import com.example.e_commerce.presentation.home.components.NewArrivalsLandingImage
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
@@ -56,8 +60,6 @@ fun HomeScreen(
         onProductClick = onProductClick,
         onCartButtonClicked = onCartButtonClicked,
         getAllProducts = viewModel::getAllProducts,
-        searchPrefix = viewModel::searchProducts,
-        onCategorySelected = viewModel::getProductsByCategory,
         onFavouriteClicked = viewModel::onFavouriteClicked,
         productsInStock = productsInStock,
         onStoreClicked = onStoreClicked,
@@ -73,8 +75,6 @@ fun HomeContent(
     onFavouriteClicked: (ProductModel) -> Unit,
     getAllProducts: () -> Unit,
     onStoreClicked: () -> Unit,
-    searchPrefix: (String) -> List<ProductModel>,
-    onCategorySelected: (CategoriesEntries) -> Unit,
     productsInStock: Map<String, Boolean>,
     modifier: Modifier = Modifier,
 ) {
@@ -84,9 +84,7 @@ fun HomeContent(
         derivedStateOf { connection === ConnectionState.Available }
     }
     var showRefreshButton by remember { mutableStateOf(false) }
-    var displayedProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
     var allProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
-    var searchText by remember { mutableStateOf("") }
 
     LaunchedEffect(key1 = connection) {
         if (previousConnection != null && previousConnection != connection) {
@@ -99,11 +97,6 @@ fun HomeContent(
         previousConnection = connection
     }
     LaunchedEffect(state) {
-        displayedProducts = when (state) {
-            is ScreenState.Success -> state.data
-            is ScreenState.Error -> state.data ?: emptyList()
-            else -> emptyList()
-        }
         allProducts = when (state) {
             is ScreenState.Success -> state.data
             is ScreenState.Error -> state.data ?: emptyList()
@@ -170,7 +163,7 @@ fun HomeContent(
 
                 is ScreenState.Success -> {
                     StoreProducts(
-                        products = displayedProducts,
+                        products = state.data,
                         onProductClick = onProductClick,
                         onCartButtonClicked = onCartButtonClicked,
                         onFavouriteClicked = onFavouriteClicked,
@@ -223,7 +216,7 @@ fun StoreScreenPreview() {
         )
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
         HomeContent(
-            state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
+            state = state, {}, {}, {},
             getAllProducts = {}, onStoreClicked = {}, productsInStock = emptyMap(),
         )
     }
