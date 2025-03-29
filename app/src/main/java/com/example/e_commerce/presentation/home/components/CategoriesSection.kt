@@ -1,6 +1,5 @@
 package com.example.e_commerce.presentation.home.components
 
-import android.content.ClipData.Item
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,7 +27,7 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.e_commerce.presentation.home.CategoriesEntries
-import com.example.e_commerce.presentation.home.NewArrivals
+import com.example.e_commerce.presentation.home.AllProducts
 import com.example.e_commerce.presentation.home.ecommerceCategories
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
@@ -54,8 +53,8 @@ fun CategoriesSection(
         ) {
            item {
                CategoryChip(
-                   category = NewArrivals.category,
-                   icon = NewArrivals.icon,
+                   category = AllProducts.category,
+                   icon = AllProducts.icon,
                    selected = newArrivalsSelected,
                    onCategorySelected = {
                        newArrivalsSelected = !newArrivalsSelected

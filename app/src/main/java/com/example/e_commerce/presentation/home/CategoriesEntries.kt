@@ -7,9 +7,9 @@ interface CategoriesEntries {
     val category: String
 }
 
-object NewArrivals : CategoriesEntries {
+object AllProducts : CategoriesEntries {
     override val icon: Int = R.drawable.box_unpacked_svgrepo_com
-    override val category: String ="New Arrivals"
+    override val category: String ="All"
 
 }
 object Electronics : CategoriesEntries {
