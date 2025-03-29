@@ -32,13 +32,15 @@ fun EcommerceBottomNavigation(
                     Icon(
                         painter = painterResource(screen.icon),
                         contentDescription = screen.route,
-                        modifier = modifier.size(20.dp)
+                        modifier = modifier.size(20.dp),
+                        tint = if (currentScreen == screen) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                     )
                 },
                 label = { Text(text = (screen.route.uppercase())
                     , fontSize = 10.sp) }
                 ,
                 modifier = modifier,
+                selectedContentColor = MaterialTheme.colorScheme.primary
             )
         }
     }
