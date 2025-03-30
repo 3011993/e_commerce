@@ -117,14 +117,7 @@ fun HomeContent(
                 onNavigationBack = {},
                 modifier = Modifier
             )
-            Text(
-                "Welcome to El Korany Store",
-                style = MaterialTheme.typography.bodyMedium.copy(color = secondaryOnBackGround),
-                modifier = modifier.padding(start = 16.dp)
-            )
-
             NewArrivalsLandingImage()
-
             Row(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
