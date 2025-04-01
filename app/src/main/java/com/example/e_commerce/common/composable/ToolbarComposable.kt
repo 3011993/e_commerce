@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +38,7 @@ fun CommerceToolBar(
     @DrawableRes navigationIcon: Int? = null,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().height(40.dp),
+        modifier = modifier.fillMaxWidth().height(45.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -57,12 +59,14 @@ fun CommerceToolBar(
                     IconButton(
                         onClick = onNavigationBack,
                         modifier = modifier
-                            .clip(CircleShape)
+                            .clip(RectangleShape)
                             .background(MaterialTheme.colorScheme.surface),
                     ) {
                         Icon(
                             painter = painterResource(navigationIcon),
-                            contentDescription = "Navigate back"
+                            contentDescription = "Navigate back",
+                            modifier = modifier.padding(4.dp),
+                            tint = Color.Unspecified
                         )
                     }
                 }

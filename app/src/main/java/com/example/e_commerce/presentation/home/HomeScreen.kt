@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.e_commerce.R
 import com.example.e_commerce.common.ConnectionState
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.rememberConnectivityState
@@ -115,6 +116,7 @@ fun HomeContent(
             CommerceToolBar(
                 title = AppText.home_top_bar,
                 onNavigationBack = {},
+                navigationIcon = R.drawable.elkorany_app,
                 modifier = Modifier
             )
             NewArrivalsLandingImage()
@@ -202,7 +204,7 @@ fun StoreScreenPreview() {
                 price = "11.44",
                 category = "",
                 description = "",
-                id = 0,
+                id = 1,
                 image = ""
             )
 
