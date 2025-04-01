@@ -221,6 +221,6 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
             viewModel.addOrUpdateCart(product)
-        })
+        }, onNavigationBackClicked = { appState.popUp() })
     }
 }

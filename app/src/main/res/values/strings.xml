@@ -44,6 +44,7 @@
     <!-- Top Bar Values -->
     <string name= "carts_top_bar">Carts</string>
     <string name= "home_top_bar">El Korany Store</string>
+    <string name= "store_top_bar">Store</string>
     <string name= "wishlist_top_bar">Wishlist</string>
     <string name= "account_top_bar">Account</string>
     <string name= "product_details_top_bar">Product Details</string>

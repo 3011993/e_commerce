@@ -45,6 +45,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 @Composable
 fun StoreScreen(
     onProductClick: (ProductModel) -> Unit, onCartButtonClicked: (ProductModel) -> Unit,
+    onNavigationBackClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
@@ -59,6 +60,7 @@ fun StoreScreen(
         onCategorySelected = viewModel::getProductsByCategory,
         onFavouriteClicked = viewModel::onFavouriteClicked,
         productsInStock = productsInStock,
+        onNavigationBackClicked = onNavigationBackClicked,
         modifier = modifier
     )
 }
@@ -72,6 +74,7 @@ fun StoreContent(
     getAllProducts: () -> Unit,
     searchPrefix: (String) -> List<ProductModel>,
     onCategorySelected: (CategoriesEntries) -> Unit,
+    onNavigationBackClicked: () -> Unit,
     productsInStock: Map<String, Boolean>,
     modifier: Modifier = Modifier,
 ) {
@@ -117,8 +120,9 @@ fun StoreContent(
                 .padding(top = 4.dp)
         ) {
             CommerceToolBar(
-                title = R.string.home_top_bar,
-                onNavigationBack = {},
+                title = R.string.store_top_bar,
+                navigationIcon = R.drawable.back,
+                onNavigationBack = onNavigationBackClicked,
                 modifier = Modifier
             )
             
@@ -213,7 +217,7 @@ fun StoreScreenPreview() {
         val state: ScreenState<List<ProductModel>> = ScreenState.Success(productsList)
         StoreContent(
             state = state, {}, {}, {}, searchPrefix = { emptyList() }, onCategorySelected = {},
-            getAllProducts = {}, productsInStock = emptyMap(),
+            getAllProducts = {}, onNavigationBackClicked = {}, productsInStock = emptyMap(),
         )
     }
 }
