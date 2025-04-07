@@ -38,7 +38,7 @@ fun CommerceToolBar(
     @DrawableRes navigationIcon: Int? = null,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().height(45.dp),
+        modifier = modifier.fillMaxWidth().height(50.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -59,13 +59,12 @@ fun CommerceToolBar(
                     IconButton(
                         onClick = onNavigationBack,
                         modifier = modifier
-                            .clip(RectangleShape)
+                            .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surface),
                     ) {
                         Icon(
                             painter = painterResource(navigationIcon),
                             contentDescription = "Navigate back",
-                            modifier = modifier.padding(4.dp),
                             tint = Color.Unspecified
                         )
                     }
