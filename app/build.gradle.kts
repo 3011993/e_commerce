@@ -6,16 +6,17 @@ plugins {
     alias(libs.plugins.parcelize)
     alias(libs.plugins.google.service)
     alias(libs.plugins.crashlytics.plugin)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.example.e_commerce"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.e_commerce"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -45,7 +46,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {

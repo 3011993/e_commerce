@@ -12,5 +12,6 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.crashlytics.plugin) apply false
+    alias(libs.plugins.compose.compiler) apply false
 
 }
