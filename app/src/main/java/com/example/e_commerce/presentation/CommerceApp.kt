@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.demo.CheckOutScreen
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.presentation.account.login.LoginScreen
 import com.example.e_commerce.presentation.account.settings.SettingsScreen
@@ -182,20 +183,21 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
     composable(ORDER_CONFIRMATION) {
         var showDialog by remember { mutableStateOf(false) }
         val viewModel : OrderConfirmationViewModel = hiltViewModel()
-        OrderConfirmationScreen(openAddressScreen = { route ->
-            appState.navigate(route)
-        }, openPaymentScreen = { route ->
-            appState.navigate(route)
-        }, callBack = { isNavigated ->
-            showDialog = isNavigated
-        }, onNavigationBack = { appState.popUp() })
-        ConfirmOrderDialog(
-            showDialog,
-            onDismiss = { showDialog = false }) {
-            appState.navigateAndPopUp(ORDER_CONFIRMED, Home.route)
-            viewModel.resetData()
-            showDialog = false
-        }
+//        OrderConfirmationScreen(openAddressScreen = { route ->
+//            appState.navigate(route)
+//        }, openPaymentScreen = { route ->
+//            appState.navigate(route)
+//        }, callBack = { isNavigated ->
+//            showDialog = isNavigated
+//        }, onNavigationBack = { appState.popUp() })
+//        ConfirmOrderDialog(
+//            showDialog,
+//            onDismiss = { showDialog = false }) {
+//            appState.navigateAndPopUp(ORDER_CONFIRMED, Home.route)
+//            viewModel.resetData()
+//            showDialog = false
+//        }
+        CheckOutScreen()
     }
     composable(ADDRESS) {
         AddressScreen(openScreen = { route ->
