@@ -97,6 +97,7 @@ fun CartContent(
         } else {
             val totalPrice = carts.sumOf { it.price }
             CheckOutScreen(
+                carts = carts,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

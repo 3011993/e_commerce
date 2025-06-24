@@ -1,10 +1,6 @@
 package com.example.demo
 
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,19 +8,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.e_commerce.common.Constants.BACKEND_URL
 import com.example.e_commerce.common.snackbar.SnackBarManager
+import com.example.e_commerce.domain.model.CartModel
+import com.example.e_commerce.domain.model.PaymentRequestBody
+import com.example.e_commerce.domain.model.ServerCartItem
 import com.example.e_commerce.presentation.order_confirmation.stripe.components.ErrorAlert
 import com.example.e_commerce.presentation.order_confirmation.stripe.components.PayButton
 import com.example.e_commerce.ui.theme.E_commerceTheme
+import com.google.gson.Gson
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import com.stripe.android.paymentsheet.rememberPaymentSheet
-import okhttp3.*
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -33,7 +36,7 @@ import kotlin.coroutines.suspendCoroutine
 
 
 @Composable
-fun CheckOutScreen(modifier: Modifier = Modifier) {
+fun CheckOutScreen(carts: List<CartModel>, modifier: Modifier = Modifier) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
     var error by remember { mutableStateOf<String?>(null) }
@@ -50,15 +53,13 @@ fun CheckOutScreen(modifier: Modifier = Modifier) {
 
     error?.let { errorMessage ->
         ErrorAlert(
-            errorMessage = errorMessage,
-            onDismiss = {
+            errorMessage = errorMessage, onDismiss = {
                 error = null
-            }
-        )
+            })
     }
 
     LaunchedEffect(Unit) {
-        fetchPaymentIntent().onSuccess { clientSecret ->
+        fetchPaymentIntent(carts).onSuccess { clientSecret ->
             paymentIntentClientSecret = clientSecret
         }.onFailure { paymentIntentError ->
             error = paymentIntentError.localizedMessage ?: paymentIntentError.message
@@ -66,63 +67,62 @@ fun CheckOutScreen(modifier: Modifier = Modifier) {
     }
 
     PayButton(
-        enabled = paymentIntentClientSecret != null,
-        onClick = {
+        enabled = paymentIntentClientSecret != null, onClick = {
             paymentIntentClientSecret?.let {
                 onPayClicked(
                     paymentSheet = paymentSheet,
                     paymentIntentClientSecret = it,
                 )
             }
-        },
-        modifier
+        }, modifier
     )
 }
 
-private suspend fun fetchPaymentIntent(): Result<String> = suspendCoroutine { continuation ->
-    val url = "$BACKEND_URL/create-payment-intent"
+private suspend fun fetchPaymentIntent(carts: List<CartModel>): Result<String> =
+    suspendCoroutine { continuation ->
+        val url = "$BACKEND_URL/create-payment-intent"
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val serverCartItems = carts.map { cartModel ->
+            val itemPriceInCents = (cartModel.price * 100).toLong()
+            ServerCartItem(
+                id = cartModel.productId.toString(),
+                amount = itemPriceInCents
+            )
+        }
+        val requestBodyObject = PaymentRequestBody(serverCartItems)
+        val gson = Gson()
+        val shoppingCartJson = gson.toJson(requestBodyObject)
+        val body = shoppingCartJson.toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
 
-    val shoppingCartContent = """
-            {
-                "items": [
-                    {"id":"xl-tshirt"}
-                ]
-            }
-        """
+        OkHttpClient()
+            .newCall(request)
+            .enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    continuation.resume(Result.failure(e))
+                }
 
-    val mediaType = "application/json; charset=utf-8".toMediaType()
+                override fun onResponse(call: Call, response: Response) {
+                    if (!response.isSuccessful) {
+                        continuation.resume(Result.failure(Exception(response.message)))
+                    } else {
+                        val clientSecret = extractClientSecretFromResponse(response)
 
-    val body = shoppingCartContent.toRequestBody(mediaType)
-    val request = Request.Builder()
-        .url(url)
-        .post(body)
-        .build()
+                        clientSecret?.let { secret ->
+                            continuation.resume(Result.success(secret))
+                        } ?: run {
+                            val error =
+                                Exception("Could not find payment intent client secret in response!")
 
-    OkHttpClient()
-        .newCall(request)
-        .enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                continuation.resume(Result.failure(e))
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (!response.isSuccessful) {
-                    continuation.resume(Result.failure(Exception(response.message)))
-                } else {
-                    val clientSecret = extractClientSecretFromResponse(response)
-
-                    clientSecret?.let { secret ->
-                        continuation.resume(Result.success(secret))
-                    } ?: run {
-                        val error =
-                            Exception("Could not find payment intent client secret in response!")
-
-                        continuation.resume(Result.failure(error))
+                            continuation.resume(Result.failure(error))
+                        }
                     }
                 }
-            }
-        })
-}
+            })
+    }
 
 private fun extractClientSecretFromResponse(response: Response): String? {
     return try {
@@ -150,6 +150,6 @@ private fun onPayClicked(
 @Composable
 private fun CheckOutScreePreview() {
     E_commerceTheme {
-        CheckOutScreen()
+        CheckOutScreen(emptyList())
     }
 }
