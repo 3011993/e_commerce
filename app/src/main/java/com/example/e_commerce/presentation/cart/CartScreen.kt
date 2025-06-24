@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.demo.CheckOutScreen
 import com.example.e_commerce.R
 import com.example.e_commerce.common.composable.DialogCancelButton
 import com.example.e_commerce.common.composable.DialogConfirmButton
@@ -37,7 +38,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
-fun CartScreen(onNavigationBackClicked: () -> Unit,onCheckOutClick: () -> Unit ,modifier: Modifier = Modifier) {
+fun CartScreen(onNavigationBackClicked: () -> Unit,modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         val viewModel: CartViewModel = hiltViewModel()
         val carts by viewModel.carts.collectAsState()
@@ -47,7 +48,6 @@ fun CartScreen(onNavigationBackClicked: () -> Unit,onCheckOutClick: () -> Unit ,
             onDecreaseQuantity = viewModel::removeProductFromCart,
             onNavigationBackClicked = onNavigationBackClicked,
             carts = carts,
-            onCheckOutClick = onCheckOutClick
         )
     }
 }
@@ -60,7 +60,6 @@ fun CartContent(
     onDecreaseQuantity: (CartModel) -> Unit,
     onNavigationBackClicked: () -> Unit,
     carts: List<CartModel>,
-    onCheckOutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showLoading by remember { mutableStateOf(false) }
@@ -97,9 +96,7 @@ fun CartContent(
             )
         } else {
             val totalPrice = carts.sumOf { it.price }
-            CheckOutBottom(
-                totalPrice,
-                onCheckOutClick = onCheckOutClick,
+            CheckOutScreen(
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
@@ -127,6 +124,6 @@ fun CartScreenPreview() {
             onDecreaseQuantity = {},
             onIncreaseQuantity = {},
             onNavigationBackClicked = {},
-            onCheckOutClick = {})
+            )
     }
 }

@@ -9,10 +9,11 @@ import androidx.compose.ui.Modifier
 @Composable
 fun PayButton(
     enabled: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         enabled = enabled,
         onClick = onClick
     ) {

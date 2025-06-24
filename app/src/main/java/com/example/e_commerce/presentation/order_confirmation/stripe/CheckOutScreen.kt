@@ -33,7 +33,7 @@ import kotlin.coroutines.suspendCoroutine
 
 
 @Composable
-fun CheckOutScreen() {
+fun CheckOutScreen(modifier: Modifier = Modifier) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
     var error by remember { mutableStateOf<String?>(null) }
@@ -74,7 +74,8 @@ fun CheckOutScreen() {
                     paymentIntentClientSecret = it,
                 )
             }
-        }
+        },
+        modifier
     )
 }
 

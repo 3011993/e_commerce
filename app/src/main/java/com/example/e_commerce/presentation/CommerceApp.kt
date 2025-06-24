@@ -146,13 +146,14 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         var showDialog by remember { mutableStateOf(false) }
 
         CartScreen(onNavigationBackClicked = { appState.popUp() },
-            onCheckOutClick = {
-                if (uiState.isAnonymousAccount) {
-                    showDialog = true
-                } else {
-                    appState.navigate(ORDER_CONFIRMATION)
-                }
-            })
+//            onCheckOutClick = {
+//                if (uiState.isAnonymousAccount) {
+//                    showDialog = true
+//                } else {
+//                    appState.navigate(ORDER_CONFIRMATION)
+//                }
+//            }
+        )
         CheckOutDialog(
             showDialog,
             onDismiss = { showDialog = false }) {
@@ -180,25 +181,25 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigateAndPopUp(route, popUp)
         })
     }
-    composable(ORDER_CONFIRMATION) {
-        var showDialog by remember { mutableStateOf(false) }
-        val viewModel : OrderConfirmationViewModel = hiltViewModel()
-//        OrderConfirmationScreen(openAddressScreen = { route ->
-//            appState.navigate(route)
-//        }, openPaymentScreen = { route ->
-//            appState.navigate(route)
-//        }, callBack = { isNavigated ->
-//            showDialog = isNavigated
-//        }, onNavigationBack = { appState.popUp() })
-//        ConfirmOrderDialog(
-//            showDialog,
-//            onDismiss = { showDialog = false }) {
-//            appState.navigateAndPopUp(ORDER_CONFIRMED, Home.route)
-//            viewModel.resetData()
-//            showDialog = false
-//        }
-        CheckOutScreen()
-    }
+//    composable(ORDER_CONFIRMATION) {
+//        var showDialog by remember { mutableStateOf(false) }
+//        val viewModel : OrderConfirmationViewModel = hiltViewModel()
+////        OrderConfirmationScreen(openAddressScreen = { route ->
+////            appState.navigate(route)
+////        }, openPaymentScreen = { route ->
+////            appState.navigate(route)
+////        }, callBack = { isNavigated ->
+////            showDialog = isNavigated
+////        }, onNavigationBack = { appState.popUp() })
+////        ConfirmOrderDialog(
+////            showDialog,
+////            onDismiss = { showDialog = false }) {
+////            appState.navigateAndPopUp(ORDER_CONFIRMED, Home.route)
+////            viewModel.resetData()
+////            showDialog = false
+////        }
+//        CheckOutScreen()
+//    }
     composable(ADDRESS) {
         AddressScreen(openScreen = { route ->
             appState.navigate(route)
