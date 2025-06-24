@@ -13,8 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.e_commerce.common.Constants.BACKEND_URL
 import com.example.e_commerce.common.snackbar.SnackBarManager
+import com.example.e_commerce.presentation.order_confirmation.stripe.components.ErrorAlert
+import com.example.e_commerce.presentation.order_confirmation.stripe.components.PayButton
+import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import com.stripe.android.paymentsheet.rememberPaymentSheet
@@ -69,41 +73,6 @@ fun CheckOutScreen() {
                     paymentSheet = paymentSheet,
                     paymentIntentClientSecret = it,
                 )
-            }
-        }
-    )
-}
-
-@Composable
-private fun PayButton(
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = Modifier.fillMaxWidth(),
-        enabled = enabled,
-        onClick = onClick
-    ) {
-        Text("Pay now")
-    }
-}
-
-@Composable
-private fun ErrorAlert(
-    errorMessage: String,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        title = {
-            Text(text = "Error occurred during checkout")
-        },
-        text = {
-            Text(text = errorMessage)
-        },
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            Button(onDismiss) {
-                Text(text = "Ok")
             }
         }
     )
@@ -174,4 +143,12 @@ private fun onPayClicked(
 
     // Present Payment Sheet
     paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration)
+}
+
+@Preview
+@Composable
+private fun CheckOutScreePreview() {
+    E_commerceTheme {
+        CheckOutScreen()
+    }
 }
