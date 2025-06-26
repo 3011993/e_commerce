@@ -41,6 +41,7 @@ fun CheckOutScreen(
     isUserAnonymous: Boolean,
     onCheckOutClicked : () -> Unit,
     resetData : () -> Unit,
+    openScreen : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
@@ -52,6 +53,7 @@ fun CheckOutScreen(
             is PaymentSheetResult.Completed -> {
                 SnackBarManager.showMessage("Payment complete!")
                 resetData()
+                openScreen()
             }
             is PaymentSheetResult.Canceled -> SnackBarManager.showMessage("Payment canceled!")
             is PaymentSheetResult.Failed -> {
@@ -162,6 +164,6 @@ private fun onPayClicked(
 @Composable
 private fun CheckOutScreePreview() {
     E_commerceTheme {
-        CheckOutScreen(emptyList(), true,{},{})
+        CheckOutScreen(emptyList(), true,{},{},{})
     }
 }

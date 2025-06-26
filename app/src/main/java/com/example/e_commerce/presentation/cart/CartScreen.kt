@@ -32,6 +32,7 @@ fun CartScreen(
     onCheckOutClicked: () -> Unit,
     onNavigationBackClicked: () -> Unit,
     isUserAnonymous: Boolean,
+    openScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxSize()) {
@@ -45,6 +46,7 @@ fun CartScreen(
             isUserAnonymous = isUserAnonymous,
             onCheckOutClicked = onCheckOutClicked,
             resetData = viewModel::resetData,
+            openScreen = openScreen,
             carts = carts,
         )
     }
@@ -61,6 +63,7 @@ fun CartContent(
     isUserAnonymous : Boolean,
     onCheckOutClicked: () -> Unit,
     resetData : () -> Unit,
+    openScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showLoading by remember { mutableStateOf(false) }
@@ -102,6 +105,7 @@ fun CartContent(
                 isUserAnonymous = isUserAnonymous,
                 onCheckOutClicked = onCheckOutClicked,
                 resetData = resetData,
+                openScreen = openScreen,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
@@ -130,7 +134,8 @@ fun CartScreenPreview() {
             onNavigationBackClicked = {},
             onCheckOutClicked = {},
             isUserAnonymous = true,
-            resetData = {}
+            resetData = {},
+            openScreen = {}
         )
     }
 }

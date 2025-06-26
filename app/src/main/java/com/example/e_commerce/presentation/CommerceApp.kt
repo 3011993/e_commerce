@@ -32,8 +32,6 @@ import com.example.e_commerce.presentation.account.sign_up.SignUpScreen
 import com.example.e_commerce.presentation.cart.CartScreen
 import com.example.e_commerce.presentation.cart.CartViewModel
 import com.example.e_commerce.presentation.cart.components.CheckOutDialog
-import com.example.e_commerce.presentation.order_confirmation.payment.AddNewPaymentScreen
-import com.example.e_commerce.presentation.order_confirmation.address.AddressScreen
 import com.example.e_commerce.presentation.order_confirmation.order_confirmed.OrderConfirmedScreen
 import com.example.e_commerce.presentation.wishlist.WishlistScreen
 import com.example.e_commerce.presentation.product_details.ProductDetailsScreen
@@ -147,6 +145,9 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
                 }
             }
             , isUserAnonymous = uiState.isAnonymousAccount
+            , openScreen = {
+                appState.clearAndNavigate(ORDER_CONFIRMED)
+            }
         )
         CheckOutDialog(
             showDialog,
@@ -175,34 +176,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigateAndPopUp(route, popUp)
         })
     }
-//    composable(ORDER_CONFIRMATION) {
-//        var showDialog by remember { mutableStateOf(false) }
-//        val viewModel : OrderConfirmationViewModel = hiltViewModel()
-////        OrderConfirmationScreen(openAddressScreen = { route ->
-////            appState.navigate(route)
-////        }, openPaymentScreen = { route ->
-////            appState.navigate(route)
-////        }, callBack = { isNavigated ->
-////            showDialog = isNavigated
-////        }, onNavigationBack = { appState.popUp() })
-////        ConfirmOrderDialog(
-////            showDialog,
-////            onDismiss = { showDialog = false }) {
-////            appState.navigateAndPopUp(ORDER_CONFIRMED, Home.route)
-////            viewModel.resetData()
-////            showDialog = false
-////        }
-//    }
-    composable(ADDRESS) {
-        AddressScreen(openScreen = { route ->
-            appState.navigate(route)
-        }, onNavigateBack = { appState.popUp() })
-    }
-    composable(ADD_NEW_PAYMENT) {
-        AddNewPaymentScreen(openScreen = { route ->
-            appState.navigate(route)
-        }, onNavigateBack = { appState.popUp() })
-    }
+
     composable(ORDER_CONFIRMED) {
         OrderConfirmedScreen(openScreen = { route ->
             appState.clearAndNavigate(route)
