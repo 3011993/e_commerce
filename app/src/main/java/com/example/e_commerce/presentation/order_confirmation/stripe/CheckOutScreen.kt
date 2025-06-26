@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.e_commerce.presentation.order_confirmation.stripe
 
 
 import androidx.compose.runtime.Composable
@@ -36,7 +36,12 @@ import kotlin.coroutines.suspendCoroutine
 
 
 @Composable
-fun CheckOutScreen(carts: List<CartModel>, modifier: Modifier = Modifier) {
+fun CheckOutScreen(
+    carts: List<CartModel>,
+    isUserAnonymous: Boolean,
+    onCheckOutClicked : () -> Unit,
+    modifier: Modifier = Modifier
+) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
     var error by remember { mutableStateOf<String?>(null) }
@@ -68,11 +73,15 @@ fun CheckOutScreen(carts: List<CartModel>, modifier: Modifier = Modifier) {
 
     PayButton(
         enabled = paymentIntentClientSecret != null, onClick = {
-            paymentIntentClientSecret?.let {
-                onPayClicked(
-                    paymentSheet = paymentSheet,
-                    paymentIntentClientSecret = it,
-                )
+            if (!isUserAnonymous) {
+                paymentIntentClientSecret?.let {
+                    onPayClicked(
+                        paymentSheet = paymentSheet,
+                        paymentIntentClientSecret = it,
+                    )
+                }
+            } else {
+                onCheckOutClicked()
             }
         }, modifier
     )
@@ -150,6 +159,6 @@ private fun onPayClicked(
 @Composable
 private fun CheckOutScreePreview() {
     E_commerceTheme {
-        CheckOutScreen(emptyList())
+        CheckOutScreen(emptyList(), true,{})
     }
 }

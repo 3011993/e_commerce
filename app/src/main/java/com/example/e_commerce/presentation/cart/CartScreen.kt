@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,26 +17,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.demo.CheckOutScreen
-import com.example.e_commerce.R
-import com.example.e_commerce.common.composable.DialogCancelButton
-import com.example.e_commerce.common.composable.DialogConfirmButton
-import com.example.e_commerce.common.composable.RegularCardEditor
-import com.example.e_commerce.common.ext.card
+import com.example.e_commerce.presentation.order_confirmation.stripe.CheckOutScreen
 import com.example.e_commerce.domain.model.CartModel
-import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.presentation.cart.components.CartHeader
-import com.example.e_commerce.presentation.cart.components.CheckOutBottom
 import com.example.e_commerce.presentation.cart.components.CartItem
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 
 @Composable
-fun CartScreen(onNavigationBackClicked: () -> Unit,modifier: Modifier = Modifier) {
+fun CartScreen(
+    onCheckOutClicked: () -> Unit,
+    onNavigationBackClicked: () -> Unit,
+    isUserAnonymous: Boolean,
+    modifier: Modifier = Modifier
+) {
     Box(modifier = modifier.fillMaxSize()) {
         val viewModel: CartViewModel = hiltViewModel()
         val carts by viewModel.carts.collectAsState()
@@ -47,6 +42,8 @@ fun CartScreen(onNavigationBackClicked: () -> Unit,modifier: Modifier = Modifier
             onIncreaseQuantity = viewModel::updateCart,
             onDecreaseQuantity = viewModel::removeProductFromCart,
             onNavigationBackClicked = onNavigationBackClicked,
+            isUserAnonymous = isUserAnonymous,
+            onCheckOutClicked = onCheckOutClicked,
             carts = carts,
         )
     }
@@ -60,6 +57,8 @@ fun CartContent(
     onDecreaseQuantity: (CartModel) -> Unit,
     onNavigationBackClicked: () -> Unit,
     carts: List<CartModel>,
+    isUserAnonymous : Boolean,
+    onCheckOutClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showLoading by remember { mutableStateOf(false) }
@@ -98,12 +97,13 @@ fun CartContent(
             val totalPrice = carts.sumOf { it.price }
             CheckOutScreen(
                 carts = carts,
+                isUserAnonymous = isUserAnonymous,
+                onCheckOutClicked = onCheckOutClicked,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
     }
 }
-
 
 
 @Preview(showBackground = true)
@@ -125,6 +125,8 @@ fun CartScreenPreview() {
             onDecreaseQuantity = {},
             onIncreaseQuantity = {},
             onNavigationBackClicked = {},
-            )
+            onCheckOutClicked = {},
+            isUserAnonymous = true
+        )
     }
 }
