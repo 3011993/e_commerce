@@ -12,15 +12,14 @@ import com.example.e_commerce.presentation.ADD_NEW_PAYMENT
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.Home
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderConfirmationViewModel @Inject constructor(
     logService: LogService,
     accountService: AccountService,
-    private val storageService: StorageService,
-    private val repo: CommerceRepository,
+    storageService: StorageService,
+    repo: CommerceRepository,
 ) : CommerceViewModel(logService, storageService, accountService, repo) {
 
     init {
@@ -53,13 +52,6 @@ class OrderConfirmationViewModel @Inject constructor(
         callBack(true)
     }
 
-    fun resetData() {
-        launchCatching(dispatcher = Dispatchers.IO) {
-            storageService.deleteCarts()
-            repo.resetUiStates()
-        }
-
-    }
 
     fun onContinueShoppingClicked(openScreen: (String) -> Unit) {
         openScreen(Home.route)

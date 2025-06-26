@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +33,6 @@ import com.example.e_commerce.common.composable.CommerceWideButton
 import com.example.e_commerce.common.composable.PaymentField
 import com.example.e_commerce.common.composable.SmallPaymentField
 import com.example.e_commerce.domain.model.PaymentModel
-import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon

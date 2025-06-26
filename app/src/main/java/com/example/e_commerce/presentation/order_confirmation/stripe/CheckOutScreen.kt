@@ -40,6 +40,7 @@ fun CheckOutScreen(
     carts: List<CartModel>,
     isUserAnonymous: Boolean,
     onCheckOutClicked : () -> Unit,
+    resetData : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
@@ -48,7 +49,10 @@ fun CheckOutScreen(
 
     val paymentSheet = rememberPaymentSheet { paymentResult ->
         when (paymentResult) {
-            is PaymentSheetResult.Completed -> SnackBarManager.showMessage("Payment complete!")
+            is PaymentSheetResult.Completed -> {
+                SnackBarManager.showMessage("Payment complete!")
+                resetData()
+            }
             is PaymentSheetResult.Canceled -> SnackBarManager.showMessage("Payment canceled!")
             is PaymentSheetResult.Failed -> {
                 error = paymentResult.error.localizedMessage ?: paymentResult.error.message
@@ -119,7 +123,6 @@ private suspend fun fetchPaymentIntent(carts: List<CartModel>): Result<String> =
                         continuation.resume(Result.failure(Exception(response.message)))
                     } else {
                         val clientSecret = extractClientSecretFromResponse(response)
-
                         clientSecret?.let { secret ->
                             continuation.resume(Result.success(secret))
                         } ?: run {
@@ -159,6 +162,6 @@ private fun onPayClicked(
 @Composable
 private fun CheckOutScreePreview() {
     E_commerceTheme {
-        CheckOutScreen(emptyList(), true,{})
+        CheckOutScreen(emptyList(), true,{},{})
     }
 }

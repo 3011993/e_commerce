@@ -192,7 +192,6 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
 ////            viewModel.resetData()
 ////            showDialog = false
 ////        }
-//        CheckOutScreen()
 //    }
     composable(ADDRESS) {
         AddressScreen(openScreen = { route ->
