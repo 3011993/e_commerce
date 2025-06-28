@@ -2,9 +2,8 @@ package com.example.e_commerce.presentation
 
 import android.content.res.Resources
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.collectAsState
@@ -16,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -52,19 +50,12 @@ fun CommerceApp() {
         Scaffold(
             snackbarHost = {
                 SnackbarHost(
-                    hostState = it, modifier = Modifier.padding(8.dp),
-                    snackbar = { snackBarData ->
-                        Snackbar(
-                            snackBarData,
-                            backgroundColor =
-                            MaterialTheme.colorScheme.surface,
-                            contentColor = MaterialTheme.colorScheme.onSurface,
-                            shape = RoundedCornerShape(32.dp)
-                        )
+                    hostState = appState.snackBarHostState){ data ->
+                    Snackbar(){
+                        Text(text = data.visuals.message)
                     }
-                )
+                }
             },
-            scaffoldState = appState.scaffoldState,
             bottomBar = {
                 if (appState.showBottomNavigation) {
                     EcommerceBottomNavigation(
@@ -89,13 +80,13 @@ fun CommerceApp() {
 
 @Composable
 fun rememberCommerceAppState(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     navController: NavHostController = rememberNavController(),
     snackBarManager: SnackBarManager = SnackBarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-) = remember(scaffoldState, navController, snackBarManager, resources, coroutineScope) {
-    CommerceAppState(scaffoldState, navController, snackBarManager, resources, coroutineScope)
+) = remember(snackBarHostState, navController, snackBarManager, resources, coroutineScope) {
+    CommerceAppState(snackBarHostState, navController, snackBarManager, resources, coroutineScope)
 }
 
 @Composable

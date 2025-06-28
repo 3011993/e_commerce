@@ -21,6 +21,7 @@ google-version = "4.4.2"
 crashlytics-plugin = "3.0.2"
 uiTextGoogleFonts = "1.8.2"
 stripe-version = "21.15.1"
+activity-version= "1.10.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 stripe-android ={module ="com.stripe:stripe-android",version.ref = "stripe-version"}
 stripe-financial ={module ="com.stripe:financial-connections",version.ref = "stripe-version"}
+androidx-activity = { module = "androidx.activity:activity", version.ref = "activity-version"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

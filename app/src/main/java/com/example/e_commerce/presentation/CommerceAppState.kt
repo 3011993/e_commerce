@@ -1,7 +1,7 @@
 package com.example.e_commerce.presentation
 
 import android.content.res.Resources
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @Stable
 class CommerceAppState(
-    val scaffoldState: ScaffoldState,
+    val snackBarHostState: SnackbarHostState,
     val navController: NavHostController,
     private val snackBarManager: SnackBarManager,
     val resources: Resources,
@@ -25,7 +25,7 @@ class CommerceAppState(
         coroutineScope.launch {
             snackBarManager.snackBarMessages.filterNotNull().collect { snackBarMessage ->
                 val text = snackBarMessage.toMessage(resources)
-                scaffoldState.snackbarHostState.showSnackbar(text)
+                snackBarHostState.showSnackbar(text)
                 snackBarManager.clearSnackBarState()
             }
         }

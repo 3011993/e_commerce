@@ -86,7 +86,7 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.stripe.android)
     implementation(libs.stripe.financial)
-
+    implementation(libs.androidx.activity)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
