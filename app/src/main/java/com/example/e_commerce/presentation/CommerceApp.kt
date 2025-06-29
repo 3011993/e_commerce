@@ -2,6 +2,7 @@ package com.example.e_commerce.presentation
 
 import android.content.res.Resources
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -13,8 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -50,9 +53,18 @@ fun CommerceApp() {
         Scaffold(
             snackbarHost = {
                 SnackbarHost(
-                    hostState = appState.snackBarHostState){ data ->
-                    Snackbar(){
-                        Text(text = data.visuals.message)
+                    hostState = appState.snackBarHostState
+                ) { data ->
+                    Snackbar(
+                        shape = CircleShape,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
+                    ) {
+                        Text(
+                            text = data.visuals.message,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             },
@@ -110,7 +122,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate("$PRODUCT_DETAILS_SCREEN/${product.id}")
         }, onCartButtonClicked = { product ->
             viewModel.addOrUpdateCart(product)
-        }, onStoreClicked = {appState.navigate(STORE_SCREEN)})
+        }, onStoreClicked = { appState.navigate(STORE_SCREEN) })
     }
     composable("$PRODUCT_DETAILS_SCREEN$PRODUCT_ID_ARG") {
         appState.showBottomNavigation = false
@@ -129,14 +141,13 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         val uiState by viewModel.uiState.collectAsState(initial = SettingsUiState(false))
         var showDialog by remember { mutableStateOf(false) }
 
-        CartScreen(onNavigationBackClicked = { appState.popUp() },
+        CartScreen(
+            onNavigationBackClicked = { appState.popUp() },
             onCheckOutClicked = {
                 if (uiState.isAnonymousAccount) {
                     showDialog = true
                 }
-            }
-            , isUserAnonymous = uiState.isAnonymousAccount
-            , openScreen = {
+            }, isUserAnonymous = uiState.isAnonymousAccount, openScreen = {
                 appState.clearAndNavigate(ORDER_CONFIRMED)
             }
         )
@@ -144,11 +155,13 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             showDialog,
             onDismiss = { showDialog = false }) {
             showDialog = false
-            appState.navigate(Account.route) }
+            appState.navigate(Account.route)
+        }
     }
     composable(Account.route) {
         appState.showBottomNavigation = true
-        SettingsScreen(openScreen = { route -> appState.navigate(route) },
+        SettingsScreen(
+            openScreen = { route -> appState.navigate(route) },
             restartApp = { route ->
                 appState.clearAndNavigate(route)
             }, clearAndNavigate = { route ->
@@ -175,7 +188,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
             appState.navigate(route)
         })
     }
-    composable(STORE_SCREEN){
+    composable(STORE_SCREEN) {
         appState.showBottomNavigation = true
         val viewModel: CartViewModel = hiltViewModel()
         StoreScreen(onProductClick = { product ->
