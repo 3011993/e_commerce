@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +28,8 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.e_commerce.presentation.store.CategoriesEntries
 import com.example.e_commerce.presentation.store.AllProducts
+import com.example.e_commerce.presentation.store.CategoriesEntries
 import com.example.e_commerce.presentation.store.ecommerceCategories
 import com.example.e_commerce.ui.theme.E_commerceTheme
 
@@ -51,18 +53,18 @@ fun CategoriesSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(end = 8.dp)
         ) {
-           item {
-               CategoryChip(
-                   category = AllProducts.category,
-                   icon = AllProducts.icon,
-                   selected = newArrivalsSelected,
-                   onCategorySelected = {
-                       newArrivalsSelected = !newArrivalsSelected
-                       if(newArrivalsSelected) selectedCategory = null
-                       onNewArrivalsClicked()
-                   }
-               )
-           }
+            item {
+                CategoryChip(
+                    category = AllProducts.category,
+                    icon = AllProducts.icon,
+                    selected = newArrivalsSelected,
+                    onCategorySelected = {
+                        newArrivalsSelected = !newArrivalsSelected
+                        if (newArrivalsSelected) selectedCategory = null
+                        onNewArrivalsClicked()
+                    }
+                )
+            }
             items(ecommerceCategories) { category ->
                 CategoryChip(
                     category = category.category, icon = category.icon,
@@ -86,7 +88,7 @@ fun CategoryChip(
     icon: Int,
     modifier: Modifier = Modifier,
 ) {
-    Chip(
+    FilterChip(
         onClick = { onCategorySelected() },
         leadingIcon = {
             Icon(
@@ -94,19 +96,27 @@ fun CategoryChip(
                 contentDescription = category,
                 modifier = modifier.size(40.dp)
             )
-        }, colors = ChipDefaults.chipColors(
-            backgroundColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
+        }, colors = FilterChipDefaults.filterChipColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            labelColor = MaterialTheme.colorScheme.onSurface,
+            iconColor = MaterialTheme.colorScheme.onSurface,
         ),
         shape = RoundedCornerShape(8.dp),
-        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null
-    ) { Text(category.toUpperCase(Locale.current), style = MaterialTheme.typography.bodyMedium) }
+        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null,
+        selected = selected,
+        label = {
+            Text(
+                category.toUpperCase(Locale.current),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun CategoriesSectionPreview() {
     E_commerceTheme {
-        CategoriesSection({},{})
+        CategoriesSection({}, {})
     }
 }

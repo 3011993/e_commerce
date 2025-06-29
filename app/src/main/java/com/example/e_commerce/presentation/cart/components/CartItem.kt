@@ -26,11 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.e_commerce.common.ext.adjustPrice
-import com.example.e_commerce.R.drawable as AppIcon
 import com.example.e_commerce.domain.model.CartModel
-
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
+import com.example.e_commerce.R.drawable as AppIcon
 
 @Composable
 fun CartItem(

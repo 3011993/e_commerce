@@ -1,6 +1,5 @@
 package com.example.e_commerce.presentation.cart
 
-
 import com.example.e_commerce.R
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.CartModel

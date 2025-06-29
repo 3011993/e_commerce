@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,15 +37,15 @@ import coil.compose.AsyncImage
 import com.example.e_commerce.common.composable.CommerceToolBar
 import com.example.e_commerce.common.composable.CommerceWideButton
 import com.example.e_commerce.common.ext.adjustPrice
-import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.AddressModel
+import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.PaymentModel
 import com.example.e_commerce.presentation.order_confirmation.address.AddressViewModel
 import com.example.e_commerce.presentation.order_confirmation.payment.PaymentViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
-import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
+import com.example.e_commerce.R.string as AppText
 
 
 @Composable

@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,8 +28,8 @@ import com.example.e_commerce.common.composable.DialogConfirmLoginButton
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
-import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
+import com.example.e_commerce.R.string as AppText
 
 @Composable
 fun OrderConfirmedScreen(navigateBack :(String) -> Unit,openScreen: (String) -> Unit,modifier: Modifier = Modifier) {

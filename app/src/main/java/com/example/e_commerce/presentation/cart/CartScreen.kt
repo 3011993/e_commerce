@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.e_commerce.presentation.order_confirmation.stripe.CheckOutScreen
 import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.presentation.cart.components.CartHeader
 import com.example.e_commerce.presentation.cart.components.CartItem
+import com.example.e_commerce.presentation.order_confirmation.stripe.CheckOutScreen
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
 

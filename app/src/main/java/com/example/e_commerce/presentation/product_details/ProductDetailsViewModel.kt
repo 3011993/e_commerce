@@ -1,16 +1,12 @@
 package com.example.e_commerce.presentation.product_details
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.e_commerce.R
 import com.example.e_commerce.common.Resources
-import com.example.e_commerce.common.snackbar.SnackBarManager
-import com.example.e_commerce.domain.model.CartModel
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.domain.repo.CommerceRepository
 import com.example.e_commerce.domain.service.AccountService
 import com.example.e_commerce.domain.service.LogService
 import com.example.e_commerce.domain.service.StorageService
-import com.example.e_commerce.presentation.BaseCommerceViewModel
 import com.example.e_commerce.presentation.CommerceViewModel
 import com.example.e_commerce.presentation.PRODUCT_ID
 import com.example.e_commerce.presentation.ScreenState

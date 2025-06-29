@@ -1,11 +1,14 @@
 package com.example.e_commerce.presentation
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,11 +24,12 @@ fun EcommerceBottomNavigation(
     currentScreen: EcommerceDestination,
     modifier: Modifier = Modifier
 ) {
-    BottomNavigation (
-        backgroundColor = MaterialTheme.colorScheme.background,
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) {
         ecommerceScreens.forEach { screen ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 selected = currentScreen == screen,
                 onClick = { onTabSelected(screen) },
                 icon = {
@@ -40,7 +44,16 @@ fun EcommerceBottomNavigation(
                     , fontSize = 10.sp) }
                 ,
                 modifier = modifier,
-                selectedContentColor = MaterialTheme.colorScheme.primary
+                colors = NavigationBarItemColors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    selectedIndicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
+                        NavigationBarDefaults.Elevation) ,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledIconColor = MaterialTheme.colorScheme.onSurface,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                ),
             )
         }
     }

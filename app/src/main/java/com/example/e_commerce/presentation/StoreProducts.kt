@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.example.e_commerce.R
 import com.example.e_commerce.common.snackbar.SnackBarManager
 import com.example.e_commerce.domain.model.ProductModel
-import com.example.e_commerce.presentation.home.HomeContent
 import com.example.e_commerce.presentation.home.components.ProductItem
 import com.example.e_commerce.ui.theme.E_commerceTheme
 

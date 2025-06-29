@@ -1,6 +1,5 @@
 package com.example.e_commerce.presentation.order_confirmation.stripe
 
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,9 +38,9 @@ import kotlin.coroutines.suspendCoroutine
 fun CheckOutScreen(
     carts: List<CartModel>,
     isUserAnonymous: Boolean,
-    onCheckOutClicked : () -> Unit,
-    resetData : () -> Unit,
-    openScreen : () -> Unit,
+    onCheckOutClicked: () -> Unit,
+    resetData: () -> Unit,
+    openScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
@@ -55,6 +54,7 @@ fun CheckOutScreen(
                 resetData()
                 openScreen()
             }
+
             is PaymentSheetResult.Canceled -> SnackBarManager.showMessage("Payment canceled!")
             is PaymentSheetResult.Failed -> {
                 error = paymentResult.error.localizedMessage ?: paymentResult.error.message
@@ -164,6 +164,6 @@ private fun onPayClicked(
 @Composable
 private fun CheckOutScreePreview() {
     E_commerceTheme {
-        CheckOutScreen(emptyList(), true,{},{},{})
+        CheckOutScreen(emptyList(), true, {}, {}, {})
     }
 }

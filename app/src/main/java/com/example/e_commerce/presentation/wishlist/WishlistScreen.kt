@@ -21,8 +21,8 @@ import com.example.e_commerce.presentation.ScreenState
 import com.example.e_commerce.presentation.StoreProducts
 import com.example.e_commerce.presentation.wishlist.components.WishListAvailableItems
 import com.example.e_commerce.ui.theme.E_commerceTheme
-import com.example.e_commerce.R.string as AppText
 import com.example.e_commerce.R.drawable as AppIcon
+import com.example.e_commerce.R.string as AppText
 
 @Composable
 fun WishlistScreen(clearAndNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
