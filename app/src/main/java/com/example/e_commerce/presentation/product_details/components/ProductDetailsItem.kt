@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.e_commerce.common.composable.CommerceToolBar
-import com.example.e_commerce.common.composable.CommerceWideButtonWithData
+import com.example.e_commerce.common.composable.CustomizedCommerceButtonWithData
 import com.example.e_commerce.domain.model.ProductModel
 import com.example.e_commerce.ui.theme.E_commerceTheme
 import com.example.e_commerce.ui.theme.secondaryOnBackGround
@@ -40,7 +40,7 @@ fun ProductDetailsItem(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(bottom =80.dp)
+                .padding(bottom = 50.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             CommerceToolBar(
@@ -118,9 +118,9 @@ fun ProductDetailsItem(
                 )
             }
         }
-        CommerceWideButtonWithData(
+        CustomizedCommerceButtonWithData(
             text = AppText.add_to_cart_button,
-            modifier = modifier.align(Alignment.BottomCenter),
+            modifier = modifier.align(Alignment.BottomCenter).padding(start = 16.dp, end = 16.dp),
             data = product,
             action = {
                 onCartButtonClicked(product)

@@ -89,7 +89,7 @@ fun CheckOutScreen(
             } else {
                 onCheckOutClicked()
             }
-        }, modifier
+        }, modifier = modifier
     )
 }
 

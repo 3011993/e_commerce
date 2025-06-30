@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_commerce.R
 import com.example.e_commerce.common.composable.CommerceToolBar
-import com.example.e_commerce.common.composable.CommerceWideButton
+import com.example.e_commerce.common.composable.CustomizedCommerceButton
 import com.example.e_commerce.common.composable.DialogCancelLoginButton
 import com.example.e_commerce.common.composable.DialogConfirmLoginButton
 import com.example.e_commerce.presentation.order_confirmation.OrderConfirmationViewModel
@@ -69,7 +69,7 @@ fun OrderConfirmedContent(onContinueShoppingClicked : () -> Unit,
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        CommerceWideButton(AppText.continue_shopping_button, action = onContinueShoppingClicked)
+        CustomizedCommerceButton(AppText.continue_shopping_button, action = onContinueShoppingClicked)
     }
 }
 @Composable

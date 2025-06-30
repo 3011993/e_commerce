@@ -1,10 +1,9 @@
 package com.example.e_commerce.presentation.order_confirmation.stripe.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.e_commerce.R
+import com.example.e_commerce.common.composable.CustomizedCommerceButton
 
 @Composable
 fun PayButton(
@@ -12,11 +11,10 @@ fun PayButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
-        modifier = modifier.fillMaxWidth(),
+    CustomizedCommerceButton(
         enabled = enabled,
-        onClick = onClick
-    ) {
-        Text("Pay now")
-    }
+        action = onClick,
+        text = R.string.pay_now_button,
+        modifier = modifier
+    )
 }

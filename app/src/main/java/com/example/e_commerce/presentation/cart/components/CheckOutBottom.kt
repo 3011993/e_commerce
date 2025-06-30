@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.e_commerce.R
-import com.example.e_commerce.common.composable.CommerceWideButton
+import com.example.e_commerce.common.composable.CustomizedCommerceButton
 import com.example.e_commerce.common.composable.DialogCancelLoginButton
 import com.example.e_commerce.common.composable.DialogConfirmLoginButton
 import com.example.e_commerce.common.ext.adjustPrice
@@ -55,7 +55,7 @@ fun CheckOutBottom(
                 )
                 Text(totalPrice.adjustPrice(), style = MaterialTheme.typography.bodyMedium)
             }
-            CommerceWideButton(
+            CustomizedCommerceButton(
                 text = AppText.check_out_button,
                 modifier = modifier,
                 action = onCheckOutClick
