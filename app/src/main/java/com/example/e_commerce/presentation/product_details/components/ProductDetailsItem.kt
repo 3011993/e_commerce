@@ -37,17 +37,18 @@ fun ProductDetailsItem(
     onCartButtonClicked: (ProductModel) -> Unit, modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
+        CommerceToolBar(
+            title = AppText.product_details_top_bar,
+            navigationIcon = AppIcon.back,
+            onNavigationBack = onNavigationBackClicked,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(bottom = 50.dp)
+                .padding(bottom = 65.dp, top = 50.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            CommerceToolBar(
-                title = AppText.product_details_top_bar,
-                navigationIcon = AppIcon.back,
-                onNavigationBack = onNavigationBackClicked
-            )
             AsyncImage(
                 model = product.image,
                 contentDescription = product.title,
@@ -120,7 +121,7 @@ fun ProductDetailsItem(
         }
         CustomizedCommerceButtonWithData(
             text = AppText.add_to_cart_button,
-            modifier = modifier.align(Alignment.BottomCenter).padding(start = 16.dp, end = 16.dp),
+            modifier = modifier.align(Alignment.BottomCenter),
             data = product,
             action = {
                 onCartButtonClicked(product)

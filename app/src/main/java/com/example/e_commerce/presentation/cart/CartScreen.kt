@@ -108,7 +108,7 @@ fun CartContent(
                 onCheckOutClicked = onCheckOutClicked,
                 resetData = resetData,
                 openScreen = openScreen,
-                modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)
+                modifier = Modifier.align(Alignment.BottomCenter).padding()
             )
         }
     }

@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,8 +43,8 @@ fun <T> CustomizedCommerceButtonWithData(
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 2.dp)
-            .height(50.dp),
-        shape = CircleShape,
+            .height(65.dp),
+        shape = RectangleShape,
         enabled = enabled
     ) {
         Text(

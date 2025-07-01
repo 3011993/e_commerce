@@ -112,7 +112,7 @@ fun SignUpScreenContent(
             onClick = onSignUpClick,
             modifier
                 .fillMaxWidth()
-                .height(75.dp)
+                .height(65.dp)
                 .padding(bottom = 0.dp),
             shape = RectangleShape
         ) {
