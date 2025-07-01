@@ -115,7 +115,7 @@ fun HomeContent(
             CommerceToolBar(
                 title = AppText.home_top_bar,
                 onNavigationBack = {},
-                navigationIcon = R.drawable.elkorany_app,
+                navigationIcon = R.drawable.logo,
                 modifier = modifier
             )
             NewArrivalsLandingImage()
