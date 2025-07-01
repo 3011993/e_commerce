@@ -111,7 +111,6 @@ fun HomeContent(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp)
         ) {
             CommerceToolBar(
                 title = AppText.home_top_bar,
@@ -121,18 +120,18 @@ fun HomeContent(
             )
             NewArrivalsLandingImage()
             Row(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth().padding(top = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     "New Arrival", style = MaterialTheme.typography.bodyMedium,
-                    modifier = modifier.padding(start = 16.dp, top = 45.dp)
+                    modifier = Modifier.padding(start = 16.dp)
                 )
                 Text(
                     "View All",
                     style = MaterialTheme.typography.bodySmall.copy(color = secondaryOnBackGround),
                     modifier = modifier
-                        .padding(end = 16.dp, top = 45.dp)
+                        .padding(end = 16.dp)
                         .clickable { onStoreClicked() },
                 )
             }
