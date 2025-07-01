@@ -71,7 +71,7 @@ fun CommerceToolBar(
                     }
                 }
             },
-            modifier = modifier,
+            modifier = modifier.padding(start = 8.dp, end = 8.dp),
             windowInsets = WindowInsets(top = 0.dp)
         )
     }

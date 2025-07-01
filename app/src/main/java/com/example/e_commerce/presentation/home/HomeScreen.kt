@@ -117,7 +117,7 @@ fun HomeContent(
                 title = AppText.home_top_bar,
                 onNavigationBack = {},
                 navigationIcon = R.drawable.elkorany_app,
-                modifier = Modifier
+                modifier = modifier
             )
             NewArrivalsLandingImage()
             Row(

@@ -57,7 +57,7 @@ fun WishListContent(
             title = AppText.wishlist_top_bar,
             navigationIcon = AppIcon.back,
             onNavigationBack = onNavigationBackClicked,
-            modifier = Modifier
+            modifier = modifier
         )
         Box(modifier = modifier.fillMaxSize()) {
             when (state) {
