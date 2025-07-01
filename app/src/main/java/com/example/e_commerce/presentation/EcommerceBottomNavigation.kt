@@ -1,6 +1,9 @@
 package com.example.e_commerce.presentation
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemGestures
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -26,7 +29,9 @@ fun EcommerceBottomNavigation(
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground
+        contentColor = MaterialTheme.colorScheme.onBackground,
+        windowInsets = WindowInsets(bottom = WindowInsets.systemGestures.asPaddingValues().calculateBottomPadding())
+
     ) {
         ecommerceScreens.forEach { screen ->
             NavigationBarItem(
@@ -40,15 +45,18 @@ fun EcommerceBottomNavigation(
                         tint = if (currentScreen == screen) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                     )
                 },
-                label = { Text(text = (screen.route.uppercase())
-                    , fontSize = 10.sp) }
-                ,
+                label = {
+                    Text(
+                        text = (screen.route.uppercase()), fontSize = 10.sp
+                    )
+                },
                 modifier = modifier,
                 colors = NavigationBarItemColors(
                     selectedIconColor = MaterialTheme.colorScheme.primary,
                     selectedTextColor = MaterialTheme.colorScheme.primary,
                     selectedIndicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                        NavigationBarDefaults.Elevation) ,
+                        NavigationBarDefaults.Elevation
+                    ),
                     unselectedIconColor = MaterialTheme.colorScheme.onSurface,
                     unselectedTextColor = MaterialTheme.colorScheme.onSurface,
                     disabledIconColor = MaterialTheme.colorScheme.onSurface,
