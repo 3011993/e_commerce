@@ -63,9 +63,9 @@ fun CommerceApp() {
                 ) { data ->
                     Snackbar(
                         shape = CircleShape,
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.padding(start = 32.dp, end = 32.dp, bottom = 16.dp),
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 16.dp),
                     ) {
                         Text(
                             text = data.visuals.message,
