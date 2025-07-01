@@ -15,7 +15,7 @@ import com.example.e_commerce.ui.theme.E_commerceTheme
 @Composable
 fun NewArrivalsLandingImage(modifier: Modifier = Modifier) {
     Image(painter = painterResource(R.drawable.new_arrivals), contentDescription = null,
-        modifier = modifier.fillMaxWidth().heightIn(min =160.dp, max= 210.dp), contentScale = ContentScale.FillWidth)
+        modifier = modifier.fillMaxWidth().heightIn(min =160.dp, max= 150.dp), contentScale = ContentScale.FillWidth)
 }
 @Preview(showBackground = true)
 @Composable
