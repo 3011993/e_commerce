@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.order_confirmation.stripe
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,7 +51,6 @@ fun CheckOutScreen(
     val paymentSheet = rememberPaymentSheet { paymentResult ->
         when (paymentResult) {
             is PaymentSheetResult.Completed -> {
-                SnackBarManager.showMessage("Payment complete!")
                 resetData()
                 openScreen()
             }
@@ -145,6 +145,7 @@ private fun extractClientSecretFromResponse(response: Response): String? {
 
         responseJson.getString("clientSecret")
     } catch (exception: JSONException) {
+        Log.i("Stripe",exception.message ?: "Unexcepted error happened")
         null
     }
 }
