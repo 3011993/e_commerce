@@ -1,9 +1,7 @@
 package com.example.e_commerce.presentation
 
 import android.content.res.Resources
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
@@ -62,9 +60,8 @@ fun CommerceApp() {
                     hostState = appState.snackBarHostState
                 ) { data ->
                     Snackbar(
-                        shape = CircleShape,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        containerColor = MaterialTheme.colorScheme.inverseSurface,
+                        contentColor = MaterialTheme.colorScheme.inverseOnSurface,
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 16.dp),
                     ) {
                         Text(
