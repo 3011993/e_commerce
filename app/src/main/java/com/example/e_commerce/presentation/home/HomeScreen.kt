@@ -85,7 +85,6 @@ fun HomeContent(
         derivedStateOf { connection === ConnectionState.Available }
     }
     var showRefreshButton by remember { mutableStateOf(false) }
-    var allProducts by remember { mutableStateOf<List<ProductModel>>(emptyList()) }
 
     LaunchedEffect(key1 = connection) {
         if (previousConnection != null && previousConnection != connection) {
@@ -96,13 +95,6 @@ fun HomeContent(
             showRefreshButton = false
         }
         previousConnection = connection
-    }
-    LaunchedEffect(state) {
-        allProducts = when (state) {
-            is ScreenState.Success -> state.data
-            is ScreenState.Error -> state.data ?: emptyList()
-            else -> emptyList()
-        }
     }
     Card(
         modifier = modifier.fillMaxSize(),
@@ -120,7 +112,9 @@ fun HomeContent(
             )
             NewArrivalsLandingImage()
             Row(
-                modifier = modifier.fillMaxWidth().padding(top = 16.dp),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -174,7 +168,7 @@ fun HomeContent(
                     },
                     modifier = modifier
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
                         .align(Alignment.TopCenter),
                 ) {
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
