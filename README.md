@@ -29,6 +29,7 @@ through all the products with Trie.
 - **Room**: For local data caching and wishlist storage.
 - **Hilt**: For dependency injection.
 - **MVVM Architecture**: For a clean separation of concerns.
+- **Stripe**: For Payments
 ## Architecture
 This application follows the MVVM (Model-View-ViewModel) architecture pattern, promoting a clear separation between the UI and business logic while facilitating easier testing and maintenance.
 
