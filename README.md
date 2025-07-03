@@ -1,4 +1,4 @@
-# E-Commerce
+![Screenshot_20250703_034314](https://github.com/user-attachments/assets/64f268b2-8667-45fd-ac5a-5a8ba32bb947)# E-Commerce
 The E-Commerce App is an Android application built with Kotlin and Jetpack Compose that allows users to browse products, manage a shopping cart, and save items to a Wishlist. 
 ## Description
 The E-Commerce App is an Android application that allows users to browse products, manage a shopping cart, and save items to a wishlist. The application fetches product data from an API, utilizing Firebase for authentication and Firestore for real-time data storage. It features efficient data caching with Room and is built using Jetpack Compose for a modern UI experience. It features Search 
@@ -13,13 +13,14 @@ through all the products with Trie.
 - **Search Functionality**:Implemeneted using a Trie data structure for fast and efficient product searching
 - **Network Observer**: Monitors internet connectivity in real-time and updates Screen state
 ##Screenshots
-![Screenshot_20241111_052351_e_commerce](https://github.com/user-attachments/assets/830c6e54-7e0f-480e-8ee6-1891e37c2da8)
-![Screenshot_20241111_050819_e_commerce](https://github.com/user-attachments/assets/97ff1677-d950-4994-a56b-fd4b19275659)
-![Screenshot_20241111_050810_e_commerce](https://github.com/user-attachments/assets/3b8e9d32-0364-4da5-9ec6-2fdc85c8d7be)
-![Screenshot_20241111_050758_e_commerce](https://github.com/user-attachments/assets/462eadbc-e1d5-4006-b091-1175bf7870e0)
-![Screenshot_20241111_050750_e_commerce](https://github.com/user-attachments/assets/5976f683-e5c8-4376-80de-2505bb5bff0a)
-![Screenshot_20241111_050732_e_commerce](https://github.com/user-attachments/assets/66c2a4e4-cd62-42d7-9b6a-9c5ae4bc01c3)
-![Screenshot_20241111_050720_e_commerce](https://github.com/user-attachments/assets/c5fe9ddf-1c36-4dbf-a086-448ee9bfffbc)
+![Screenshot_20250703_034314](https://github.com/user-attachments/assets/307676a7-d13e-4c5f-a0f6-0d999158742b)
+![Screenshot_20250703_034343](https://github.com/user-attachments/assets/ba0cac1b-2e53-465a-91c0-a79cca6f8041)
+![Screenshot_20250703_034407](https://github.com/user-attachments/assets/a5c599ab-009c-4900-b71c-beaeb9e5aee4)
+![Screenshot_20250703_034428](https://github.com/user-attachments/assets/312a3c48-13d6-443f-afe6-089668ca4696)
+![Screenshot_20250703_034516](https://github.com/user-attachments/assets/4607294d-3788-45d7-a5e7-fc755ecbb086)
+![Screenshot_20250703_034547](https://github.com/user-attachments/assets/0f30ac25-3e3b-4953-bf0c-7bd1d2ff1e97)
+![Screenshot_20250703_034557](https://github.com/user-attachments/assets/9f504a03-8b6f-41c4-90f9-0ee1af5f3bb1)
+![Screenshot_20250703_034605](https://github.com/user-attachments/assets/c70940bd-05be-4370-9bda-27e00af40ba3)
 ## Technologies Used
 - **Android SDK**
 - **Jetpack Compose**: For building the user interface.
