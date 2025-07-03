@@ -1,5 +1,6 @@
 package com.example.e_commerce.presentation.cart.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -87,12 +88,14 @@ fun CartItem(
                     ) {
                         Icon(
                             painter = painterResource(id = AppIcon.decrease_button),
-                            contentDescription = "Decrease quantity"
+                            contentDescription = "Decrease quantity",
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Text(
                         text = "${cartItem.quantity}",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = modifier.clip(CircleShape).background(MaterialTheme.colorScheme.surfaceContainerHighest).padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                     IconButton(
                         onClick = {
@@ -102,7 +105,8 @@ fun CartItem(
                     ) {
                         Icon(
                             painter = painterResource(AppIcon.increase_button),
-                            contentDescription = "Increase quantity"
+                            contentDescription = "Increase quantity",
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     IconButton(
