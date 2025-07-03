@@ -1,4 +1,4 @@
-![Screenshot_20250703_034314](https://github.com/user-attachments/assets/64f268b2-8667-45fd-ac5a-5a8ba32bb947)# E-Commerce
+## E-Commerce
 The E-Commerce App is an Android application built with Kotlin and Jetpack Compose that allows users to browse products, manage a shopping cart, and save items to a Wishlist. 
 ## Description
 The E-Commerce App is an Android application that allows users to browse products, manage a shopping cart, and save items to a wishlist. The application fetches product data from an API, utilizing Firebase for authentication and Firestore for real-time data storage. It features efficient data caching with Room and is built using Jetpack Compose for a modern UI experience. It features Search 
