@@ -33,8 +33,8 @@ through all the products with Trie.
 ## Architecture
 This application adheres to the MVVM (Model-View-ViewModel) architecture pattern, which promotes a clear separation between the UI and business logic, facilitating easier testing and maintenance.
 ## Installation
-1- Clone this Repository
-2- Set up Firebase Authentication and enable  Authentication with Email and password
+1. Clone this Repository
+2. Set up Firebase Authentication and enable  Authentication with Email and password
 ## Usage
 1. Start the app and create an account or log in using your credentials.
 2. Browse through the product listings to find items of interest.
