@@ -118,7 +118,7 @@ fun NavGraphBuilder.commerceGraph(appState: CommerceAppState) {
         SplashScreen(openAndPopUp = { route, popUp ->
             appState.navigateAndPopUp(route, popUp)
         })
-    }git push
+    }
     composable(Home.route) {
         appState.showBottomNavigation = true
         val viewModel: CartViewModel = hiltViewModel()
