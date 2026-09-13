@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.stripe.android)
     implementation(libs.stripe.financial)
     implementation(libs.androidx.activity)
+    implementation(libs.logging.interceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
